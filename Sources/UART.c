@@ -45,11 +45,11 @@ bool UART_OutChar(const uint8_t data)
 void UART_Poll(void){
   if (UART_S1 & UART_S1_TDRE_MASK)	//there's something to be received from the PC, put in the RX_FIFO
     {
-      //run FIFO_get or UART_InChar
+      UART_InChar(*dataPtr); //run FIFO_get or UART_InChar
     }
   if (UART_S1 & UART_S1_RDRF_MASK)	// put something from PC to TX_FIFO to transmitto FIFO
     {
-      //run FIFO_put or UART_OutChar
+      UART_OutChar(*dataPtr); //run FIFO_put or UART_OutChar
     }
 					   //UART_S1 UART_S1_REG(UART2);?? I dont know what this is
 
