@@ -38,7 +38,7 @@ bool FIFO_Put(TFIFO * const FIFO, const uint8_t data)
 }
 
 
-bool FIFO_Get(TFIFO * const FIFO, uint8_t * const dataPtr)
+bool FIFO_Get(TFIFO * const FIFO, uint8_t volatile * const dataPtr)
 {
   if (FIFO->NbBytes > 0){
       *dataPtr = FIFO->Buffer[FIFO->Start];

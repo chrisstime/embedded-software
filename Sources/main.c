@@ -31,12 +31,61 @@
 #include "Cpu.h"
 #include "MK70F12.h"
 #include "FIFO.h"
+#include "packet.h"
+#include "UART.h"
 
-#define BAUD_RATE 38400;
+#define BAUD_RATE 38400
 // Private Global Variable
 TFIFO MyFIFO1;
 
+ static uint16union_t Tower_Value = {0x188A};
+ uint8_t Packet_No_Ack;
 
+ void Tower_Version()
+ {
+   Packet_Put(Packet_No_Ack, 0x76, 0x01, 0x00);
+ }
+
+ void Tower_Startup()
+  {
+   Packet_Put(Packet_Command, 0x00, 0x00, 0x00);
+   Tower_Version();
+   Packet_Put(0x08, 0x01, Tower_Value.s.Hi, Tower_Value.s.Lo);
+   }
+
+ void Check_Ack()
+ {
+   if((Packet_Command & PACKET_ACK_MASK) == PACKET_ACK_MASK)
+   {
+       Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
+   }
+ }
+
+ //check each bit with the packet_position to ensure that the packets are aligned.
+ void Packet_Handle(){
+   uint8_t Packet_No_Ack = Packet_Command & ~PACKET_ACK_MASK;
+
+   switch(Packet_No_Ack)
+   {
+     case 0x04:	//Tower startup
+       Tower_Startup();
+       break;
+
+     case 0x09:	//Special Tower version
+       Tower_Version();
+       break;
+
+     case 0x0B:
+      if(Packet_Parameter1 == 2)
+ 	{
+ 	 Packet_Put(0x08, 0x01, Packet_Parameter1, Packet_Parameter2);
+ 	 break;
+ 	}
+       else Packet_Put(0x08, 0x01, Tower_Value.s.Hi, Tower_Value.s.Lo);;
+       break;
+   }
+   Check_Ack();
+ }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -48,19 +97,18 @@ int main(void)
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
 
-  // Init
-  FIFO_Init(&MyFIFO1);
+  if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ))
+      {
+      Tower_Startup();
 
   /* Write your code here */
   for (;;)
   {
-
-      FIFO_Put(&MyFIFO1, 1);
-      FIFO_Put(&MyFIFO1, 2);
-      FIFO_Put(&MyFIFO1, 3);
-      FIFO_Put(&MyFIFO1, 4);
-      FIFO_Put(&MyFIFO1, 5);
-      FIFO_Put(&MyFIFO1, 6);
+      if (Packet_Get()){
+	  Packet_Handle();
+  }
+      UART_Poll();
+  }
   }
 
 
