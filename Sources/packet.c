@@ -66,6 +66,7 @@ bool Packet_Get(void){
   {
     case 0:
       UART_InChar(&Packet_Command);
+			PacketPosition++;
     break;
 
     case 1:
