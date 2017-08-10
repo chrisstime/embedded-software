@@ -83,7 +83,7 @@ bool Packet_Get(void){
 		}
 		return true;
 	}
-	return false; /* would be really really sad if this actually happens. I wouldn't even know where to start.
+	return false; /* would be really really sad if this actually happens. I wouldn't even know where to start.*/
 }
 
 /*! @brief Builds a packet and places it in the transmit FIFO buffer.
@@ -98,23 +98,23 @@ bool Packet_Put(const uint8_t command, const uint8_t parameter1, const uint8_t p
 {
   //call UART_OutChar() 5 times
   // 5th byte is calculated -> Checksum
-	if (UART_OutChar(command))
+	if (!UART_OutChar(command))
 	{
-		if (UART_OutChar(parameter1)
-		{
-			if (UART_OutChar(parameter2))
-			{
-				if (UART_OutChar(parameter3))
-				{
-					if (UART_OutChar(Calculated_Checksum())
-					{
-						return true;
-					}
-				}
-			}
-		}
+		return false;
 	}
-	return false;
+	else if (!UART_OutChar(parameter1)){
+		return false;
+	}
+	else if (!UART_OutChar(parameter2)){
+		return false;
+	}
+	else if (!UART_OutChar(parameter3)){
+		return false;
+	}
+	else if (!UART_OutChar(!Checksum_Check())){
+		return false;
+	}
+	return true;
 }
 
 //call UART_outchar 5 times. 5th time is check sum
