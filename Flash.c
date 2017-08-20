@@ -1,0 +1,254 @@
+/*
+ * Flash.c
+ *
+ *  Created on: 15 Aug 2017
+ *      Author: 11970744
+ */
+
+#include "types.h"
+#include "Flash.h"
+#include "MK70F12.h"
+
+//Block 2, sector 2 address is 0x0008_0000;
+#define FLASH_START 0x00080000LU
+
+
+uint64union_t virtualRAM;
+//uint32union_t FlashStartByte;
+//FlashStartByte.l = FLASH_START;
+uint8_t ArrayIndex[7];
+
+/*! @brief Enables the Flash module.
+ *
+ *  @return bool - TRUE if the Flash was setup successfully.
+ */
+bool Flash_Init(void){
+  //Read FSTAT, ensure that the Flags are cleared (write 0xF0)
+
+  return true;
+}
+
+/*! @brief Allocates space for a non-volatile variable in the Flash memory.
+ *
+ *  @param variable is the address of a pointer to a variable that is to be allocated space in Flash memory.
+ *         The pointer will be allocated to a relevant address:
+ *         If the variable is a byte, then any address.
+ *         If the variable is a half-word, then an even address.
+ *         If the variable is a word, then an address divisible by 4.
+ *         This allows the resulting variable to be used with the relevant Flash_Write function which assumes a certain memory address.
+ *         e.g. a 16-bit variable will be on an even address
+ *  @param size The size, in bytes, of the variable that is to be allocated space in the Flash memory. Valid values are 1, 2 and 4.
+ *  @return bool - TRUE if the variable was allocated space in the Flash memory.
+ *  @note Assumes Flash has been initialized.
+ */
+bool Flash_AllocateVar(volatile void** variable, const uint8_t size){
+  int ByteSize=size/8;			//find the divisor
+//variable pointer to equal offset + flashstart
+//to find if we are changing a packet, half word etc. do a case basis.
+uint8_t AvailableBytes = 0 ;
+uint8_t i;
+uint8_t j;
+for (i=0;i<8;i++)
+    {
+   if (ArrayIndex[i] == 0) 		//if unallocated
+     AvailableBytes++;
+   else AvailableBytes = 0; 		//start from zero again
+   if (AvailableBytes == ByteSize)
+   *variable = (void*) (FLASH_START + i);
+    }
+for (j=i; j <= ByteSize; j++)		//mark all bits on array to keep track
+    {
+    ArrayIndex[j] = 1;
+    }
+
+if ( (i + 1) % size == 0)
+  return true;
+else return false;
+
+//  switch(ByteSize)
+//  {
+//    case 1:		//byte size therefore change 8
+//      Flash_Write8();
+//      break;
+//    case 2:		//byte size therefore change 16
+//      Flash_Write16();
+//      break;
+//    case 4:		//byte size therefore change 32
+//      Flash_Write32();
+//      break;
+//    default:
+//      return 0;
+//      break;
+//  }
+}
+
+
+
+
+
+bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
+{
+  //FCCOB from LSB: 32107654BA98
+uint64union_t phrasewrite;
+phrasewrite.l = phrase;
+
+  FTFE_FSTAT = FTFE_FSTAT_CCIF_MASK; 	//clear flag to start writing
+
+  FTFE_FCCOB0 = 0x07;//PROGRAM_PHRASE; //NEEDS defining
+  FTFE_FCCOB1 = 0x08;//FlashStartByte.s.ByteofWord[3];//
+  FTFE_FCCOB2 = 0;//FlashStartByte.s.ByteofWord[2];
+  FTFE_FCCOB3 = 0;//FlashStartByte.s.ByteofWord[1];
+  FTFE_FCCOB4 = phrasewrite.BoP.ByteofPhrase[3];
+  FTFE_FCCOB5 = phrasewrite.BoP.ByteofPhrase[2];
+  FTFE_FCCOB6 = phrasewrite.BoP.ByteofPhrase[1];
+  FTFE_FCCOB7 = phrasewrite.BoP.ByteofPhrase[0];
+  FTFE_FCCOB8 = phrasewrite.BoP.ByteofPhrase[7];
+  FTFE_FCCOB9 = phrasewrite.BoP.ByteofPhrase[6];
+  FTFE_FCCOBA = phrasewrite.BoP.ByteofPhrase[5];
+  FTFE_FCCOBB = phrasewrite.BoP.ByteofPhrase[4];
+
+ return true;
+}
+
+bool ReadPhrase()
+{
+
+// FTFE_FSTAT = FTFE_FSTAT_CCIF_MASK; 	//clear flag to start writing
+
+  FTFE_FCCOB0 = 0x03;//READ_PHRASE; //NEEDS defining
+  FTFE_FCCOB1 = 0x08;//FlashStartByte.s.ByteofWord[3];//
+  FTFE_FCCOB2 = 0;//FlashStartByte.s.ByteofWord[2];
+  FTFE_FCCOB3 = 0;//FlashStartByte.s.ByteofWord[1];
+
+  virtualRAM.l = FTFE_FCCOBB;
+
+ return true;
+}
+
+/*! @brief Writes a 32-bit number to Flash.
+ *
+ *  @param address The address of the data.
+ *  @param data The 32-bit data to write.
+ *  @return bool - TRUE if Flash was written successfully, FALSE if address is not aligned to a 4-byte boundary or if there is a programming error.
+ *  @note Assumes Flash has been initialized.
+ */
+bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
+{
+  int index;
+  uint8_t newindex;
+  uint32_t newaddress;
+  uint64union_t sixfourbit;
+ index = (uint32_t)address - FLASH_START;
+
+  if (index == 0) //write into the low part of the union
+    {
+      sixfourbit.s.Lo = data;
+      sixfourbit.s.Hi = virtualRAM.s.Hi;
+    }
+  else
+    {
+      sixfourbit.s.Hi = data;
+      newindex = index - 4;	//change index as we need to realign the starting point
+      sixfourbit.s.Lo = virtualRAM.s.Lo;
+    }
+  newaddress = (uint32_t)newindex + FLASH_START;
+
+  bool success;
+  success = ModifyPhrase(FLASH_START, sixfourbit.l);
+   if (success){
+   return true;}
+  return 0;
+}
+
+/*! @brief Writes a 16-bit number to Flash.
+ *
+ *  @param address The address of the data.
+ *  @param data The 16-bit data to write.
+ *  @return bool - TRUE if Flash was written successfully, FALSE if address is not aligned to a 2-byte boundary or if there is a programming error.
+ *  @note Assumes Flash has been initialized.
+ */
+bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
+{
+  uint8_t index;
+    uint8_t newindex;
+    uint32_t newaddress;
+  uint32union_t threetwobit;
+  index = (uint32_t)address - FLASH_START;
+
+  if (index % 4 == 0) //write into the low part of the union
+    {
+      threetwobit.s.Lo = data;
+      threetwobit.s.Hi = virtualRAM.HWoP.HWofPhrase [index + 2];
+    }
+  else
+    {
+      threetwobit.s.Hi = data;
+      newindex = index - 2;	//change index as we need to realign the starting point
+      threetwobit.s.Lo = virtualRAM.HWoP.HWofPhrase [newindex];
+    }
+  newaddress = newindex + FLASH_START;
+
+  bool success;
+  success = Flash_Write32((uint32_t*)newaddress, threetwobit.l); //pass the half word to form a word.
+   if (success){
+     return true;}
+    return 0;
+}
+
+/*! @brief Writes an 8-bit number to Flash.
+ *
+ *  @param address The address of the data.
+ *  @param data The 8-bit data to write.
+ *  @return bool - TRUE if Flash was written successfully, FALSE if there is a programming error.
+ *  @note Assumes Flash has been initialized.
+ *
+ *
+ */
+bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
+{
+  uint8_t index;
+  uint8_t newindex;
+  uint32_t newaddress;
+  uint16union_t onesixbit;
+
+  index = (uint32_t)address - FLASH_START;//FlashStart needs defining
+
+
+ReadPhrase(); // copy flash phrase into RAM
+
+  if (index>7)//FlashSize needs defining //return false if the offset is too large
+    return false;
+  if (index % 2 == 0)		//if index is even put flash in low part of union
+    {
+      onesixbit.s.Lo = data;
+      onesixbit.s.Hi = virtualRAM.BoP.ByteofPhrase [index+1]; //get RAM unchanged part to add to union
+    }
+  else
+    {				 //reverse of true to align the bytes
+      onesixbit.s.Hi = data;
+      newindex = index - 1;	//change index as we need to realign the starting point
+      onesixbit.s.Lo = virtualRAM.BoP.ByteofPhrase [newindex];
+    }
+  newaddress = newindex + FLASH_START;
+
+   bool success;
+   success = Flash_Write16((uint16_t*)newaddress, onesixbit.l); //pass the half word to form a word.
+    if (success){
+      return true;}
+     return 0;
+}
+
+/*! @brief Erases the entire Flash sector.
+ *
+ *  @return bool - TRUE if the Flash "data" sector was erased successfully.
+ *  @note Assumes Flash has been initialized.
+ */
+bool Flash_Erase(void)
+{
+  FTFE_FSTAT = FTFE_FSTAT_CCIF_MASK; 	//clear flag to start writing
+
+    FTFE_FCCOB0 = 0x08;//PROGRAM_PHRASE; //NEEDS defining
+    FTFE_FCCOB1 = 0x08;//FlashStartByte.s.ByteofWord[3];//
+    FTFE_FCCOB2 = 0;//FlashStartByte.s.ByteofWord[2];
+    FTFE_FCCOB3 = 0;//FlashStartByte.s.ByteofWord[1];
+}
