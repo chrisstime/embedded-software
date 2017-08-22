@@ -46,6 +46,7 @@
 #include "UART.h"
 #include "Flash.h"
 #include "types.h"
+#include "LEDs.h"
 
 #define BAUD_RATE 38400
 // Private Global Variable
@@ -136,15 +137,18 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ);
-	Tower_Startup();
+	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ){
+		Tower_Startup();
+		LEDs_Init();
+		LEDs_On(LED_ORANGE);
 
-	/* Write your code here */
-	for (;;) {
-		if (Packet_Get()) {
-			Packet_Handle();
+		/* Write your code here */
+		for (;;) {
+			if (Packet_Get()) {
+				Packet_Handle();
+			}
+			UART_Poll();
 		}
-		UART_Poll();
 	}
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
