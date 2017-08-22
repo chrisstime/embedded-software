@@ -32,18 +32,12 @@ const uint8_t PACKET_ACK_MASK = 0x80;
  *  @param baudRate The desired baud rate in bits/sec.
  *  @param moduleClk The module clock rate in Hz
  *  @return bool - TRUE if the packet module was successfully initialized.
- *  @uint8_t Calculated_Checksum - returns the Calculated checksum based on XORing all the packets together
  *  @bool Checksum_Check Compares the calculated checksum with the value of Checksum and returns true if the are the same
  */
-
-uint8_t Calculated_Checksum(void)
+static bool Checksum_Check(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
-	return Packet_Command ^ Packet_Parameter1 ^ Packet_Parameter2 ^ Packet_Parameter3;
-}
-
-static bool Checksum_Check(void)
-{
-  if (Calculated_Checksum() == Packet_Checksum)
+	uint8_t Calculated_Checksum = command ^ parameter1 ^ parameter2 ^ parameter3;
+  if (Calculated_Checksum == Packet_Checksum)
     {
       return true;
     }
@@ -104,7 +98,7 @@ bool Packet_Get(void){
 			break;
 
 	case 5:
-		if (Checksum_Check())
+		if (Checksum_Check(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
 		{
 			PacketPosition = 0;
 			return true;

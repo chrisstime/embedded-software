@@ -101,7 +101,7 @@ void Packet_Handle() {
 			Flash_Erase();
 		if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
 		{
-			Flash_Write16((volatile uint16_t*)&NvTowerNb, TowerNb);
+			Flash_Write8((volatile uint8_t*)&NvTowerNb, TowerNb);
 			Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
 		}
 		break;

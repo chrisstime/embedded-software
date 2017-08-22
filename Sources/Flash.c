@@ -40,29 +40,23 @@ bool Flash_Init(void){
  *  @note Assumes Flash has been initialized.
  */
 bool Flash_AllocateVar(volatile void** variable, const uint8_t size){
-  volatile int ByteSize=size/8;			//find the divisor
-//variable pointer to equal offset + flashstart
 //to find if we are changing a packet, half word etc. do a case basis.
-  uint8_t AvailableBytes = 0 ;
-  uint8_t i;
-  uint8_t j;
+  static uint8_t AvailableBytes = 0 ;
+  static uint8_t i;
+
   for (i=0;i<8;i++)
       {
      if (ArrayIndex[i] == 0) 		//if unallocated
        AvailableBytes++;
      else AvailableBytes = 0; 		//start from zero again
-     if (AvailableBytes == ByteSize)
-     *variable = (void*) (FLASH_DATA_START + i);
-      }
-  for (j=i; j <= ByteSize; j++)		//mark all bits on array to keep track
-      {
-      ArrayIndex[j] = 1;
-      }
 
-  if ((int)*variable % (ByteSize) == 0x00)
-    return true;
-
- return false;
+     if (AvailableBytes == size){
+      *variable = i - (size - 1);
+      if ((int)*variable % (size) == 0x00) // if variable is either 1, 2 or 4
+        return true;
+    }
+  }
+  return false; // if the for loop fails.
 }
 
 
