@@ -93,17 +93,23 @@ void Packet_Handle() {
 		} else
 			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		break;
-	case 0x07:
-	//  *NvTowerNb = 0x0008;
-//		if (Packet_Parameter1 == 8)
-//			Flash_Erase();
-//		if ( Flash_AllocateVar(&NvTowerNb, sizeof(*NvTowerNb)))
-//			Flash_Write16(&Packet_Parameter1, Packet_Parameter3);
-//		break;
+
+	case 0x07: // from reading the manual why does it look like what we have for 0x0D is what we're meant to have for 0x07??
+	  *NvTowerNb = 0x0008;
+		if (Packet_Parameter1 == 8)
+			Flash_Erase();
+		if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
+		{
+			Flash_Write16((volatile uint16_t*)&NvTowerNb, TowerNb);
+			Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
+		}
+		break;
+
 	case 0x08:
 		data = _FB(FLASH_DATA_START + Packet_Parameter1);
 		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, data);
 		break;
+
 	case 0x0D:
 		if (Packet_Parameter1 == 1)
 		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
