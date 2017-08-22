@@ -2,7 +2,7 @@
  * LEDs.c
  *
  *  Created on: 20 Aug 2017
- *      Author: 11986282
+ *      Author: 11986282, 11970744
  */
 /*
 /*!
