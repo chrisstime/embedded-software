@@ -112,7 +112,6 @@ uint64_t ReadPhrase()
  */
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
-  volatile uint32_t *newindex;
   volatile uint32_t newaddress;
   uint64union_t sixfourbit;
 
@@ -120,14 +119,14 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
     {
       sixfourbit.s.Lo = data;
       sixfourbit.s.Hi = virtualRAM.s.Hi;
+      newaddress = address;
     }
   else
     {
       sixfourbit.s.Hi = data;
-      newindex = address - 4;	//change index as we need to realign the starting point
+      newaddress = address - 4;	//change index as we need to realign the starting point
       sixfourbit.s.Lo = virtualRAM.s.Lo;
     }
-  newaddress = newindex + FLASH_DATA_START;
 
   bool success;
   success = ModifyPhrase(FLASH_DATA_START, sixfourbit.l);
@@ -146,8 +145,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 {
 
-    uint32_t *newindex;
-    uint32_t newaddress;
+  uint32_t *newaddress;
   uint32union_t threetwobit;
 
 
@@ -155,14 +153,15 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
     {
       threetwobit.s.Lo = data;
       threetwobit.s.Hi = virtualRAM.HWoP.HWofPhrase [(int)*address + 2];
+      newaddress = address;
     }
   else
     {
       threetwobit.s.Hi = data;
-      newindex = address - 2;	//change index as we need to realign the starting point
+      newaddress = address - 2;	//change index as we need to realign the starting point
       threetwobit.s.Lo = virtualRAM.HWoP.HWofPhrase [(int)*newindex];
     }
-  newaddress = newindex + FLASH_DATA_START;
+
 
   bool success;
   success = Flash_Write32((uint32_t*)newaddress, threetwobit.l); //pass the half word to form a word.
@@ -182,7 +181,6 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
  */
 bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
 {
-  uint32_t *newindex;
   uint32_t *newaddress;
   uint16union_t onesixbit;
 
@@ -197,14 +195,14 @@ Flash_Erase();
     {
       onesixbit.s.Lo = data;
       onesixbit.s.Hi = virtualRAM.BoP.ByteofPhrase [(int)*address+1]; //get RAM unchanged part to add to union
+      newaddress = address;
     }
   else
     {				 //reverse of true to align the bytes
       onesixbit.s.Hi = data;
-      newindex = address - 1;	//change index as we need to realign the starting point
+      newaddress = address - 1;	//change index as we need to realign the starting point
       onesixbit.s.Lo = virtualRAM.BoP.ByteofPhrase [(int)*newindex];
     }
-  newaddress = newindex + FLASH_DATA_START;
 
    bool success;
    success = Flash_Write16((uint16_t*)newaddress, onesixbit.l); //pass the half word to form a word.
