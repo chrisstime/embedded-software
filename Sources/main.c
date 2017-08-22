@@ -35,10 +35,17 @@
 
 // CPU mpdule - contains low level hardware initialization routines
 #include "Cpu.h"
+#include "Events.h"
+#include "PE_Types.h"
+#include "PE_Error.h"
+#include "PE_Const.h"
+#include "IO_Map.h"
 #include "MK70F12.h"
 #include "FIFO.h"
 #include "packet.h"
 #include "UART.h"
+#include "Flash.h"
+#include "types.h"
 
 #define BAUD_RATE 38400
 // Private Global Variable
@@ -54,7 +61,8 @@ void Tower_Version() {
 void Tower_Startup() {
 	Packet_Put(0x04, 0x00, 0x00, 0x00);
 	Tower_Version();
-	Packet_Put(0x08, 0x01, Tower_Value.s.Hi, Tower_Value.s.Lo);
+	Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
+	//check the tower number and mode bytes - program default.
 }
 
 void Check_Ack() {
@@ -67,7 +75,9 @@ void Check_Ack() {
 //check each bit with the packet_position to ensure that the packets are aligned.
 void Packet_Handle() {
 	uint8_t Packet_No_Ack = Packet_Command & ~PACKET_ACK_MASK;
-
+	uint8_t data;
+	volatile uint16union_t *NvTowerNb;
+	volatile uint16union_t *NvTowerMd;
 	switch (Packet_Command) {
 	case 0x04:	//Tower startup
 		Tower_Startup();
@@ -76,14 +86,35 @@ void Packet_Handle() {
 	case 0x09:	//Special Tower version
 		Tower_Version();
 		break;
-
+//new lab 2 commands
 	case 0x0B:
 		if (Packet_Parameter1 == 2) {
-			Packet_Put(0x08, 0x01, Packet_Parameter1, Packet_Parameter2);
+			Packet_Put(0x0B, 0x01, Packet_Parameter1, Packet_Parameter2);
 		} else
-			Packet_Put(0x08, 0x01, Tower_Value.s.Hi, Tower_Value.s.Lo);
+			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		break;
-
+	case 0x07:
+	//  *NvTowerNb = 0x0008;
+//		if (Packet_Parameter1 == 8)
+//			Flash_Erase();
+//		if ( Flash_AllocateVar(&NvTowerNb, sizeof(*NvTowerNb)))
+//			Flash_Write16(&Packet_Parameter1, Packet_Parameter3);
+//		break;
+	case 0x08:
+		data = _FB(FLASH_DATA_START + Packet_Parameter1);
+		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, data);
+		break;
+	case 0x0D:
+		if (Packet_Parameter1 == 1)
+		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
+		if(Packet_Parameter1 == 2){
+		    if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(Packet_Parameter3)))
+		      {
+		      Flash_Write16((volatile uint16_t*)&NvTowerMd, Packet_Parameter3);
+		      Packet_Put(0x0D, 0x02, NvTowerMd->s.Lo, NvTowerMd->s.Hi);
+		      }
+		}
+		break;
 	}
 	Check_Ack();
 
@@ -111,15 +142,14 @@ int main(void)
 	}
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START(); /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-	/*** End of RTOS startup code.  ***/
-	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for (;;) {
-	}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */
