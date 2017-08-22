@@ -46,7 +46,6 @@
 #include "UART.h"
 #include "Flash.h"
 #include "types.h"
-#include "LEDs.h"
 
 #define BAUD_RATE 38400
 // Private Global Variable
@@ -79,6 +78,8 @@ void Packet_Handle() {
 	uint8_t data;
 	volatile uint16union_t *NvTowerNb;
 	volatile uint16union_t *NvTowerMd;
+	volatile TPacket *testwrite;
+
 	switch (Packet_Command) {
 	case 0x04:	//Tower startup
 		Tower_Startup();
@@ -94,30 +95,24 @@ void Packet_Handle() {
 		} else
 			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		break;
+	case 0x07:
 
-	case 0x07: // from reading the manual why does it look like what we have for 0x0D is what we're meant to have for 0x07??
-	  *NvTowerNb = 0x0008;
 		if (Packet_Parameter1 == 8)
 			Flash_Erase();
-		if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
-		{
-			Flash_Write8((volatile uint8_t*)&NvTowerNb, TowerNb);
-			Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
-		}
+		if ( Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb)))
+			Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
 		break;
-
 	case 0x08:
 		data = _FB(FLASH_DATA_START + Packet_Parameter1);
 		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, data);
 		break;
-
 	case 0x0D:
 		if (Packet_Parameter1 == 1)
 		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		if(Packet_Parameter1 == 2){
-		    if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(Packet_Parameter3)))
+		    if (Flash_AllocateVar((volatile void **)NvTowerMd, sizeof(Packet_Parameter3)))
 		      {
-		      Flash_Write16((volatile uint16_t*)&NvTowerMd, Packet_Parameter3);
+		      Flash_Write16((volatile uint16_t*)NvTowerMd,(const uint16_t) Packet_Parameter23);
 		      Packet_Put(0x0D, 0x02, NvTowerMd->s.Lo, NvTowerMd->s.Hi);
 		      }
 		}
@@ -137,18 +132,15 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ){
-		Tower_Startup();
-		LEDs_Init();
-		LEDs_On(LED_ORANGE);
+	Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ);
+	Tower_Startup();
 
-		/* Write your code here */
-		for (;;) {
-			if (Packet_Get()) {
-				Packet_Handle();
-			}
-			UART_Poll();
+	/* Write your code here */
+	for (;;) {
+		if (Packet_Get()) {
+			Packet_Handle();
 		}
+		UART_Poll();
 	}
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
