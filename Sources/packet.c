@@ -15,13 +15,15 @@
 #include "UART.h"
 
 
-uint8_t	Packet_Command,		/*!< The packet's command */
-	Packet_Parameter1, 	/*!< The packet's 1st parameter */
-	Packet_Parameter2, 	/*!< The packet's 2nd parameter */
-	Packet_Parameter3,	/*!< The packet's 3rd parameter */
-	Packet_Checksum;	/*!< The packet's checksum */
+//uint8_t	Packet_Command,	/*!< The packet's command */
+//	Packet_Parameter1, 	/*!< The packet's 1st parameter */
+//	Packet_Parameter2, 	/*!< The packet's 2nd parameter */
+//	Packet_Parameter3,	/*!< The packet's 3rd parameter */
+//	Packet_Checksum;	/*!< The packet's checksum */
 
-uint8_t PacketPosition;
+TPacket Packet;
+
+static uint8_t PacketPosition;
 const uint8_t PACKET_ACK_MASK = 0x80;
 
 
@@ -52,6 +54,11 @@ static bool Checksum_Check(void)
 bool Packet_Init(const uint32_t baudRate, const uint32_t moduleClk)
 {
   PacketPosition = 0;
+  Packet_Parameter1 = 0;
+  Packet_Parameter2 = 0;
+  Packet_Parameter3 = 0;
+  Packet_Checksum = 0;
+  Packet_Command = 0;
   return UART_Init(baudRate, moduleClk);
 }
 
@@ -60,6 +67,7 @@ void Packet_Shift(){
   Packet_Parameter1 = Packet_Parameter2;
   Packet_Parameter2 = Packet_Parameter3;
   Packet_Parameter3 =  Packet_Checksum;
+  Packet_Checksum = 0;
 }
 
 /*! @brief Attempts to get a packet from the received data.
@@ -67,23 +75,53 @@ void Packet_Shift(){
  *  @return bool - TRUE if a valid packet was received.
  */
 bool Packet_Get(void){
-	int PacketPosition;
+	static int PacketPosition = 0;
 
-	for(PacketPosition = 0; PacketPosition < 5 ; PacketPosition++ )
-	{
-		UART_InChar(&Packet_Checksum);
-		Packet_Shift();
-	}
-	while (!Checksum_Check())
-	{
-		for (PacketPosition = 3; PacketPosition < 5 ; PacketPosition++)
+	switch(PacketPosition){
+	case 0:
+		if (UART_InChar(&Packet_Command))
+			PacketPosition++;
+		break;
+
+	case 1:
+		if (UART_InChar(&Packet_Parameter1))
+			PacketPosition++;
+		break;
+
+	case 2:
+		if (UART_InChar(&Packet_Parameter2))
+			PacketPosition++;
+		break;
+
+	case 3:
+		if (UART_InChar(&Packet_Parameter3))
+			PacketPosition++;
+		break;
+
+	case 4:
+		if (UART_InChar(&Packet_Checksum))
+			PacketPosition++;
+			break;
+
+	case 5:
+		if (Checksum_Check())
 		{
-			UART_InChar(&Packet_Checksum);
+			PacketPosition = 0;
+			return true;
+		}
+		else
+		{
+			PacketPosition = 4;
 			Packet_Shift();
 		}
-		return true;
+		break;
+
+	default:
+		PacketPosition = 0;
+		break;
 	}
-	return false; /* would be really really sad if this actually happens. I wouldn't even know where to start.*/
+
+	return false;
 }
 
 /*! @brief Builds a packet and places it in the transmit FIFO buffer.
@@ -96,25 +134,12 @@ bool Packet_Get(void){
 
 bool Packet_Put(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
+	uint8_t checkSum = command ^ parameter1 ^ parameter2 ^ parameter3;
   //call UART_OutChar() 5 times
   // 5th byte is calculated -> Checksum
-	if (!UART_OutChar(command))
-	{
-		return false;
-	}
-	else if (!UART_OutChar(parameter1)){
-		return false;
-	}
-	else if (!UART_OutChar(parameter2)){
-		return false;
-	}
-	else if (!UART_OutChar(parameter3)){
-		return false;
-	}
-	else if (!UART_OutChar(!Checksum_Check())){
-		return false;
-	}
-	return true;
+	return (UART_OutChar(command) &&
+			UART_OutChar(parameter1) && UART_OutChar(parameter2) &&
+			UART_OutChar(parameter3) && UART_OutChar(checkSum));
 }
 
 //call UART_outchar 5 times. 5th time is check sum

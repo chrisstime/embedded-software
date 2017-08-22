@@ -61,7 +61,7 @@ bool FIFO_Get(TFIFO * const FIFO, uint8_t volatile * const dataPtr)
 	FIFO->NbBytes--;
 
 	if (FIFO->Start >= FIFO_SIZE)
-		FIFO->End = 0;
+		FIFO->Start = 0;
 
 	return true;
 }
