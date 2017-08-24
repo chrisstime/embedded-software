@@ -22,7 +22,7 @@ uint8_t ArrayIndex[7];
  */
 bool Flash_Init(void){
   //Read FSTAT, ensure that the Flags are cleared (write 0xF0)
-	FTFE_FSTAT = 0xF0;
+	//FTFE_FSTAT = 0xF0;
   return true;
 }
 

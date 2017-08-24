@@ -50,10 +50,12 @@ Packet_Parameter3 **     Filename    : main.c
 
 #define BAUD_RATE 115200
 // Private Global Variable
-TFIFO MyFIFO1;
+// TFIFO MyFIFO1;
 
-static uint16union_t Tower_Value = { 0x188A };
+#define TOWER_DEFAULT_VALUE 0x188A;
 uint8_t Packet_No_Ack;
+volatile uint16union_t* NvTowerNb;
+volatile uint16union_t* NvTowerMd;
 
 void Tower_Version() {
 	Packet_Put(Packet_No_Ack, 0x76, 0x01, 0x00);
@@ -62,7 +64,12 @@ void Tower_Version() {
 void Tower_Startup() {
 	Packet_Put(0x04, 0x00, 0x00, 0x00);
 	Tower_Version();
-	Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
+	//Packet_Put(0x0B, 0x01, TOWER_DEFAULT_VALUE.s.Lo, TOWER_DEFAULT_VALUE.s.Hi);
+    if ((*NvTowerNb).l -- 0x0FFFF) {
+        Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_NB);
+       // Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi)
+
+    }
 	//check the tower number and mode bytes - program default.
 }
 
@@ -76,8 +83,6 @@ void Check_Ack(const uint8_t command, const uint8_t parameter1, const uint8_t pa
 void Packet_Handle() {
 	uint8_t Packet_No_Ack = Packet_Command & ~PACKET_ACK_MASK;
 	uint8_t data;
-	volatile uint16union_t *NvTowerNb;
-	volatile uint16union_t *NvTowerMd;
 
 	switch (Packet_Command) {
 	case 0x04:	//Tower startup
@@ -89,38 +94,49 @@ void Packet_Handle() {
 		break;
 //new lab 2 commands
 	case 0x0B:
-		if (Packet_Parameter1 == 2) {
-			Packet_Put(0x0B, 0x01, Packet_Parameter1, Packet_Parameter2);
-		} else
-			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
+		if (Packet_Parameter1 == 0x02) {
+            Flash_Write16((uint16_t*)NvTowerNb, Packet_Parameter23);
+		}
+        else if (Packet_Parameter1 == 0x01) {
+            if (Packet_Parameter2 == 0x00 and Packet_Parameter3 == 0x00) {
+                return Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi)
+            }
+        }
 		break;
 
 	case 0x07:
-		if (Packet_Parameter1 == 8)
-			Flash_Erase();
-		//if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
-		//{
-		else if (Packet_Parameter1 == 2)
-		{
-			Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
-			// Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
-		}
-		//}
+		if (Packet_Parameter1 == 0x07 && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00){
+            uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
+            return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
+        }
 		break;
 
 	case 0x08:
-		data = _FB(FLASH_DATA_START + Packet_Parameter1);
-		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, data);
+        if (Packet_Parameter1 == 0x08 && Packet_Parameter2 == 0x00)
+            Flash_Erase();
+            //if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
+            //{
+        else if (Packet_Parameter1 < 0x08) {
+            //Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
+            // Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
+            uint32_t *addressFlash = (uint32_t *)(FLASH_DATA_START + Packet_Parameter1);
+            return Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
+        }
+
+
 		break;
 
 	case 0x0D:
-		if (Packet_Parameter1 == 1)
-		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
-		if(Packet_Parameter1 == 2)
+		if (Packet_Parameter1 == 0x01)
+		{
+			if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
+				return Packet_Put(0x0D, 0x01, (*NvTowerMode).s.Lo, (*NvTowerMode).s.Hi);
+		}
+		if(Packet_Parameter1 == 0x02)
 		{
 			//if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(NvTowerMd)))
 			//{
-			  Flash_Write16((volatile uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
+			  Flash_Write16((uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
 
 			 // Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
 			//Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
@@ -147,6 +163,7 @@ int main(void)
 		//Flash_Init();
 		LEDs_Init();
 		LEDs_On(LED_ORANGE);
+		LEDs_On(LED_BLUE);
 			/* Write your code here */
 			for (;;) {
 				if (Packet_Get()) {
