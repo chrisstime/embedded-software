@@ -95,13 +95,16 @@ void Packet_Handle() {
 			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		break;
 
-	case 0x07: // from reading the manual why does it look like what we have for 0x0D is what we're meant to have for 0x07??
+	case 0x07:
 		if (Packet_Parameter1 == 8)
 			Flash_Erase();
 		//if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
 		//{
-		else{	Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
-			Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);}
+		else if (Packet_Parameter1 == 2)
+		{
+			Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
+			// Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
+		}
 		//}
 		break;
 
@@ -115,13 +118,13 @@ void Packet_Handle() {
 		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		if(Packet_Parameter1 == 2)
 		{
-			if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(NvTowerMd)))
-			{
+			//if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(NvTowerMd)))
+			//{
 			  Flash_Write16((volatile uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
 
-			  Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
+			 // Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
 			//Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
-			}
+			//}
 		}
 		break;
 	}
