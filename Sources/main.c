@@ -1,5 +1,5 @@
 /* ###################################################################
- **     Filename    : main.c
+Packet_Parameter3 **     Filename    : main.c
  **     Project     : Lab1
  **     Processor   : MK70FN1M0VMJ12
  **     Version     : Driver 01.01
@@ -46,8 +46,9 @@
 #include "UART.h"
 #include "Flash.h"
 #include "types.h"
+#include "LEDs.h"
 
-#define BAUD_RATE 38400
+#define BAUD_RATE 115200
 // Private Global Variable
 TFIFO MyFIFO1;
 
@@ -65,11 +66,10 @@ void Tower_Startup() {
 	//check the tower number and mode bytes - program default.
 }
 
-void Check_Ack() {
-	if ((Packet_Command & PACKET_ACK_MASK) == PACKET_ACK_MASK) {
-		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2,
-				Packet_Parameter3);
-	}
+void Check_Ack(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3) {
+	if ((Packet_Command & PACKET_ACK_MASK) == PACKET_ACK_MASK)
+		Packet_Put(command, parameter1, parameter2, parameter3);
+
 }
 
 //check each bit with the packet_position to ensure that the packets are aligned.
@@ -78,7 +78,6 @@ void Packet_Handle() {
 	uint8_t data;
 	volatile uint16union_t *NvTowerNb;
 	volatile uint16union_t *NvTowerMd;
-	volatile TPacket *testwrite;
 
 	switch (Packet_Command) {
 	case 0x04:	//Tower startup
@@ -95,30 +94,38 @@ void Packet_Handle() {
 		} else
 			Packet_Put(0x0B, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
 		break;
-	case 0x07:
 
+	case 0x07: // from reading the manual why does it look like what we have for 0x0D is what we're meant to have for 0x07??
 		if (Packet_Parameter1 == 8)
 			Flash_Erase();
-		if ( Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb)))
-			Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
+		//if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
+		//{
+		else{	Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
+			Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);}
+		//}
 		break;
+
 	case 0x08:
 		data = _FB(FLASH_DATA_START + Packet_Parameter1);
 		Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, data);
 		break;
+
 	case 0x0D:
 		if (Packet_Parameter1 == 1)
 		Packet_Put(0x0D, 0x01, Tower_Value.s.Lo, Tower_Value.s.Hi);
-		if(Packet_Parameter1 == 2){
-		    if (Flash_AllocateVar((volatile void **)NvTowerMd, sizeof(Packet_Parameter3)))
-		      {
-		      Flash_Write16((volatile uint16_t*)NvTowerMd,(const uint16_t) Packet_Parameter23);
-		      Packet_Put(0x0D, 0x02, NvTowerMd->s.Lo, NvTowerMd->s.Hi);
-		      }
+		if(Packet_Parameter1 == 2)
+		{
+			if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(NvTowerMd)))
+			{
+			  Flash_Write16((volatile uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
+
+			  Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
+			//Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
+			}
 		}
 		break;
 	}
-	Check_Ack();
+	Check_Ack(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
 
 }
 
@@ -132,16 +139,20 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ);
-	Tower_Startup();
-
-	/* Write your code here */
-	for (;;) {
-		if (Packet_Get()) {
-			Packet_Handle();
+	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ)){
+		Tower_Startup();
+		//Flash_Init();
+		LEDs_Init();
+		LEDs_On(LED_ORANGE);
+			/* Write your code here */
+			for (;;) {
+				if (Packet_Get()) {
+					Packet_Handle();
+				}
+				UART_Poll();
+			}
 		}
-		UART_Poll();
-	}
+
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
