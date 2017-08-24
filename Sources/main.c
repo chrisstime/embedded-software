@@ -49,10 +49,10 @@ Packet_Parameter3 **     Filename    : main.c
 #include "LEDs.h"
 
 #define BAUD_RATE 115200
+#define TOWER_DEFAULT_VALUE 0x188A
 // Private Global Variable
 // TFIFO MyFIFO1;
 
-#define TOWER_DEFAULT_VALUE 0x188A;
 uint8_t Packet_No_Ack;
 volatile uint16union_t* NvTowerNb;
 volatile uint16union_t* NvTowerMd;
@@ -65,11 +65,10 @@ void Tower_Startup() {
 	Packet_Put(0x04, 0x00, 0x00, 0x00);
 	Tower_Version();
 	//Packet_Put(0x0B, 0x01, TOWER_DEFAULT_VALUE.s.Lo, TOWER_DEFAULT_VALUE.s.Hi);
-    if ((*NvTowerNb).l -- 0x0FFFF) {
-        Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_NB);
-       // Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi)
-
+    if ((*NvTowerNb).l == 0x0FFFF) {
+        Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
     }
+    Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
 	//check the tower number and mode bytes - program default.
 }
 
@@ -98,8 +97,8 @@ void Packet_Handle() {
             Flash_Write16((uint16_t*)NvTowerNb, Packet_Parameter23);
 		}
         else if (Packet_Parameter1 == 0x01) {
-            if (Packet_Parameter2 == 0x00 and Packet_Parameter3 == 0x00) {
-                return Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi)
+            if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00) {
+                Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
             }
         }
 		break;
@@ -107,7 +106,7 @@ void Packet_Handle() {
 	case 0x07:
 		if (Packet_Parameter1 == 0x07 && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00){
             uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
-            return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
+            Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
         }
 		break;
 
@@ -120,7 +119,7 @@ void Packet_Handle() {
             //Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
             // Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
             uint32_t *addressFlash = (uint32_t *)(FLASH_DATA_START + Packet_Parameter1);
-            return Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
+            Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
         }
 
 
@@ -130,7 +129,7 @@ void Packet_Handle() {
 		if (Packet_Parameter1 == 0x01)
 		{
 			if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
-				return Packet_Put(0x0D, 0x01, (*NvTowerMode).s.Lo, (*NvTowerMode).s.Hi);
+				Packet_Put(0x0D, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
 		}
 		if(Packet_Parameter1 == 0x02)
 		{
