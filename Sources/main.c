@@ -148,20 +148,21 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ)){
-		Tower_Startup();
-		//Flash_Init();
-		LEDs_Init();
+	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init())
+    {
+        Tower_Startup();
 		LEDs_On(LED_ORANGE);
 		LEDs_On(LED_BLUE);
 			/* Write your code here */
-			for (;;) {
-				if (Packet_Get()) {
+			for (;;)
+            {
+				if (Packet_Get())
+                {
 					Packet_Handle();
 				}
 				UART_Poll();
 			}
-		}
+    }
 
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/

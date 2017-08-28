@@ -117,24 +117,17 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
     return false; // size doesn't match 1, 2 or 4 OR no memory is left to allocate OR allocation failed for god knows what reason
 }
 
-
-
-bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
+/*!
+ * @brief Writes phrase to the flash sector
+ *
+ * @param address phrase address
+ * @param phrase what is going to be written in that address
+ *
+ * @return boool - TRUE if phrase was written successfully
+ */
+static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
-    bool successfulErase = false;
     bool successfulWrite = false;
-
-    TFCCOB FlashFCCOB;
-
-    FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
-    FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
-    FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
-    FlashFCCOB.FCCOB3 = (uint8_t)(address);
-
-    if (LaunchCommmand(&FlashFCCOB))
-    {
-        successfulErase = true;
-    }
 
     FlashFCCOB.FCCOB = FLASH_CMD_PROGRAM_PHRASE;
     FlashFCCOB.FCCOB1 = (address >> 16);
@@ -153,27 +146,42 @@ bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
     {
         successfulWrite = true;
     }
-    return successfulErase && successfulWrite;
-
+    return successfulWrite;
 }
 
-uint8_t ReadByte(uint8_t offset)
+/*!
+ * @brief Erases the flash sector
+ * @param address the address of the sector
+ *
+ * @return bool - true if the phrase was erased successfully
+ */
+static BOOL EraseSector(const uint32_t address)
 {
-  uint32_t read = FLASH_DATA_START + offset;
-    return _FB(read);
+    bool successfulErase = false;
+
+    TFCCOB FlashFCCOB;
+
+    FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
+    FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
+    FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
+    FlashFCCOB.FCCOB3 = (uint8_t)(address);
+
+    if (LaunchCommmand(&FlashFCCOB))
+    {
+        successfulErase = true;
+    }
+    return successfulErase;
 }
-uint64_t ReadPhrase()
+
+/*!
+ * @brief This erases then writes to the address
+ * @param address
+ * @param phrase
+ * @return bool - if the phase is successfully modified
+ */
+bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
 {
-
-// FTFE_FSTAT = FTFE_FSTAT_CCIF_MASK; 	//clear flag to start writing
-
-//  FTFE_FCCOB0 = 0x03;//READ_PHRASE; //NEEDS defining
-//  FTFE_FCCOB1 = 0x08;//FlashStartByte.s.ByteofWord[3];//
-//  FTFE_FCCOB2 = 0;//FlashStartByte.s.ByteofWord[2];
-//  FTFE_FCCOB3 = 0;//FlashStartByte.s.ByteofWord[1];
-//
-//  virtualRAM.l = FTFE_FCCOBB;
-  return _FP(FLASH_DATA_START);
+    return EraseSector(address) && WritePhrase(address, phrase);
 }
 
 /*! @brief Writes a 32-bit number to Flash.
@@ -185,27 +193,28 @@ uint64_t ReadPhrase()
  */
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
-  volatile uint32_t *newaddress;
-  uint64union_t sixfourbit;
+    volatile uint32_t* phraseAdd = address;
+    uint64union_t sixtyFourBitPhrase;
 
-  if (*address == 0) //write into the low part of the union
+    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
     {
-      sixfourbit.s.Lo = data;
-      sixfourbit.s.Hi = virtualRAM.s.Hi;
-      *newaddress = *address;
-    }
-  else
-    {
-      sixfourbit.s.Hi = data;
-      *newaddress = *address - 4;	//change index as we need to realign the starting point
-      sixfourbit.s.Lo = virtualRAM.s.Lo;
+        return false;
     }
 
-  bool success;
-  success = ModifyPhrase(FLASH_DATA_START, sixfourbit.l);
-   if (success)
-	   return true;
-  return 0;
+    if((uint32_t)address % 8 == 0 )
+    {
+        sixtyFourBitPhrase.s.Lo = data;
+        sixtyFourBitPhrase.s.Hi = *(address + 1);
+    }
+    else
+    {
+        sixtyFourBitPhrase.s.Hi = data;
+        sixtyFourBitPhrase.s.Lo = *(address -1 );
+
+        phraseAdd--;
+    }
+
+    return ModifyPhrase((uint32_t)phraseAdd, sixtyFourBitPhrase);
 }
 
 /*! @brief Writes a 16-bit number to Flash.
@@ -217,30 +226,28 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
  */
 bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 {
+    volatile uint16_t* wordAdd = address;
+    uint32_t thirtyTwoBitWord;
 
-  uint16_t *naddress;
-  uint32union_t threetwobit;
-
-
-  if (*address % 4 == 0) //write into the low part of the union
+    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 ==0))
     {
-      threetwobit.s.Lo = data;
-      threetwobit.s.Hi = virtualRAM.HWoP.HWofPhrase [(int)*address + 2];
-  //    *naddress = *address;
-    }
-  else
-    {
-      threetwobit.s.Hi = data;
-      *naddress = *address - 2;	//change index as we need to realign the starting point
-      threetwobit.s.Lo = virtualRAM.HWoP.HWofPhrase [(int)*address];
+        return false;
     }
 
+    if((uint32_t)address % 4 == 0)
+    {
+        thirtyTwoBitWord.s.Lo = data;
+        thirtyTwoBitWord.s.Hi = *(address + 1);
+    }
+    else
+    {
+        thirtyTwoBitWord.s.Hi = data;
+        thirtyTwoBitWord.s.Lo = *(address - 1);
 
-  bool success;
-  success = Flash_Write32((uint32_t*)address, threetwobit.l); //pass the half word to form a word.
-   if (success){
-     return true;}
-    return 0;
+        wordAdd--;
+    }
+
+    return Flash_Write32((uint32_t*)wordAdd, thirtyTwoBitWord.l);
 }
 
 /*! @brief Writes an 8-bit number to Flash.
@@ -254,34 +261,28 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
  */
 bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
 {
-  uint8_t *newaddress;
-  uint16union_t onesixbit;
+    volatile uint8_t* halfWordAdd = address;
+    uint16union_t sixteenBitHalfWord;
 
-	ReadPhrase(); // copy flash phrase into RAM
-	if (Flash_Erase()){
+    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END))
+    {
+        return false;
+    }
 
-	  if ((int)address > 7)//FlashSize needs defining //return false if the offset is too large
-		return false;
-	  if (*address % 2 == 0)		//if index is even put flash in low part of union
-		{
-		  onesixbit.s.Lo = data;
-		  onesixbit.s.Hi = virtualRAM.BoP.ByteofPhrase [(int)*address+1]; //get RAM unchanged part to add to union
-		  *newaddress = *address;
-		}
-	  else
-		{				 //reverse of true to align the bytes
-		  onesixbit.s.Hi = data;
-		  *newaddress = *address - 1;	//change index as we need to realign the starting point
-		  onesixbit.s.Lo = virtualRAM.BoP.ByteofPhrase [(int)*newaddress];
-		}
+    if ((uint32_t)address % 2 == 0)
+    {
+        sixteenBitHalfWord.s.Lo = data;
+        sixteenBitHalfWord.s.Hi = *(address + 1);
+    }
+    else
+    {
+        sixteenBitHalfWord.s.Hi = data;
+        sixteenBitHalfWord.s.Lo = *(address - 1);
 
-	   bool success;
-	   success = Flash_Write16((uint16_t*)newaddress, onesixbit.l); //pass the half word to form a word.
-		if (success){
-		  return true;
-		}
-	}
-	return 0;
+        halfWordAdd--;
+    }
+
+    return Flash_Write16((uint16_t*)halfWordAdd, sixteenBitHalfWord.l);
 }
 
 /*! @brief Erases the entire Flash sector.
@@ -291,12 +292,5 @@ bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
  */
 bool Flash_Erase(void)
 {
-
-    FTFE_FCCOB0 = 0x08; //PROGRAM_PHRASE; //NEEDS defining
-    FTFE_FCCOB1 = 0x08; //FlashStartByte.s.ByteofWord[3];//
-    FTFE_FCCOB2 = 0; //FlashStartByte.s.ByteofWord[2];
-    FTFE_FCCOB3 = 0; //FlashStartByte.s.ByteofWord[1];
-    FTFE_FSTAT = FTFE_FSTAT_CCIF_MASK; 	//clear flag to start writing
-
-  return true;
+    return EraseSector(FLASH_DATA_START);
 }

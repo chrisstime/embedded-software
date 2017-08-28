@@ -28,11 +28,29 @@
 #define MEMORY_SIZE ((FLASH_DATA_END - FLASH_DATA_START) + 1)
 
 /*!
+ * @brief Writes phrase to the flash sector
+ *
+ * @param address phrase address
+ * @param phrase what is going to be written in that address
+ *
+ * @return boool - TRUE if phrase was written successfully
+ */
+static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase);
+
+/*!
+ * @brief Erases the flash sector
+ * @param address the address of the sector
+ *
+ * @return bool - true if the phrase was erased successfully
+ */
+static BOOL EraseSector(const uint32_t address);
+
+/*!
  * @brief This launches the Command
  *
  * @return boool - TRUE if the command launches successfully
  */
-static bool LaunchCom(TFCCOB* commonCommandObject)
+static bool LaunchCom(TFCCOB* commonCommandObject);
 
 /*! @brief Enables the Flash module.
  *
