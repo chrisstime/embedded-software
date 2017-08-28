@@ -113,11 +113,8 @@ void Packet_Handle() {
 	case 0x08:
         if (Packet_Parameter1 == 0x08 && Packet_Parameter2 == 0x00)
             Flash_Erase();
-            //if ( Flash_AllocateVar((volatile void **)&NvTowerNb, sizeof(&NvTowerNb)))
-            //{
-        else if (Packet_Parameter1 < 0x08) {
-            //Flash_Write8((volatile uint8_t*)&Packet_Parameter1, Packet_Parameter3);
-            // Packet_Put(0x0D, 0x00, NvTowerNb->s.Lo, NvTowerNb->s.Hi);
+        else if (Packet_Parameter1 < 0x08)
+        {
             uint32_t *addressFlash = (uint32_t *)(FLASH_DATA_START + Packet_Parameter1);
             Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
         }
@@ -133,13 +130,7 @@ void Packet_Handle() {
 		}
 		if(Packet_Parameter1 == 0x02)
 		{
-			//if (Flash_AllocateVar((volatile void **)&NvTowerMd, sizeof(NvTowerMd)))
-			//{
-			  Flash_Write16((uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
-
-			 // Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
-			//Packet_Put(0x0D, 0x02, Packet_Parameter2, Packet_Parameter3);
-			//}
+            Flash_Write16((uint16_t*)&NvTowerMd, (const uint16_t)Packet_Parameter23);
 		}
 		break;
 	}

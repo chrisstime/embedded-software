@@ -20,10 +20,19 @@
 #define _FW(flashAddress)  *(uint32_t volatile *)(flashAddress)
 #define _FP(flashAddress)  *(uint64_t volatile *)(flashAddress)
 
-// Address of the start of the Flash block we are using for data storage
+/*! Address of the start of the Flash block we are using for data storage */
 #define FLASH_DATA_START 0x00080000LU
-// Address of the end of the Flash block we are using for data storage
+/*! Address of the end of the Flash block we are using for data storage */
 #define FLASH_DATA_END   0x00080007LU
+/*! Size of the memory available */
+#define MEMORY_SIZE ((FLASH_DATA_END - FLASH_DATA_START) + 1)
+
+/*!
+ * @brief This launches the Command
+ *
+ * @return boool - TRUE if the command launches successfully
+ */
+static bool LaunchCom(TFCCOB* commonCommandObject)
 
 /*! @brief Enables the Flash module.
  *
