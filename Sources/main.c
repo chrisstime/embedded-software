@@ -48,7 +48,7 @@ Packet_Parameter3 **     Filename    : main.c
 #include "types.h"
 #include "LEDs.h"
 
-// Define packet commands
+// Define packet commands and other things that need to be defined
 #define CMD_STARTUP 0x04
 #define CMD_FLASH_PRG 0x07
 #define CMD_FLASH_READ 0x08
@@ -66,35 +66,43 @@ static volatile uint16union_t* NvTowerMd;
 
 void Tower_Version()
 {
-	Packet_Put(PacketNoAck, 0x76, 0x01, 0x00);
+	Packet_Put((Packet_Command & ~PACKET_ACK_MASK), 0x76, 0x01, 0x00);
 }
 
 void Tower_Startup()
 {
 	Packet_Put(0x04, 0x00, 0x00, 0x00);
 	Tower_Version();
-	//Packet_Put(0x0B, 0x01, TOWER_DEFAULT_VALUE.s.Lo, TOWER_DEFAULT_VALUE.s.Hi);
-    if ((*NvTowerNb).l == 0x0FFFF)
+	Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb)); //returns bool
+    if ((*NvTowerNb).l == 0xFFFF)
     {
         Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
+        uint64_t initialiseFlash = _FP(FLASH_DATA_START);
     }
+
+//	Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd)); //returns bool
+//    if ((*NvTowerMd).l == 0xFFFF)
+//    {
+//        Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_VALUE);
+//    }
+
     Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
 	//check the tower number and mode bytes - program default.
 }
 
 void Check_Ack(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
-	if ((Packet_Command & PACKET_ACK_MASK) == PACKET_ACK_MASK)
+	if ((command & PACKET_ACK_MASK) == PACKET_ACK_MASK)
         Packet_Put(command, parameter1, parameter2, parameter3);
 }
 
 //check each bit with the packet_position to ensure that the packets are aligned.
 void Packet_Handle()
 {
-    PacketNoAck = Packet_Command & ~PACKET_ACK_MASK;
+   // PacketNoAck = Packet_Command & ~PACKET_ACK_MASK;
 	uint8_t data;
 
-	switch (PacketNoAck) {
+	switch (Packet_Command & ~PACKET_ACK_MASK) {
 	case CMD_STARTUP:	//Tower startup
 		Tower_Startup();
 		break;

@@ -5,7 +5,6 @@
  *      @author: 11970744, 11986282
  */
 
-// what do we need this for again? (double check with Declan)
 #include "types.h"
 // add in header file for Flash.c
 #include "Flash.h"
@@ -233,7 +232,7 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
     volatile uint16_t* wordAdd = address;
     uint32union_t word;
 
-    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 ==0))
+    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 == 0))
     {
         return false;
     }
@@ -298,3 +297,8 @@ bool Flash_Erase(void)
 {
     return EraseSector(FLASH_DATA_START);
 }
+
+/* END Flash */
+/*!
+** @}
+*/
