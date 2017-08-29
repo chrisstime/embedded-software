@@ -21,7 +21,7 @@
 //	Packet_Parameter3,	/*!< The packet's 3rd parameter */
 //	Packet_Checksum;	/*!< The packet's checksum */
 
-static TPacket Packet;
+TPacket Packet;
 static uint8_t PacketPosition;
 
 

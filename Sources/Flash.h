@@ -25,8 +25,8 @@
 /*! Address of the end of the Flash block we are using for data storage */
 #define FLASH_DATA_END   0x00080007LU
 
-struct {
-    uint8_t FCCOB;
+typedef struct {
+    uint8_t FCCOB0;
     uint8_t FCCOB1;
     uint8_t FCCOB2;
     uint8_t FCCOB3;
@@ -48,7 +48,7 @@ struct {
  *
  * @return boool - TRUE if phrase was written successfully
  */
-static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase);
+static bool WritePhrase(const uint32_t address, const uint64union_t phrase);
 
 /*!
  * @brief Erases the flash sector
@@ -56,14 +56,14 @@ static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase);
  *
  * @return bool - true if the phrase was erased successfully
  */
-static BOOL EraseSector(const uint32_t address);
+static bool EraseSector(const uint32_t address);
 
 /*!
  * @brief This launches the Command
  *
  * @return boool - TRUE if the command launches successfully
  */
-static bool LaunchCom(TFCCOB* commonCommandObject);
+static bool LaunchCommand(TFCCOB* commonCommandObject);
 
 /*! @brief Enables the Flash module.
  *

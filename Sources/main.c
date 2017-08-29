@@ -56,10 +56,11 @@ Packet_Parameter3 **     Filename    : main.c
 #define CMD_TOWER_NB 0x0B
 #define CMD_TOWER_MODE 0x0D
 #define TOWER_DEFAULT_VALUE 0x188A
-#define PACKET_ACK_MASK = 0x80
+#define PACKET_ACK_MASK 0x80
 
-const uint8_t BaudRate = 115200;
+const uint32_t BaudRate = 115200;
 
+static uint8_t PacketNoAck;
 static volatile uint16union_t* NvTowerNb;
 static volatile uint16union_t* NvTowerMd;
 
@@ -73,7 +74,8 @@ void Tower_Startup()
 	Packet_Put(0x04, 0x00, 0x00, 0x00);
 	Tower_Version();
 	//Packet_Put(0x0B, 0x01, TOWER_DEFAULT_VALUE.s.Lo, TOWER_DEFAULT_VALUE.s.Hi);
-    if ((*NvTowerNb).l == 0x0FFFF) {
+    if ((*NvTowerNb).l == 0x0FFFF)
+    {
         Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
     }
     Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
@@ -89,10 +91,10 @@ void Check_Ack(const uint8_t command, const uint8_t parameter1, const uint8_t pa
 //check each bit with the packet_position to ensure that the packets are aligned.
 void Packet_Handle()
 {
-    uint8_t packetNoAck = Packet_Command & ~PACKET_ACK_MASK;
+    PacketNoAck = Packet_Command & ~PACKET_ACK_MASK;
 	uint8_t data;
 
-	switch (Packet_Command) {
+	switch (PacketNoAck) {
 	case CMD_STARTUP:	//Tower startup
 		Tower_Startup();
 		break;
@@ -161,7 +163,7 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	if (Packet_Init(BAUD_RATE, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init())
+	if (Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init())
     {
         Tower_Startup();
 		LEDs_On(LED_ORANGE);

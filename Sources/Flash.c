@@ -14,31 +14,33 @@
 
 // Size of the memory available
 #define MEMORY_SIZE ((FLASH_DATA_END - FLASH_DATA_START) + 1)
+#define FLASH_CMD_ERASE_SECTOR FTFE_FCCOB0_CCOBn(0x09)
+#define FLASH_CMD_PROGRAM_PHRASE FTFE_FCCOB0_CCOBn(0x07)
 
 static bool addressAvailable[MEMORY_SIZE];
 
 /*!
  * @brief This launches the Command
  *
- * @return boool - TRUE if the command launches successfully
+ * @return bool - TRUE if the command launches successfully
  */
-static bool LaunchCommmand(TFCCOB* commonCommandObject)
+static bool LaunchCommand(TFCCOB* commonCommandObject)
 {
-    //Iguana write to it
-    FCCOB = commonCommandObject->FCCOB;
-    FCCOB1 = commonCommandObject->FCCOB1;
-    FCCOB2 = commonCommandObject->FCCOB2;
-    FCCOB3 = commonCommandObject->FCCOB3;
-    FCCOB7 = commonCommandObject->FCCOB7;
-    FCCOB6 = commonCommandObject->FCCOB6;
-    FCCOB5 = commonCommandObject->FCCOB5;
-    FCCOB4 = commonCommandObject->FCCOB4;
-    FCCOBB = commonCommandObject->FCCOBB;
-    FCCOBA = commonCommandObject->FCCOBA;
-    FCCOB9 = commonCommandObject->FCCOB9;
-    FCCOB8 = commonCommandObject->FCCOB8;
+	//Iguana write to it
+    FTFE_FCCOB0 = commonCommandObject->FCCOB0;
+    FTFE_FCCOB1 = commonCommandObject->FCCOB1;
+    FTFE_FCCOB2 = commonCommandObject->FCCOB2;
+    FTFE_FCCOB3 = commonCommandObject->FCCOB3;
+    FTFE_FCCOB7 = commonCommandObject->FCCOB7;
+    FTFE_FCCOB6 = commonCommandObject->FCCOB6;
+    FTFE_FCCOB5 = commonCommandObject->FCCOB5;
+    FTFE_FCCOB4 = commonCommandObject->FCCOB4;
+    FTFE_FCCOBB = commonCommandObject->FCCOBB;
+    FTFE_FCCOBA = commonCommandObject->FCCOBA;
+    FTFE_FCCOB9 = commonCommandObject->FCCOB9;
+    FTFE_FCCOB8 = commonCommandObject->FCCOB8;
 
-    FTFE_FSTAT |= FTFE_FSTAT_CCIFMASK;  // this be the register for the flash status?? allegedly...
+    FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
     // le make sure we shoot it into the right spots
     return true;
 }
@@ -76,9 +78,11 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
 
     if (size == 1) // if size is 1 byte, we can allocate it to any address
     {
-        for (position = 0 ; position < MEMORY_SIZE ; position++) {
-            if (addressAvailable[position]) {
-                *variable = (void *)(FLASH_DATA_START + position);
+        for (position = 0 ; position < MEMORY_SIZE ; position++)
+        {
+        	if (addressAvailable[position])
+        	{
+        		*variable = (void *)(FLASH_DATA_START + position);
                 addressAvailable[position] = false;
                 return true;
             }
@@ -124,24 +128,25 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
  *
  * @return boool - TRUE if phrase was written successfully
  */
-static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase)
+static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
-    bool successfulWrite = false;
+    TFCCOB FlashFCCOB;
+	bool successfulWrite = false;
 
-    FlashFCCOB.FCCOB = FLASH_CMD_PROGRAM_PHRASE;
+    FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
     FlashFCCOB.FCCOB1 = (address >> 16);
     FlashFCCOB.FCCOB2 = (address >> 8);
     FlashFCCOB.FCCOB3 = address;
     FlashFCCOB.FCCOB7 = (phrase.s.Lo);
     FlashFCCOB.FCCOB6 = (address >> 8);
     FlashFCCOB.FCCOB5 = (address >> 16);
-    FlashFCCOB.FCCOB4 = (address >> 24)
+    FlashFCCOB.FCCOB4 = (address >> 24);
     FlashFCCOB.FCCOBB = (phrase.s.Hi);
     FlashFCCOB.FCCOBA = (address >> 8);
     FlashFCCOB.FCCOB9 = (address >> 16);
     FlashFCCOB.FCCOB8 = (address >> 24);
 
-    if (LauchCommand(&FlashFCCOB))
+    if (LaunchCommand(&FlashFCCOB))
     {
         successfulWrite = true;
     }
@@ -154,7 +159,7 @@ static BOOL WritePhrase(const uint32_t address, const uint64union_t phrase)
  *
  * @return bool - true if the phrase was erased successfully
  */
-static BOOL EraseSector(const uint32_t address)
+static bool EraseSector(const uint32_t address)
 {
     bool successfulErase = false;
 
@@ -165,7 +170,7 @@ static BOOL EraseSector(const uint32_t address)
     FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
     FlashFCCOB.FCCOB3 = (uint8_t)(address);
 
-    if (LaunchCommmand(&FlashFCCOB))
+    if (LaunchCommand(&FlashFCCOB))
     {
         successfulErase = true;
     }
@@ -178,7 +183,7 @@ static BOOL EraseSector(const uint32_t address)
  * @param phrase
  * @return bool - if the phase is successfully modified
  */
-bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
+bool ModifyPhrase(const uint32_t address, const uint64union_t phrase)
 {
     return EraseSector(address) && WritePhrase(address, phrase);
 }
@@ -213,7 +218,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
         phraseAdd--;
     }
 
-    return ModifyPhrase((uint32_t)phraseAdd, sixtyFourBitPhrase);
+    return ModifyPhrase((uint32_t)phraseAdd, phrase);
 }
 
 /*! @brief Writes a 16-bit number to Flash.
@@ -226,7 +231,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 {
     volatile uint16_t* wordAdd = address;
-    uint32_t word;
+    uint32union_t word;
 
     if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 ==0))
     {
@@ -246,7 +251,7 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
         wordAdd--;
     }
 
-    return Flash_Write32((uint32_t*)wordAdd, thirtyTwoBitWord.l);
+    return Flash_Write32((uint32_t*)wordAdd, word.l);
 }
 
 /*! @brief Writes an 8-bit number to Flash.
@@ -281,7 +286,7 @@ bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
         halfWordAdd--;
     }
 
-    return Flash_Write16((uint16_t*)halfWordAdd, sixteenBitHalfWord.l);
+    return Flash_Write16((uint16_t*)halfWordAdd, halfWord.l);
 }
 
 /*! @brief Erases the entire Flash sector.
