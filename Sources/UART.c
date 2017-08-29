@@ -1,9 +1,9 @@
 /*
  * UART.c
  *
- *  Created on: 1 Aug 2017
- *  Last Modified 8 Aug 2017
- *      Author: 11970744, 11986282
+ *   Created on: 1 Aug 2017
+ *      @date: 8 Aug 2017
+ *      @author: 11970744, 11986282
  */
 /*!
  **  @addtogroup UART_module packet module documentation

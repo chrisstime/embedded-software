@@ -2,8 +2,8 @@
  * FIFO.c
  *
  *  Created on: 1 Aug 2017
- *  Last Modified 8 Aug 2017
- *      Author: 11970744, 11986282
+ *      @date 8 Aug 2017
+ *      @author: 11970744, 11986282
  */
 /*!
  **  @addtogroup FIFO_module FIFO module documentation

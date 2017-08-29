@@ -1,8 +1,8 @@
 /*
  * Flash.c
  *
- *  Created on: 15 Aug 2017
- *      Author: 11970744, 11986282
+ *      @date: 15 Aug 2017
+ *      @author: 11970744, 11986282
  */
 
 // what do we need this for again? (double check with Declan)
@@ -12,11 +12,10 @@
 // peripheral memory map for tower
 #include "MK70F12.h"
 
-static bool addressAvailable[FLASH_MEM_SIZE];
+// Size of the memory available
+#define MEMORY_SIZE ((FLASH_DATA_END - FLASH_DATA_START) + 1)
 
-
-uint64union_t virtualRAM;
-uint8_t ArrayIndex[7];
+static bool addressAvailable[MEMORY_SIZE];
 
 /*!
  * @brief This launches the Command
@@ -194,7 +193,7 @@ bool ModifyPhrase(const uint32_t address, const uint64_t phrase)
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
     volatile uint32_t* phraseAdd = address;
-    uint64union_t sixtyFourBitPhrase;
+    uint64union_t phrase;
 
     if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
     {
@@ -203,13 +202,13 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 
     if((uint32_t)address % 8 == 0 )
     {
-        sixtyFourBitPhrase.s.Lo = data;
-        sixtyFourBitPhrase.s.Hi = *(address + 1);
+        phrase.s.Lo = data;
+        phrase.s.Hi = *(address + 1);
     }
     else
     {
-        sixtyFourBitPhrase.s.Hi = data;
-        sixtyFourBitPhrase.s.Lo = *(address -1 );
+        phrase.s.Hi = data;
+        phrase.s.Lo = *(address -1 );
 
         phraseAdd--;
     }
@@ -227,7 +226,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 {
     volatile uint16_t* wordAdd = address;
-    uint32_t thirtyTwoBitWord;
+    uint32_t word;
 
     if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 ==0))
     {
@@ -236,13 +235,13 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 
     if((uint32_t)address % 4 == 0)
     {
-        thirtyTwoBitWord.s.Lo = data;
-        thirtyTwoBitWord.s.Hi = *(address + 1);
+        word.s.Lo = data;
+        word.s.Hi = *(address + 1);
     }
     else
     {
-        thirtyTwoBitWord.s.Hi = data;
-        thirtyTwoBitWord.s.Lo = *(address - 1);
+        word.s.Hi = data;
+        word.s.Lo = *(address - 1);
 
         wordAdd--;
     }
@@ -262,7 +261,7 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
 {
     volatile uint8_t* halfWordAdd = address;
-    uint16union_t sixteenBitHalfWord;
+    uint16union_t halfWord;
 
     if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END))
     {
@@ -271,13 +270,13 @@ bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
 
     if ((uint32_t)address % 2 == 0)
     {
-        sixteenBitHalfWord.s.Lo = data;
-        sixteenBitHalfWord.s.Hi = *(address + 1);
+        halfWord.s.Lo = data;
+        halfWord.s.Hi = *(address + 1);
     }
     else
     {
-        sixteenBitHalfWord.s.Hi = data;
-        sixteenBitHalfWord.s.Lo = *(address - 1);
+        halfWord.s.Hi = data;
+        halfWord.s.Lo = *(address - 1);
 
         halfWordAdd--;
     }

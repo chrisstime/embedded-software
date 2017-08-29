@@ -2,8 +2,8 @@
  * packet.c
  *
  *  Created on: 1 Aug 2017
- *  Last Modified 8 Aug 2017
- *      Author: 11970744, 11986282
+ *  @date: 8 Aug 2017
+ *  @author: 11970744, 11986282
  */
 /*!
 **  @addtogroup packet_module packet module documentation
@@ -21,10 +21,8 @@
 //	Packet_Parameter3,	/*!< The packet's 3rd parameter */
 //	Packet_Checksum;	/*!< The packet's checksum */
 
-TPacket Packet;
-
+static TPacket Packet;
 static uint8_t PacketPosition;
-const uint8_t PACKET_ACK_MASK = 0x80;
 
 
 /*! @brief Initializes the packets by calling the initialization routines of the supporting software modules.
@@ -131,9 +129,7 @@ bool Packet_Put(const uint8_t command, const uint8_t parameter1, const uint8_t p
 	uint8_t checkSum = command ^ parameter1 ^ parameter2 ^ parameter3;
   //call UART_OutChar() 5 times
   // 5th byte is calculated -> Checksum
-	return (UART_OutChar(command) &&
-			UART_OutChar(parameter1) && UART_OutChar(parameter2) &&
-			UART_OutChar(parameter3) && UART_OutChar(checkSum));
+	return (UART_OutChar(command) && UART_OutChar(parameter1) && UART_OutChar(parameter2) && UART_OutChar(parameter3) && UART_OutChar(checkSum));
 }
 
 //call UART_outchar 5 times. 5th time is check sum

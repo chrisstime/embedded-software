@@ -24,8 +24,21 @@
 #define FLASH_DATA_START 0x00080000LU
 /*! Address of the end of the Flash block we are using for data storage */
 #define FLASH_DATA_END   0x00080007LU
-/*! Size of the memory available */
-#define MEMORY_SIZE ((FLASH_DATA_END - FLASH_DATA_START) + 1)
+
+struct {
+    uint8_t FCCOB;
+    uint8_t FCCOB1;
+    uint8_t FCCOB2;
+    uint8_t FCCOB3;
+    uint8_t FCCOB7;
+    uint8_t FCCOB6;
+    uint8_t FCCOB5;
+    uint8_t FCCOB4;
+    uint8_t FCCOBB;
+    uint8_t FCCOBA;
+    uint8_t FCCOB9;
+    uint8_t FCCOB8;
+} TFCCOB;
 
 /*!
  * @brief Writes phrase to the flash sector
