@@ -131,16 +131,6 @@ bool FlashRead(void)
   return false;
 }
 
-bool CheckAck(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
-{
-	if ((command & PACKET_ACK_MASK) == PACKET_ACK_MASK)
-    {
-      if (Packet_Put(command, parameter1, parameter2, parameter3))
-        return true;
-    }
-    return false;
-}
-
 bool TowerMd(void)
 {
   if (Packet_Parameter1 == 0x01)
@@ -160,7 +150,9 @@ bool TowerMd(void)
 //check each bit with the packet_position to ensure that the packets are aligned.
 void Packet_Handle()
 {
-  uint8_t PacketNoAck = Packet_Command & ~PACKET_ACK_MASK;
+  Packet_Command &= ~PACKET_ACK_MASK;
+
+  bool ack = Packet_Command & PACKET_ACK_MASK;
   bool success;
 
 	switch (Packet_Command)
@@ -190,10 +182,13 @@ void Packet_Handle()
       break;
   }
 
-  if (success)
+  if (ack)
   {
-    if (CheckAck(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
-      return true;
+    if (success)
+    {
+      Packet_Command |= PACKET_ACK_MASK;
+      Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
+    }
   }
 }
 
