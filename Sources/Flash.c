@@ -25,7 +25,6 @@ static bool addressAvailable[MEMORY_SIZE];
  */
 static bool LaunchCommand(TFCCOB* commonCommandObject)
 {
-	//Iguana write to it
     FTFE_FCCOB0 = commonCommandObject->FCCOB0;
     FTFE_FCCOB1 = commonCommandObject->FCCOB1;
     FTFE_FCCOB2 = commonCommandObject->FCCOB2;
@@ -50,12 +49,12 @@ static bool LaunchCommand(TFCCOB* commonCommandObject)
  */
 bool Flash_Init(void)
 {
-    uint8_t checkAvailability;
-    for (checkAvailability = 0; checkAvailability < MEMORY_SIZE ; checkAvailability++) // set availability of each address
-    {
-        addressAvailable[checkAvailability] = true; // set to true - for use when Flash_AllocateVar()
-    }
-    return true;
+  uint8_t checkAvailability;
+  for (checkAvailability = 0; checkAvailability < MEMORY_SIZE ; checkAvailability++) // set availability of each address
+  {
+    addressAvailable[checkAvailability] = true; // set to true - for use when Flash_AllocateVar()
+  }
+  return true;
 }
 
 /*! @brief Allocates space for a non-volatile variable in the Flash memory.
@@ -73,50 +72,50 @@ bool Flash_Init(void)
  */
 bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
 {
-    uint32_t position; // 32 bit position
+  uint32_t position; // 32 bit position
 
-    if (size == 1) // if size is 1 byte, we can allocate it to any address
+  if (size == 1) // if size is 1 byte, we can allocate it to any address
+  {
+    for (position = 0 ; position < MEMORY_SIZE ; position++)
     {
-        for (position = 0 ; position < MEMORY_SIZE ; position++)
-        {
-        	if (addressAvailable[position])
-        	{
-        		*variable = (void *)(FLASH_DATA_START + position);
-                addressAvailable[position] = false;
-                return true;
-            }
-        }
+      if (addressAvailable[position])
+      {
+        *variable = (void *)(FLASH_DATA_START + position);
+        addressAvailable[position] = false;
+        return true;
+      }
     }
-    else if (size == 2)
+  }
+  else if (size == 2)
+  {
+    for (position = 0 ; position < MEMORY_SIZE ; position += 2 )
     {
-        for (position = 0 ; position < MEMORY_SIZE ; position += 2 )
-        {
-           if (addressAvailable[position] && addressAvailable[position + 1])
-           {
-               *variable = (void*)FLASH_DATA_START + position;
-               addressAvailable[position] = false;
-               addressAvailable[position + 1] = false;
-               return true;
-           }
-        }
+      if (addressAvailable[position] && addressAvailable[position + 1])
+      {
+        *variable = (void*)FLASH_DATA_START + position;
+        addressAvailable[position] = false;
+        addressAvailable[position + 1] = false;
+        return true;
+      }
     }
-    else if (size == 4)
+  }
+  else if (size == 4)
+  {
+    for(position = 0; position < MEMORY_SIZE ; position += 4)
     {
-        for(position = 0; position < MEMORY_SIZE ; position += 4)
-        {
-            if (addressAvailable[position] && addressAvailable[position + 1]
-                && addressAvailable[position + 2] && addressAvailable[position + 3])
-            {
-                *variable = (void*)FLASH_DATA_START + position;
-                addressAvailable[position] = false;
-                addressAvailable[position + 1] = false;
-                addressAvailable[position + 2] = false;
-                addressAvailable[position + 3] = false;
-                return true;
-            }
-        }
+      if (addressAvailable[position] && addressAvailable[position + 1]
+          && addressAvailable[position + 2] && addressAvailable[position + 3])
+      {
+        *variable = (void*)FLASH_DATA_START + position;
+        addressAvailable[position] = false;
+        addressAvailable[position + 1] = false;
+        addressAvailable[position + 2] = false;
+        addressAvailable[position + 3] = false;
+        return true;
+      }
     }
-    return false; // size doesn't match 1, 2 or 4 OR no memory is left to allocate OR allocation failed for god knows what reason
+  }
+  return false; // size doesn't match 1, 2 or 4 OR no memory is left to allocate OR allocation failed for god knows what reason
 }
 
 /*!
@@ -129,27 +128,27 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
  */
 static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
-    TFCCOB FlashFCCOB;
-	bool successfulWrite = false;
+  bool successfulWrite = false;
+  TFCCOB FlashFCCOB;
 
-    FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
-    FlashFCCOB.FCCOB1 = (address >> 16);
-    FlashFCCOB.FCCOB2 = (address >> 8);
-    FlashFCCOB.FCCOB3 = address;
-    FlashFCCOB.FCCOB7 = (phrase.s.Lo);
-    FlashFCCOB.FCCOB6 = (address >> 8);
-    FlashFCCOB.FCCOB5 = (address >> 16);
-    FlashFCCOB.FCCOB4 = (address >> 24);
-    FlashFCCOB.FCCOBB = (phrase.s.Hi);
-    FlashFCCOB.FCCOBA = (address >> 8);
-    FlashFCCOB.FCCOB9 = (address >> 16);
-    FlashFCCOB.FCCOB8 = (address >> 24);
+  FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
+  FlashFCCOB.FCCOB1 = (address >> 16);
+  FlashFCCOB.FCCOB2 = (address >> 8);
+  FlashFCCOB.FCCOB3 = address;
+  FlashFCCOB.FCCOB7 = (phrase.s.Lo);
+  FlashFCCOB.FCCOB6 = (address >> 8);
+  FlashFCCOB.FCCOB5 = (address >> 16);
+  FlashFCCOB.FCCOB4 = (address >> 24);
+  FlashFCCOB.FCCOBB = (phrase.s.Hi);
+  FlashFCCOB.FCCOBA = (address >> 8);
+  FlashFCCOB.FCCOB9 = (address >> 16);
+  FlashFCCOB.FCCOB8 = (address >> 24);
 
-    if (LaunchCommand(&FlashFCCOB))
-    {
-        successfulWrite = true;
-    }
-    return successfulWrite;
+  if (LaunchCommand(&FlashFCCOB))
+  {
+    successfulWrite = true;
+  }
+  return successfulWrite;
 }
 
 /*!
@@ -160,20 +159,20 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
  */
 static bool EraseSector(const uint32_t address)
 {
-    bool successfulErase = false;
+  bool successfulErase = false;
 
-    TFCCOB FlashFCCOB;
+  TFCCOB FlashFCCOB;
 
-    FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
-    FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
-    FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
-    FlashFCCOB.FCCOB3 = (uint8_t)(address);
+  FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
+  FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
+  FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
+  FlashFCCOB.FCCOB3 = (uint8_t)(address);
 
-    if (LaunchCommand(&FlashFCCOB))
-    {
-        successfulErase = true;
-    }
-    return successfulErase;
+  if (LaunchCommand(&FlashFCCOB))
+  {
+    successfulErase = true;
+  }
+  return successfulErase;
 }
 
 /*!
@@ -184,7 +183,7 @@ static bool EraseSector(const uint32_t address)
  */
 bool ModifyPhrase(const uint32_t address, const uint64union_t phrase)
 {
-    return EraseSector(address) && WritePhrase(address, phrase);
+  return EraseSector(address) && WritePhrase(address, phrase);
 }
 
 /*! @brief Writes a 32-bit number to Flash.
@@ -196,28 +195,28 @@ bool ModifyPhrase(const uint32_t address, const uint64union_t phrase)
  */
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
-    volatile uint32_t* phraseAdd = address;
-    uint64union_t phrase;
+  volatile uint32_t* phraseAdd = address;
+  uint64union_t phrase;
 
-    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
-    {
-        return false;
-    }
+  if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
+  {
+    return false;
+  }
 
-    if((uint32_t)address % 8 == 0 )
-    {
-        phrase.s.Lo = data;
-        phrase.s.Hi = *(address + 1);
-    }
-    else
-    {
-        phrase.s.Hi = data;
-        phrase.s.Lo = *(address -1 );
+  if((uint32_t)address % 8 == 0 )
+  {
+    phrase.s.Lo = data;
+    phrase.s.Hi = *(address + 1);
+  }
+  else
+  {
+    phrase.s.Hi = data;
+    phrase.s.Lo = *(address -1 );
 
-        phraseAdd--;
-    }
+    phraseAdd--;
+  }
 
-    return ModifyPhrase((uint32_t)phraseAdd, phrase);
+  return ModifyPhrase((uint32_t)phraseAdd, phrase);
 }
 
 /*! @brief Writes a 16-bit number to Flash.
@@ -229,28 +228,28 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
  */
 bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
 {
-    volatile uint16_t* wordAdd = address;
-    uint32union_t word;
+  volatile uint16_t* wordAdd = address;
+  uint32union_t word;
 
-    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 == 0))
-    {
-        return false;
-    }
+  if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address %2 == 0))
+  {
+    return false;
+  }
 
-    if((uint32_t)address % 4 == 0)
-    {
-        word.s.Lo = data;
-        word.s.Hi = *(address + 1);
-    }
-    else
-    {
-        word.s.Hi = data;
-        word.s.Lo = *(address - 1);
+  if((uint32_t)address % 4 == 0)
+  {
+    word.s.Lo = data;
+    word.s.Hi = *(address + 1);
+  }
+  else
+  {
+    word.s.Hi = data;
+    word.s.Lo = *(address - 1);
 
-        wordAdd--;
-    }
+    wordAdd--;
+  }
 
-    return Flash_Write32((uint32_t*)wordAdd, word.l);
+  return Flash_Write32((uint32_t*)wordAdd, word.l);
 }
 
 /*! @brief Writes an 8-bit number to Flash.
@@ -264,28 +263,28 @@ bool Flash_Write16(volatile uint16_t* const address, const uint16_t data)
  */
 bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
 {
-    volatile uint8_t* halfWordAdd = address;
-    uint16union_t halfWord;
+  volatile uint8_t* halfWordAdd = address;
+  uint16union_t halfWord;
 
-    if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END))
-    {
-        return false;
-    }
+  if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END))
+  {
+    return false;
+  }
 
-    if ((uint32_t)address % 2 == 0)
-    {
-        halfWord.s.Lo = data;
-        halfWord.s.Hi = *(address + 1);
-    }
-    else
-    {
-        halfWord.s.Hi = data;
-        halfWord.s.Lo = *(address - 1);
+  if ((uint32_t)address % 2 == 0)
+  {
+    halfWord.s.Lo = data;
+    halfWord.s.Hi = *(address + 1);
+  }
+  else
+  {
+    halfWord.s.Hi = data;
+    halfWord.s.Lo = *(address - 1);
 
-        halfWordAdd--;
-    }
+    halfWordAdd--;
+  }
 
-    return Flash_Write16((uint16_t*)halfWordAdd, halfWord.l);
+  return Flash_Write16((uint16_t*)halfWordAdd, halfWord.l);
 }
 
 /*! @brief Erases the entire Flash sector.
@@ -295,7 +294,7 @@ bool Flash_Write8(volatile uint8_t* const address, const uint8_t data)
  */
 bool Flash_Erase(void)
 {
-    return EraseSector(FLASH_DATA_START);
+  return EraseSector(FLASH_DATA_START);
 }
 
 /* END Flash */
