@@ -171,39 +171,37 @@ void Packet_Handle()
   bool success;
 
 	switch (PacketNoAck)
-    {
-      case CMD_STARTUP:	//Tower startup
-        success = TowerStartup();
-        break;
+  {
+    case CMD_STARTUP:	//Tower startup
+      success = TowerStartup();
+      break;
 
-      case CMD_TOWER_VER:	//Special Tower version
-		    success = TowerVersion();
-		    break;
+    case CMD_TOWER_VER:	//Special Tower version
+      success = TowerVersion();
+      break;
 
-            //new lab 2 commands
-      case CMD_TOWER_NB:
-		    success = TowerNb();
-		    break;
+    case CMD_TOWER_NB:
+      success = TowerNb();
+      break;
 
-      case CMD_FLASH_PRG:
-        success = FlashPrg();
-        break;
+    case CMD_FLASH_PRG:
+      success = FlashPrg();
+      break;
 
-      case CMD_FLASH_READ:
-        success = FlashRead();
-		    break;
+    case CMD_FLASH_READ:
+      success = FlashRead();
+      break;
 
-      case CMD_TOWER_MODE:
-		    success = TowerMd();
-		  break;
-    }
+    case CMD_TOWER_MODE:
+      success = TowerMd();
+      break;
+  }
 
-    if (success)
-    {
-      if (CheckAck(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
-        return true;
-    }
-
+  if (success)
+  {
+    if (CheckAck(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
+      return true;
+  }
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */

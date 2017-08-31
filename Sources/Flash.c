@@ -103,8 +103,7 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
   {
     for(position = 0; position < MEMORY_SIZE ; position += 4)
     {
-      if (addressAvailable[position] && addressAvailable[position + 1]
-          && addressAvailable[position + 2] && addressAvailable[position + 3])
+      if (addressAvailable[position] && addressAvailable[position + 1] && addressAvailable[position + 2] && addressAvailable[position + 3])
       {
         *variable = (void*)FLASH_DATA_START + position;
         addressAvailable[position] = false;
