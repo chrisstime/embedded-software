@@ -55,7 +55,7 @@ Packet_Parameter3 **     Filename    : main.c
 #define CMD_TOWER_VER 0x09
 #define CMD_TOWER_NB 0x0B
 #define CMD_TOWER_MODE 0x0D
-#define TOWER_DEFAULT_VALUE 0x188A
+#define TOWER_DEFAULT_VALUE 0x188A // the student number here is 9862
 #define PACKET_ACK_MASK 0x80
 
 const uint32_t BaudRate = 115200;
@@ -72,25 +72,18 @@ bool TowerVersion(void)
 
 bool TowerStartup(void)
 {
-	Packet_Put(0x04, 0x00, 0x00, 0x00);
-	Tower_Version();
-	Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb)); //returns bool
-    if ((*NvTowerNb).l == 0xFFFF)
-    {
-      if (Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE))
-      {
-        uint64_t initialiseFlash = _FP(FLASH_DATA_START);
-      }
-    }
+  bool success;
 
-//	Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd)); //returns bool
-//    if ((*NvTowerMd).l == 0xFFFF)
-//    {
-//      Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_VALUE);
-//    }
-
-  Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init();
+  success &= Packet_Put(0x04, 0x00, 0x00, 0x00) && Tower_Version() && Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
+  if (success && (*NvTowerNb).l == 0xFFFF)
+  {
+    success &= Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
+    uint64_t initialiseFlash = _FP(FLASH_DATA_START);
+  }
+  success &= Packet_Put(0x0B, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
 	//check the tower number and mode bytes - program default.
+  return success;
 }
 
 bool TowerNb(void)
@@ -170,7 +163,7 @@ void Packet_Handle()
   uint8_t PacketNoAck = Packet_Command & ~PACKET_ACK_MASK;
   bool success;
 
-	switch (PacketNoAck)
+	switch (Packet_Command)
   {
     case CMD_STARTUP:	//Tower startup
       success = TowerStartup();
@@ -214,9 +207,8 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	if (Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init())
+	if (TowerStartup())
   {
-    TowerStartup();
     LEDs_On(LED_ORANGE);
     LEDs_On(LED_BLUE);
 			/* Write your code here */
