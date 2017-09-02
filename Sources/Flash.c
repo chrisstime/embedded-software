@@ -25,6 +25,18 @@ static bool addressAvailable[MEMORY_SIZE];
  */
 static bool LaunchCommand(TFCCOB* commonCommandObject)
 {
+  /* returns false if FCCOB is not available, LaunchCommand fails */
+  if(!(FTFE_FSTAT & FTFE_FSTAT_CCIF_MASK))
+  {
+    return false;
+  }
+
+  if((FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK))
+  {
+    /* Clear the error flags if they happen to have been set previously */
+    FTFE_FSTAT |= (FTFE_FSTAT_ACCERR_MASK | FTFE_FSTAT_FPVIOL_MASK);
+  }
+
     FTFE_FCCOB0 = commonCommandObject->FCCOB0;
     FTFE_FCCOB1 = commonCommandObject->FCCOB1;
     FTFE_FCCOB2 = commonCommandObject->FCCOB2;
