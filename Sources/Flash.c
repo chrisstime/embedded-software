@@ -127,7 +127,6 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
  */
 static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
-  bool successfulWrite = false;
   TFCCOB FlashFCCOB;
 
   FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
@@ -143,11 +142,11 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
   FlashFCCOB.FCCOB9 = (address >> 16);
   FlashFCCOB.FCCOB8 = (address >> 24);
 
-  if (LaunchCommand(&FlashFCCOB))
+  if (!LaunchCommand(&FlashFCCOB))
   {
-    successfulWrite = true;
+    return false;
   }
-  return successfulWrite;
+  return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
 
 /*!
@@ -167,11 +166,11 @@ static bool EraseSector(const uint32_t address)
   FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
   FlashFCCOB.FCCOB3 = (uint8_t)(address);
 
-  if (LaunchCommand(&FlashFCCOB))
+  if (!LaunchCommand(&FlashFCCOB))
   {
-    successfulErase = true;
+    return false;
   }
-  return successfulErase;
+  return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
 
 /*!

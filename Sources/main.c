@@ -71,7 +71,7 @@ static bool TowerVersion()
 
 static bool TowerStartup()
 {
-  bool success;
+  bool success = false;
 
   success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init(); /*Initialise Packet.c clockrate, then flash and then the LEDs */
 
@@ -87,7 +87,7 @@ static bool TowerStartup()
 
 	  success &= Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd)); /*Also allocate space in memory for the Tower mode*/
 
-	  if (success && (*NvTowerNb).l == 0xFFFF) /* Check if there's no previously set value in NvTowerMd in flash memory*/
+	  if (success && (*NvTowerMd).l == 0xFFFF) /* Check if there's no previously set value in NvTowerMd in flash memory*/
 	  {
 		  success &= Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_MD); /* If it's empty, just allocate it the default value 1 for tower mode*/
 		  uint64_t initialiseFlash = _FP(FLASH_DATA_START); /* Initialise flash */
@@ -163,7 +163,7 @@ static bool TowerMd()
 /*check each bit with the packet_position to ensure that the packets are aligned.*/
 void Packet_Handle()
 {
-  Packet_Command &= ~PACKET_ACK_MASK;
+  uint8_t packetNoAck = Packet_Command &= ~PACKET_ACK_MASK;
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
   bool success = false;
@@ -202,7 +202,7 @@ void Packet_Handle()
   {
     if (success)
     {
-      Packet_Command |= PACKET_ACK_MASK;
+      //Packet_Command |= PACKET_ACK_MASK;
       Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
     }
   }
@@ -218,12 +218,12 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-	//if (TowerStartup()) /* initialises everything, check if Flash, LED and tower was started up successfully */
-//	{
+	if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
+	{
 		/*Turns on the LED lights to indicate that TowerStartup() was successful */
 		LEDs_On(LED_ORANGE);
 		LEDs_On(LED_BLUE);
-		StartUpPackets();
+
 
 		for (;;) /*to loop forever*/
 		{
@@ -233,7 +233,7 @@ int main(void)
 			}
 			UART_Poll();
 		}
-	//}
+	}
 
 
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
