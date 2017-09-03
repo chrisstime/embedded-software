@@ -4,6 +4,11 @@
  *      @date: 15 Aug 2017
  *      @author: 11970744, 11986282
  */
+/*!
+**  @addtogroup Flash_module documentation
+**  @{
+*/
+/* MODULE Flash */
 
 #include "types.h"
 // add in header file for Flash.c
