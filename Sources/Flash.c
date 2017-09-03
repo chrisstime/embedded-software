@@ -52,7 +52,11 @@ static bool LaunchCommand(TFCCOB* commonCommandObject)
 
     FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
     // le make sure we shoot it into the right spots
-    return true;
+  while(!(FTFE_FSTAT & FTFE_FSTAT_CCIF_MASK))
+  {
+  }
+
+  return true;
 }
 
 /*! @brief Enables the Flash module.
