@@ -64,11 +64,6 @@ const uint32_t BaudRate = 115200;
 static volatile uint16union_t* NvTowerNb;
 static volatile uint16union_t* NvTowerMd;
 
-static bool TowerVersion()
-{
-	return Packet_Put((Packet_Command & ~PACKET_ACK_MASK), 0x76, 0x01, 0x00);
-}
-
 static bool TowerStartup()
 {
   bool success = false;
@@ -94,6 +89,11 @@ static bool TowerStartup()
 	  }
   }
   return success; /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
+}
+
+static bool TowerVersion()
+{
+	return Packet_Put(Packet_Command, 0x76, 0x01, 0x00);
 }
 
 static bool StartUpPackets()
@@ -163,7 +163,7 @@ static bool TowerMd()
 /*check each bit with the packet_position to ensure that the packets are aligned.*/
 void Packet_Handle()
 {
-  uint8_t packetNoAck = Packet_Command &= ~PACKET_ACK_MASK;
+  Packet_Command &= ~PACKET_ACK_MASK;
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
   bool success = false;
@@ -202,7 +202,7 @@ void Packet_Handle()
   {
     if (success)
     {
-      //Packet_Command |= PACKET_ACK_MASK;
+      Packet_Command |= PACKET_ACK_MASK;
       Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
     }
   }
