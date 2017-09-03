@@ -44,13 +44,9 @@ typedef union
     uint16_t Lo;
     uint16_t Hi;
   } s;
-  struct
-  {
-    uint8_t ByteofWord [3];
-  }BoW;
 } uint32union_t;
 
-// Union to efficiently access hi and lo parts of a "phrase" (8 bytes) or per byte
+// Union to efficiently access hi and lo parts of a "phrase" (8 bytes)
 typedef union
 {
   uint64_t l;
@@ -59,16 +55,7 @@ typedef union
     uint32_t Lo;
     uint32_t Hi;
   } s;
-  struct
-  {
-    uint8_t ByteofPhrase [7];
-  }BoP;
-  struct
-  {
-    uint16_t HWofPhrase [3];
-  }HWoP;
 } uint64union_t;
-
 
 // Union to efficiently access individual bytes of a float
 typedef union
