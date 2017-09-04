@@ -23,6 +23,21 @@
 
 static bool addressAvailable[MEMORY_SIZE];
 
+typedef struct {
+    uint8_t FCCOB0;
+    uint8_t FCCOB1;
+    uint8_t FCCOB2;
+    uint8_t FCCOB3;
+    uint8_t FCCOB7;
+    uint8_t FCCOB6;
+    uint8_t FCCOB5;
+    uint8_t FCCOB4;
+    uint8_t FCCOBB;
+    uint8_t FCCOBA;
+    uint8_t FCCOB9;
+    uint8_t FCCOB8;
+} TFCCOB;
+
 /*!
  * @brief This launches the Command
  *
@@ -155,13 +170,13 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
   FlashFCCOB.FCCOB2 = (address >> 8);
   FlashFCCOB.FCCOB3 = address;
   FlashFCCOB.FCCOB7 = (phrase.s.Lo);
-  FlashFCCOB.FCCOB6 = (address >> 8);
-  FlashFCCOB.FCCOB5 = (address >> 16);
-  FlashFCCOB.FCCOB4 = (address >> 24);
+  FlashFCCOB.FCCOB6 = (phrase.s.Lo >> 8);
+  FlashFCCOB.FCCOB5 = (phrase.s.Lo >> 16);
+  FlashFCCOB.FCCOB4 = (phrase.s.Lo >> 24);
   FlashFCCOB.FCCOBB = (phrase.s.Hi);
-  FlashFCCOB.FCCOBA = (address >> 8);
-  FlashFCCOB.FCCOB9 = (address >> 16);
-  FlashFCCOB.FCCOB8 = (address >> 24);
+  FlashFCCOB.FCCOBA = (phrase.s.Hi >> 8);
+  FlashFCCOB.FCCOB9 = (phrase.s.Hi >> 16);
+  FlashFCCOB.FCCOB8 = (phrase.s.Hi >> 24);
 
   if (!LaunchCommand(&FlashFCCOB))
   {
@@ -178,8 +193,6 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
  */
 static bool EraseSector(const uint32_t address)
 {
-  bool successfulErase = false;
-
   TFCCOB FlashFCCOB;
 
   FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
@@ -205,13 +218,6 @@ bool ModifyPhrase(const uint32_t address, const uint64union_t phrase)
   return EraseSector(address) && WritePhrase(address, phrase);
 }
 
-/*! @brief Writes a 32-bit number to Flash.
- *
- *  @param address The address of the data.
- *  @param data The 32-bit data to write.
- *  @return bool - TRUE if Flash was written successfully, FALSE if address is not aligned to a 4-byte boundary or if there is a programming error.
- *  @note Assumes Flash has been initialized.
- */
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
   volatile uint32_t* phraseAdd = address;

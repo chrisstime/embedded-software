@@ -1,31 +1,45 @@
 Sources/main.o: ../Sources/main.c \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/Cpu.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Types.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Error.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Const.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/IO_Map.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Static_Code/IO_Map/MK70F12.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Types.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Error.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Const.h \
- C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/IO_Map.h
+ D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
+ D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
+ ../Sources/FIFO.h ../Sources/types.h ../Sources/packet.h \
+ ../Sources/UART.h ../Sources/Flash.h ../Sources/LEDs.h
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/Cpu.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Types.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Error.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Const.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/IO_Map.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Static_Code/IO_Map/MK70F12.h:
+D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Types.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Error.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/PE_Const.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
 
-C:/Users/PMcL/Documents/Subjects/48434\ Embedded\ Software/4\ Labs/Lab\ 3/Template/Lab3/Generated_Code/IO_Map.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
+
+../Sources/FIFO.h:
+
+../Sources/types.h:
+
+../Sources/packet.h:
+
+../Sources/UART.h:
+
+../Sources/Flash.h:
+
+../Sources/LEDs.h:

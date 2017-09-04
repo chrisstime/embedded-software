@@ -35,7 +35,6 @@ Packet_Parameter3 **     Filename    : main.c
 
 // CPU mpdule - contains low level hardware initialization routines
 #include "Cpu.h"
-#include "Events.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -98,12 +97,12 @@ static bool TowerVersion()
 
 static bool StartUpPackets()
 {
-	bool success;
-	success = Packet_Put(CMD_STARTUP, 0x00, 0x00, 0x00); // start up value of 0x04 and the rest of the packets are zero
-	success &= Packet_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00); // signifies Tower V 1.0
-	success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi); // Whatever was saved in flash
-	success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi); // Whatever was saved in flash
-	return success; // Return success if all the packet put ran were successful
+  bool success;
+  success = Packet_Put(CMD_STARTUP, 0x00, 0x00, 0x00); // start up value of 0x04 and the rest of the packets are zero
+  success &= Packet_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00); // signifies Tower V 1.0
+  success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi); // Whatever was saved in flash
+  success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi); // Whatever was saved in flash
+  return success; // Return success if all the packet put ran were successful
 }
 
 static bool TowerNb()
@@ -138,12 +137,12 @@ static bool FlashPrg()
 
 static bool FlashRead()
 {
-	if (Packet_Parameter1 == CMD_FLASH_PRG && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
-    {
+  if (Packet_Parameter1 < 0x08 && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
+  {
       uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
       return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
-    }
-    return false; // return false if unsuccessful :(
+  }
+  return false; // return false if unsuccessful :(
 }
 
 static bool TowerMd()
