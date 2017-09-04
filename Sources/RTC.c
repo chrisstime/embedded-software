@@ -15,21 +15,87 @@
 #include "MK70F12.h"
 // includes RTC.h header files
 #include "RTC.h"
+// include CPU function header files
+#include "Cpu.h"
+
+// initiate instances of UserFunction and UserArguments
+static void (*UserFunction)(void*);
+static void* UserArguments;
 
 bool RTC_Init(void (*userFunction)(void*), void* userArguments)
 {
+  // if userFunction being passed through doesn't exist stop function and return false
+  if (!userFunction)
+  {
+    return false;
+  }
+
+  // enable System Clock Gating Control Register bit
+  SIM_SCGC6 |= SIM_SCGC6_RTC_MASK;
+
+  // if the Real Time Clock Register Oscillator is not enabled, enable it
+  if(!(RTC_CR & RTC_CR_OSCE_MASK))
+  {
+    /* Enable 32.768 kHz oscillator */
+    RTC_CR |= RTC_CR_SC2P_MASK;
+    RTC_CR &= ~RTC_CR_SC4P_MASK;
+    RTC_CR &= ~RTC_CR_SC8P_MASK;
+    RTC_CR |= RTC_CR_SC16P_MASK;
+    RTC_CR |= RTC_CR_OSCE_MASK;
+
+    /* Count to 100ms to Wait for the oscillator to startup */
+    uint8_t count;
+    for (count = 0; count < 100; count++)
+    {
+    }
+
+    // Clear le bits in RTC Control Register
+    RTC_CR &= ~RTC_CR_SWR_MASK;
+    RTC_CR &= ~RTC_CR_WPE_MASK;
+    RTC_CR &= ~RTC_CR_SUP_MASK;
+    RTC_CR &= ~RTC_CR_UM_MASK;
+    RTC_CR &= ~RTC_CR_CLKO_MASK;
+
+    // Enable the RTC Lock Register
+    RTC_LR &= ~RTC_LR_CRL_MASK;
+
+    //Clear Interrupt Register bits. Just chucked in all the masks for the IER bit fields m8
+    RTC_IER &= ~RTC_IER_TIIE_MASK;
+    RTC_IER &= ~RTC_IER_TOIE_MASK;
+    RTC_IER &= ~RTC_IER_TAIE_MASK;
+    RTC_IER &= ~RTC_IER_MOIE_MASK;
+
+    UserFunction = userFunction;
+    UserArguments = userArguments;
+  }
+
 }
 
 void RTC_Set(const uint8_t hours, const uint8_t minutes, const uint8_t seconds)
 {
+  // apparently we have to do this so all Exception handler changes doesn't screw us over
+  EnterCritical();
+
+  // write code here
+
+  ExitCritical();
 }
 
 void RTC_Get(uint8_t* const hours, uint8_t* const minutes, uint8_t* const seconds)
 {
+  // apparently we have to do this so all Exception handler changes doesn't screw us over
+  EnterCritical();
+
+  //write code here
+
+  ExitCritical();
 }
 
 void __attribute__ ((interrupt)) RTC_ISR(void)
 {
+  // call back function
+  if (UserFunction)
+    (*UserFunction)(UserArguments);
 }
 
 

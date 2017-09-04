@@ -165,7 +165,7 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 
   if (!LaunchCommand(&FlashFCCOB))
   {
-    return false;
+    return false; // return false if unsuccessful :(
   }
   return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
@@ -189,7 +189,7 @@ static bool EraseSector(const uint32_t address)
 
   if (!LaunchCommand(&FlashFCCOB))
   {
-    return false;
+    return false; // return false if unsuccessful :(
   }
   return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
@@ -219,7 +219,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 
   if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
   {
-    return false;
+    return false; // return false if no more memory left :(
   }
 
   if((uint32_t)address % 8 == 0 )
