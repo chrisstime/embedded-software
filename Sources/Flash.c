@@ -57,21 +57,23 @@ static bool LaunchCommand(TFCCOB* commonCommandObject)
     FTFE_FSTAT |= (FTFE_FSTAT_ACCERR_MASK | FTFE_FSTAT_FPVIOL_MASK);
   }
 
-    FTFE_FCCOB0 = commonCommandObject->FCCOB0;
-    FTFE_FCCOB1 = commonCommandObject->FCCOB1;
-    FTFE_FCCOB2 = commonCommandObject->FCCOB2;
-    FTFE_FCCOB3 = commonCommandObject->FCCOB3;
-    FTFE_FCCOB7 = commonCommandObject->FCCOB7;
-    FTFE_FCCOB6 = commonCommandObject->FCCOB6;
-    FTFE_FCCOB5 = commonCommandObject->FCCOB5;
-    FTFE_FCCOB4 = commonCommandObject->FCCOB4;
-    FTFE_FCCOBB = commonCommandObject->FCCOBB;
-    FTFE_FCCOBA = commonCommandObject->FCCOBA;
-    FTFE_FCCOB9 = commonCommandObject->FCCOB9;
-    FTFE_FCCOB8 = commonCommandObject->FCCOB8;
+  // point point point point
+  FTFE_FCCOB0 = commonCommandObject->FCCOB0;
+  FTFE_FCCOB1 = commonCommandObject->FCCOB1;
+  FTFE_FCCOB2 = commonCommandObject->FCCOB2;
+  FTFE_FCCOB3 = commonCommandObject->FCCOB3;
+  FTFE_FCCOB7 = commonCommandObject->FCCOB7;
+  FTFE_FCCOB6 = commonCommandObject->FCCOB6;
+  FTFE_FCCOB5 = commonCommandObject->FCCOB5;
+  FTFE_FCCOB4 = commonCommandObject->FCCOB4;
+  FTFE_FCCOBB = commonCommandObject->FCCOBB;
+  FTFE_FCCOBA = commonCommandObject->FCCOBA;
+  FTFE_FCCOB9 = commonCommandObject->FCCOB9;
+  FTFE_FCCOB8 = commonCommandObject->FCCOB8;
 
-    FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
-    // le make sure we shoot it into the right spots
+  FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
+
+  // le wait
   while(!(FTFE_FSTAT & FTFE_FSTAT_CCIF_MASK))
   {
   }
@@ -110,13 +112,16 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
 {
   uint32_t position; // 32 bit position
 
-  if (size == 1) // if size is 1 byte, we can allocate it to any address
+  if (size == 1) // if size is 1, we can allocate it to any address
   {
     for (position = 0 ; position < MEMORY_SIZE ; position++)
     {
+      // if address is available
       if (addressAvailable[position])
       {
+        // pop in the address to the variable pointer
         *variable = (void *)(FLASH_DATA_START + position);
+        // set to false so we don't accidentally fill it in. Same logic goes for the rest.
         addressAvailable[position] = false;
         return true;
       }
@@ -124,6 +129,7 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
   }
   else if (size == 2)
   {
+    // keep hopping by 2 so long as it's less the MEMORY_SIZE
     for (position = 0 ; position < MEMORY_SIZE ; position += 2 )
     {
       if (addressAvailable[position] && addressAvailable[position + 1])
@@ -165,6 +171,7 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
   TFCCOB FlashFCCOB;
 
+  // write the phrase to FCCOB
   FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
   FlashFCCOB.FCCOB1 = (address >> 16);
   FlashFCCOB.FCCOB2 = (address >> 8);
@@ -195,11 +202,13 @@ static bool EraseSector(const uint32_t address)
 {
   TFCCOB FlashFCCOB;
 
+  // Run erase command and clear the address
   FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
   FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
   FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
   FlashFCCOB.FCCOB3 = (uint8_t)(address);
 
+  // run launch command on FCCOB
   if (!LaunchCommand(&FlashFCCOB))
   {
     return false; // return false if unsuccessful :(

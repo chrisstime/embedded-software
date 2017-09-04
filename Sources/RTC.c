@@ -99,12 +99,15 @@ void RTC_Get(uint8_t* const hours, uint8_t* const minutes, uint8_t* const second
 {
   // apparently we have to do this so all Exception handler changes doesn't screw us over
   EnterCritical();
+  // variable to hold RTC_TSR
   uint32_t time = RTC_TSR;
 
+  // convert the passed RTC_TSR time (because it's all in seconds)
   uint8_t passHours = time/3600;
   uint8_t passMinutes = (time/60) % 60;
   uint8_t passSeconds = time % 60;
 
+  // pop in the values to the address
   *hours = passHours;
   *minutes = passMinutes;
   *seconds = passSeconds;

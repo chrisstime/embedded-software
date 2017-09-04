@@ -21,7 +21,7 @@
 
 static uint32_t ModuleClockPeriod;
 
-// initiate instances of UserFunction and UserArguments
+// initiate instances of UserFunction and UserArguments for le call back yo
 static void (*UserFunction)(void*);
 static void* UserArguments;
 
@@ -68,7 +68,7 @@ void PIT_Set(const uint32_t period, const bool restart)
 
   if (restart)
   {
-     // disable then renable the clock ... because that's what a restart generally means kek
+     // disable then re-nable the clock ... because that's what a restart generally means kek
       PIT_TCTRL0 &= ~PIT_TCTRL_TEN_MASK;
       PIT_TCTRL0 |= PIT_TCTRL_TEN_MASK;
   }
@@ -77,10 +77,11 @@ void PIT_Set(const uint32_t period, const bool restart)
 void PIT_Enable(const bool enable)
 {
   if (enable)
-  { // enable the clock... because that's what enables generally do
+  {
+    // enable the clock... because that's what enables generally do
     PIT_TCTRL0 |= PIT_TCTRL_TEN_MASK;
   }
-  else // if they don se so den don do et
+  else // if they don say so den don enable kapish
     PIT_TCTRL0 &= ~PIT_TCTRL_TEN_MASK;
 }
 
