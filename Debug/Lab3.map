@@ -75,23 +75,31 @@ Discarded input sections
  .group         0x00000000        0x8 ./Sources/PIT.o
  .group         0x00000000        0x8 ./Sources/PIT.o
  .group         0x00000000        0x8 ./Sources/PIT.o
+ .group         0x00000000        0x8 ./Sources/PIT.o
+ .group         0x00000000        0x8 ./Sources/PIT.o
+ .group         0x00000000        0x8 ./Sources/PIT.o
+ .group         0x00000000        0x8 ./Sources/PIT.o
  .text          0x00000000        0x0 ./Sources/PIT.o
  .data          0x00000000        0x0 ./Sources/PIT.o
  .bss           0x00000000        0x0 ./Sources/PIT.o
  .bss.ModuleClockPeriod
                 0x00000000        0x4 ./Sources/PIT.o
+ .bss.UserFunction
+                0x00000000        0x4 ./Sources/PIT.o
+ .bss.UserArguments
+                0x00000000        0x4 ./Sources/PIT.o
  .text.PIT_Init
-                0x00000000       0x18 ./Sources/PIT.o
- .text.PIT_Set  0x00000000       0x28 ./Sources/PIT.o
+                0x00000000       0xb0 ./Sources/PIT.o
+ .text.PIT_Set  0x00000000       0x5c ./Sources/PIT.o
  .text.PIT_Enable
-                0x00000000       0x14 ./Sources/PIT.o
- .text.PIT_ISR  0x00000000       0x14 ./Sources/PIT.o
- .debug_info    0x00000000      0x182 ./Sources/PIT.o
- .debug_abbrev  0x00000000       0xcd ./Sources/PIT.o
+                0x00000000       0x40 ./Sources/PIT.o
+ .text.PIT_ISR  0x00000000       0x40 ./Sources/PIT.o
+ .debug_info    0x00000000      0x457 ./Sources/PIT.o
+ .debug_abbrev  0x00000000      0x154 ./Sources/PIT.o
  .debug_aranges
                 0x00000000       0x38 ./Sources/PIT.o
  .debug_ranges  0x00000000       0x28 ./Sources/PIT.o
- .debug_macro   0x00000000       0x6d ./Sources/PIT.o
+ .debug_macro   0x00000000       0xa9 ./Sources/PIT.o
  .debug_macro   0x00000000      0x850 ./Sources/PIT.o
  .debug_macro   0x00000000       0x16 ./Sources/PIT.o
  .debug_macro   0x00000000       0x16 ./Sources/PIT.o
@@ -99,12 +107,16 @@ Discarded input sections
  .debug_macro   0x00000000      0x209 ./Sources/PIT.o
  .debug_macro   0x00000000    0x174af ./Sources/PIT.o
  .debug_macro   0x00000000       0x22 ./Sources/PIT.o
- .debug_line    0x00000000      0x20a ./Sources/PIT.o
- .debug_str     0x00000000    0x82da6 ./Sources/PIT.o
+ .debug_macro   0x00000000     0x1800 ./Sources/PIT.o
+ .debug_macro   0x00000000      0x14e ./Sources/PIT.o
+ .debug_macro   0x00000000       0x64 ./Sources/PIT.o
+ .debug_macro   0x00000000       0x94 ./Sources/PIT.o
+ .debug_line    0x00000000      0x297 ./Sources/PIT.o
+ .debug_str     0x00000000    0x8a7f3 ./Sources/PIT.o
  .comment       0x00000000       0x71 ./Sources/PIT.o
  .ARM.attributes
                 0x00000000       0x39 ./Sources/PIT.o
- .debug_frame   0x00000000       0x84 ./Sources/PIT.o
+ .debug_frame   0x00000000       0x88 ./Sources/PIT.o
  .group         0x00000000        0x8 ./Sources/RTC.o
  .group         0x00000000        0x8 ./Sources/RTC.o
  .group         0x00000000        0x8 ./Sources/RTC.o
@@ -124,16 +136,16 @@ Discarded input sections
  .bss.UserArguments
                 0x00000000        0x4 ./Sources/RTC.o
  .text.RTC_Init
-                0x00000000      0x128 ./Sources/RTC.o
- .text.RTC_Set  0x00000000       0x64 ./Sources/RTC.o
- .text.RTC_Get  0x00000000       0x5c ./Sources/RTC.o
+                0x00000000      0x134 ./Sources/RTC.o
+ .text.RTC_Set  0x00000000       0xa0 ./Sources/RTC.o
+ .text.RTC_Get  0x00000000       0xc4 ./Sources/RTC.o
  .text.RTC_ISR  0x00000000       0x34 ./Sources/RTC.o
- .debug_info    0x00000000      0x50a ./Sources/RTC.o
+ .debug_info    0x00000000      0x550 ./Sources/RTC.o
  .debug_abbrev  0x00000000      0x161 ./Sources/RTC.o
  .debug_aranges
                 0x00000000       0x38 ./Sources/RTC.o
  .debug_ranges  0x00000000       0x28 ./Sources/RTC.o
- .debug_macro   0x00000000       0xa5 ./Sources/RTC.o
+ .debug_macro   0x00000000       0xa9 ./Sources/RTC.o
  .debug_macro   0x00000000      0x850 ./Sources/RTC.o
  .debug_macro   0x00000000       0x16 ./Sources/RTC.o
  .debug_macro   0x00000000       0x16 ./Sources/RTC.o
@@ -145,8 +157,8 @@ Discarded input sections
  .debug_macro   0x00000000      0x14e ./Sources/RTC.o
  .debug_macro   0x00000000       0x64 ./Sources/RTC.o
  .debug_macro   0x00000000       0x94 ./Sources/RTC.o
- .debug_line    0x00000000      0x2c5 ./Sources/RTC.o
- .debug_str     0x00000000    0x8a7e0 ./Sources/RTC.o
+ .debug_line    0x00000000      0x2d1 ./Sources/RTC.o
+ .debug_str     0x00000000    0x8a807 ./Sources/RTC.o
  .comment       0x00000000       0x71 ./Sources/RTC.o
  .ARM.attributes
                 0x00000000       0x39 ./Sources/RTC.o

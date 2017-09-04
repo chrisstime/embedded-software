@@ -219,7 +219,7 @@ int main(void)
 
 	if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
 	{
-		/*Turns on the LED lights to indicate that TowerStartup() was successful */
+	    /*Turns on the LED lights to indicate that TowerStartup() was successful */
 		LEDs_On(LED_ORANGE);
 		LEDs_On(LED_BLUE);
 
