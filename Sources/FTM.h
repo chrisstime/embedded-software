@@ -91,4 +91,11 @@ bool FTM_StartTimer(const TFTMChannel* const aFTMChannel);
  */
 void __attribute__ ((interrupt)) FTM0_ISR(void);
 
+/*! @brief Callback function to turn off the LED in ISR.
+ *
+ *  When doing an ISR, this will be called to turn off the LED.
+ *  @note Assumes the ISR is running
+ */
+void FTM_BLED_Off(void (*fpointer));
+
 #endif

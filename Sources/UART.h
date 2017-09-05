@@ -28,7 +28,7 @@ bool UART_Init(const uint32_t baudRate, const uint32_t moduleClk);
  *  @return bool - TRUE if the receive FIFO returned a character.
  *  @note Assumes that UART_Init has been called.
  */
-bool UART_InChar(uint8_t* const dataPtr);
+bool UART_InChar(uint8_t * const dataPtr);
  
 /*! @brief Put a byte in the transmit FIFO if it is not full.
  *
@@ -47,8 +47,10 @@ void UART_Poll(void);
 
 /*! @brief Interrupt service routine for the UART.
  *
- *  @note Assumes the transmit and receive FIFOs have been initialized.
+ *  When there is a byte to send or receive, the interrupt enable for the
+ *  transmit will be enabled. Receive interrupt enable is always on
+ *  @note Assumes the UART has been initialized.
  */
-void __attribute__ ((interrupt)) UART_ISR(void);
+void  __attribute__ ((interrupt)) UART_ISR(void);
 
 #endif
