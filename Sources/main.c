@@ -47,6 +47,8 @@ Packet_Parameter3 **     Filename    : main.c
 #include "types.h"
 #include "LEDs.h"
 #include "FTM.h"
+#include "RTC.h"
+#include "PIT.h"
 
 // Define packet commands and other things that need to be defined
 #define CMD_STARTUP 0x04
@@ -70,20 +72,28 @@ static TFTMChannel aFTMChannel;
 /*! @brief Pit call back function
  *
  */
-static void PITCB(void (*fpointer))
+static void PITCallBack(void (*fpointer))
 {
-  LEDs_Toggle(LED_YELLOW)
+  LEDs_Toggle(LED_YELLOW);
 }
 
 /*! @brief Initialises everything
  *  @return returns true if everything initialises successfully
  */
-static void RTCCB(void (*fpointer))
+static void RTCCallBack(void (*fpointer))
 {
   uint8_t hours, minutes, seconds;
   RTC_Get(&hours, &minutes, &seconds);
   LEDs_Toggle(LED_YELLOW);
   Packet_Put(CMD_TOWER_TIME ,hours,minutes,seconds);
+}
+
+/*! @brief FTM call back function. Turns on blue LED
+ *
+ */
+void FTMCallBack(void (*fpointer))
+{
+  LEDs_On(LED_BLUE);
 }
 
 /*! @brief Initialises everything
@@ -94,11 +104,11 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(PITCB, Null) && RTC_Init(CPU_BUS_CLK_HZ, RTCCB, Null) FTM_Init();
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) && RTC_Init(RTCCallBack, NULL) && FTM_Init();
 
   if (success)
   {
-    PIT_Set(1000000000, true);
+    PIT_Set(500000000, true);
     PIT_Enable(true);
 
     // Initialise FTM
@@ -107,8 +117,8 @@ static bool TowerStartup()
     aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
     //  aFTMChannel.ioType.inputDetection 	= 2;
     aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
-    aFTMChannel.userArguments = 0;
-    aFTMChannel.userFunction 	= FTM_BLED_Off;
+    aFTMChannel.userArguments = NULL;
+    aFTMChannel.userFunction 	= FTMCallBack;
     FTM_Set(&aFTMChannel);
 
     /* Allocate memory in flash will return true if successful*/
@@ -294,22 +304,6 @@ void Packet_Handle()
     }
   }
   ExitCritical();
-}
-
-/*! @brief Turns on blue LED
- *
- */
-void FTM_BLED_On(void (*fpointer))
-{
-  LEDs_On(LED_BLUE);
-}
-
-/*! @brief Turns off blue LED
- *
- */
-void FTM_BLED_Off(void (*fpointer))
-{
-  LEDs_Off(LED_BLUE);
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */

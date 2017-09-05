@@ -49,6 +49,15 @@ bool FTM_StartTimer(const TFTMChannel* const aFTMChannel)
   return true; //Timer successfully initialised.
 
 }
+
+/*! @brief Turns off blue LED
+ *
+ */
+void FTM_BLED_Off(void (*fpointer))
+{
+  LEDs_Off(LED_BLUE);
+}
+
 void __attribute__ ((interrupt)) FTM0_ISR(void)
 {
   if(FTM0_C0SC & FTM_CnSC_CHF_MASK && FTM_CnSC_CHIE_MASK)
