@@ -46,6 +46,7 @@ Packet_Parameter3 **     Filename    : main.c
 #include "Flash.h"
 #include "types.h"
 #include "LEDs.h"
+#include "FTM.h"
 
 // Define packet commands and other things that need to be defined
 #define CMD_STARTUP 0x04
@@ -60,15 +61,27 @@ Packet_Parameter3 **     Filename    : main.c
 
 const uint32_t BaudRate = 115200;
 
-static volatile uint16union_t* NvTowerNb;
-static volatile uint16union_t* NvTowerMd;
+static volatile uint16union_t* NvTowerNb; // Tower Number variable
+static volatile uint16union_t* NvTowerMd; // Tower Mode variable
+
+static TFTMChannel aFTMChannel;
 
 static bool TowerStartup()
 {
   bool success = false;
 
-  /*Initialise Packet.c clockrate, then flash and then the LEDs. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init();
+  // Initialise FTM
+  aFTMChannel.channelNb	= 0x00;
+  aFTMChannel.delayCount = 24414;
+  aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
+  //  aFTMChannel.ioType.inputDetection 	= 2;
+  aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
+  aFTMChannel.userArguments = 0;
+  aFTMChannel.userFunction 	= FTM_BLED_Off;
+  FTM_Set(&aFTMChannel);
+
+  /*Initialise Packet.c clockrate, flash, LEDs and then the FTM. Will pass 0x01 to success bool if all is gewd */
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && FTM_Init();
 
   if (success)
   {
@@ -186,6 +199,7 @@ static bool TowerMd()
 
 void Packet_Handle()
 {
+  EnterCritical();
   Packet_Command &= ~PACKET_ACK_MASK;
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
@@ -229,6 +243,7 @@ void Packet_Handle()
       Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3); // Put packets
     }
   }
+  ExitCritical();
 }
 
 void FTM_BLED_On(void (*fpointer))
@@ -251,24 +266,7 @@ int main(void)
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 
-  static TFTMChannel aFTMChannel;
-
   __DI();
-  FTM_Init();
-  LEDs_Init();
-  __EI();
-  //aFTM init
-
-
-  aFTMChannel.channelNb 		= 0x00;
-  aFTMChannel.delayCount 		= 24414;
-  aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
-//  aFTMChannel.ioType.inputDetection 	= 2;
-  aFTMChannel.timerFunction 		= TIMER_FUNCTION_OUTPUT_COMPARE;
-  aFTMChannel.userArguments 		= 0;
-  aFTMChannel.userFunction 		= FTM_BLED_On;
-  FTM_Set(&aFTMChannel);
-  bool success = FTM_StartTimer(&aFTMChannel);
 
 	if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
 	{
