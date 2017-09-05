@@ -231,6 +231,16 @@ void Packet_Handle()
   }
 }
 
+void FTM_BLED_On(void (*fpointer))
+{
+  LEDs_On(LED_BLUE);
+}
+
+void FTM_BLED_Off(void (*fpointer))
+{
+  LEDs_Off(LED_BLUE);
+}
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -240,6 +250,25 @@ int main(void)
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
+
+  static TFTMChannel aFTMChannel;
+
+  __DI();
+  FTM_Init();
+  LEDs_Init();
+  __EI();
+  //aFTM init
+
+
+  aFTMChannel.channelNb 		= 0x00;
+  aFTMChannel.delayCount 		= 24414;
+  aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
+//  aFTMChannel.ioType.inputDetection 	= 2;
+  aFTMChannel.timerFunction 		= TIMER_FUNCTION_OUTPUT_COMPARE;
+  aFTMChannel.userArguments 		= 0;
+  aFTMChannel.userFunction 		= FTM_BLED_On;
+  FTM_Set(&aFTMChannel);
+  bool success = FTM_StartTimer(&aFTMChannel);
 
 	if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
 	{
@@ -254,7 +283,7 @@ int main(void)
 			{
 				Packet_Handle();
 			}
-			UART_Poll(); // UART Polling
+			//UART_Poll(); // UART Polling
 		}
 	}
 

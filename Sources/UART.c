@@ -1,12 +1,12 @@
 /*
  * UART.c
  *
- *   Created on: 1 Aug 2017
- *      @date: 8 Aug 2017
- *      @author: 11970744, 11986282
+ *  Created on: 1 Aug 2017
+ *  Last Modified 8 Aug 2017
+ *      Author: 11970744, 11986282
  */
 /*!
- **  @addtogroup UART_module UART module documentation
+ **  @addtogroup UART_module packet module documentation
  **  @
  */
 /* MODULE UART */
@@ -15,6 +15,7 @@
 #include "Cpu.h"
 #include "MK70F12.h"
 #include "FIFO.h"
+#include "PE_Types.h"
 
 static TFIFO TX_FIFO, RX_FIFO;
 
@@ -31,16 +32,20 @@ bool UART_Init(const uint32_t baudRate, const uint32_t moduleClk) // 38400, CPU_
 	UART2_C2 = 0x00;
 	UART2_C2 |= UART_C2_RE_MASK;
 	UART2_C2 |= UART_C2_TE_MASK;
+	UART2_C2 |= UART_C2_RIE_MASK;			//enable to always receive packets
+
 	UART2_C4 &= ~UART_C4_BRFA_MASK;
 	UART2_C4 |= UART_C4_BRFA(((2 * moduleClk)/baudRate) % 32);
-//	UART2_C4 |= (0x04 & UART_C4_BRFA_MASK);
+
 
 	uint16_t divisor = moduleClk / (16 * baudRate);
 	UART2_BDH = (divisor & 0x1F00) >> 8;
 	UART2_BDL = (divisor & 0x00FF);
-//  UART2_BDH = UART_BDH_SBR(0x0);  		//Initialize BaudRate SBR to 32 bits
-//  UART2_BDL = UART_BDL_SBR(0x20);
-//  UART2_C4 = UART_C4_BRFA(0x17);	//Initialize BaudRate BRFA to 23 bits						//BR=f/(16*(SBR+BRFA))
+
+//	Initialise NVIC
+
+	NVICISER1 |= NVIC_ISER_SETENA(1 << 17);
+	NVICICPR1 |= NVIC_ICPR_CLRPEND(1 << 17);
 
 	FIFO_Init(&RX_FIFO);
 	FIFO_Init(&TX_FIFO);
@@ -48,28 +53,86 @@ bool UART_Init(const uint32_t baudRate, const uint32_t moduleClk) // 38400, CPU_
 	return true;
 }
 
-bool UART_InChar(uint8_t * const dataPtr) {
+bool UART_InChar(uint8_t * const dataPtr)
+{
 	return FIFO_Get(&RX_FIFO, dataPtr);
 }
 
-bool UART_OutChar(const uint8_t data) {
-	return FIFO_Put(&TX_FIFO, data);
+bool UART_OutChar(const uint8_t data)
+{
+	EnterCritical();
+
+	bool success = false;
+	if(FIFO_Put(&TX_FIFO, data)){
+		UART2_C2 |= UART_C2_TIE_MASK;
+		success = true;
+
+	}
+	ExitCritical();
+	return success;
 }
 
-void UART_Poll(void) {
-	if (UART2_S1 & UART_S1_TDRE_MASK)//there's something to be received from the PC, put in the RX_FIFO
+//bool UART_OutChar(const uint8_t data) {
+//	if (FIFO_Put(&TX_FIFO, data))
+//	{
+//	UART2_C2 |= UART_C2_TIE_MASK;
+//	return true;//enable TIE to transmit
+//	}
+//	return false;
+//}
+
+void UART_Poll(void)
+{
+	EnterCritical();
+
+	if (UART2_C2 & UART_C2_TIE_MASK)
 	{
-		//UART_InChar();		//run FIFO_get or UART_InChar
-		FIFO_Get(&TX_FIFO, &UART2_D);
+		if (UART2_S1 & UART_S1_TDRE_MASK)//there's something to be received from the PC, put in the RX_FIFO
+		{
+			if(!FIFO_Get(&TX_FIFO, &UART2_D))
+			{
+				UART2_C2 &= ~UART_C2_TIE_MASK;
+				//disable TIE if fails
+			}
+		}
+
+	}
+	if (UART2_C2 & UART_C2_RIE_MASK)
+	{
+		if (UART2_S1 & UART_S1_RDRF_MASK)// put something from PC to TX_FIFO to transmit to FIFO
+		{
+			FIFO_Put(&RX_FIFO, UART2_D);
+		}
+	}
+	ExitCritical();
+}
+
+void  __attribute__ ((interrupt)) UART_ISR(void)
+{
+	if (UART2_C2 & UART_C2_TIE_MASK)
+	{
+		if (UART2_S1 & UART_S1_TDRE_MASK)//there's something to be received from the PC, put in the RX_FIFO
+		{
+			if(!FIFO_Get(&TX_FIFO, &UART2_D))
+			{
+				UART2_C2 &= ~UART_C2_TIE_MASK;
+				//disable TIE if fails
+			}
+		}
 	}
 
-	if (UART2_S1 & UART_S1_RDRF_MASK)// put something from PC to TX_FIFO to transmit to FIFO
+
+	if (UART2_C2 & UART_C2_RIE_MASK)
 	{
-		//UART_OutChar(); 		//run FIFO_put or UART_OutChar0
-		FIFO_Put(&RX_FIFO, UART2_D);
+		if (UART2_S1 & UART_S1_RDRF_MASK)// put something from PC to TX_FIFO to transmit to FIFO
+		{
+			FIFO_Put(&RX_FIFO, UART2_D);
+		}
 	}
-	//UART_S1 UART_S1_REG(UART2);?? I don't know what this
+
 }
+
+
 
 /* END UART */
 /*!
