@@ -6,7 +6,7 @@
  *      @author: 11970744, 11986282
  */
 /*!
- **  @addtogroup UART_module packet module documentation
+ **  @addtogroup UART_module UART module documentation
  **  @
  */
 /* MODULE UART */

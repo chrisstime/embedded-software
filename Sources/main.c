@@ -35,7 +35,6 @@ Packet_Parameter3 **     Filename    : main.c
 
 // CPU mpdule - contains low level hardware initialization routines
 #include "Cpu.h"
-#include "Events.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -68,82 +67,107 @@ static bool TowerStartup()
 {
   bool success = false;
 
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init(); /*Initialise Packet.c clockrate, then flash and then the LEDs */
+  /*Initialise Packet.c clockrate, then flash and then the LEDs. Will pass 0x01 to success bool if all is gewd */
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init();
 
   if (success)
   {
-	  success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb)); /* Allocate memory in flash will return true if successful*/
+    /* Allocate memory in flash will return true if successful*/
+	  success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
 
-	  if (success && (*NvTowerNb).l == 0xFFFF) /* Check if there's no previously set value in NvTowerNb in flash memory*/
+    /* Check if there's no previously set value in NvTowerNb in flash memory*/
+	  if (success && (*NvTowerNb).l == 0xFFFF)
 	  {
-		  success &= Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE); /* If it's empty, just allocate it the default value which is our student number*/
-		  uint64_t initialiseFlash = _FP(FLASH_DATA_START); /* Initialise flash */
+      /* If it's empty, just allocate it the default value which is our student number*/
+		  success &= Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
+
+      /* Initialise flash just because */
+		  uint64_t initialiseFlash = _FP(FLASH_DATA_START);
 	  }
 
-	  success &= Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd)); /*Also allocate space in memory for the Tower mode*/
+    /* Also allocate space in memory for the Tower mode */
+	  success &= Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd));
 
-	  if (success && (*NvTowerMd).l == 0xFFFF) /* Check if there's no previously set value in NvTowerMd in flash memory*/
+    /* Check if there's no previously set value in NvTowerMd in flash memory*/
+	  if (success && (*NvTowerMd).l == 0xFFFF)
 	  {
-		  success &= Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_MD); /* If it's empty, just allocate it the default value 1 for tower mode*/
-		  uint64_t initialiseFlash = _FP(FLASH_DATA_START); /* Initialise flash */
+      /* If it's empty, just allocate it the default value 1 for tower mode*/
+		  success &= Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_MD);
+
+      /* Initialise flash just because */
+		  uint64_t initialiseFlash = _FP(FLASH_DATA_START);
 	  }
   }
-  return success; /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
+  /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
+  return success;
 }
 
 static bool TowerVersion()
 {
+  // returns v 1.0
 	return Packet_Put(Packet_Command, 0x76, 0x01, 0x00);
 }
 
 static bool StartUpPackets()
 {
-	bool success;
-	success = Packet_Put(CMD_STARTUP, 0x00, 0x00, 0x00);
-	success &= Packet_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00);
-	success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
-	success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
-	return success;
+  // gonna use this to check is sending startup packets is successful
+  bool success;
+
+  // start up value of 0x04 and the rest of the packets are zero
+  success = Packet_Put(CMD_STARTUP, 0x00, 0x00, 0x00);
+  // signifies Tower V 1.0
+  success &= Packet_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00);
+  // Whatever was saved/written in flash
+  success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
+  // Whatever was saved/written  in flash
+  success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
+
+  // Return success if all the packet put ran were successful
+  return success;
 }
 
 static bool TowerNb()
 {
-  if (Packet_Parameter1 == 0x02)
+  if (Packet_Parameter1 == 0x02) // if Parameter is set to 2
   {
+    // Write to flash whatever packet's being passed through from PC
     return Flash_Write16((uint16_t*)NvTowerNb, Packet_Parameter23);
   }
-  else if (Packet_Parameter1 == 0x01)
+  else if (Packet_Parameter1 == 0x01) // if Parameter is set to 1
   {
     if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
     {
+      // Return either default tower value if nothing's written in flash or saved value from flash mem
       return Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
     }
   }
-  return false;
+  return false; // return false if unsuccessful :(
 }
 
 static bool FlashPrg()
 {
 	if (Packet_Parameter1 == CMD_FLASH_READ && Packet_Parameter2 == 0x00)
 	{
-		return Flash_Erase();
+		return Flash_Erase(); // Erases the stuff in flash
 	}
 	else if (Packet_Parameter1 < 0x08)
 	{
-	    uint32_t *addressFlash = (uint32_t *)(FLASH_DATA_START + Packet_Parameter1);
-	    return Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
+    uint32_t *addressFlash = (uint32_t *)(FLASH_DATA_START + Packet_Parameter1);
+    // writes to flash
+    return Flash_Write8((uint8_t *) addressFlash, Packet_Parameter3);
 	}
-	return false;
+	return false; // return false if unsuccessful :(
 }
 
 static bool FlashRead()
 {
-	if (Packet_Parameter1 == CMD_FLASH_PRG && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
-    {
-      uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
-      return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
-    }
-    return false;
+  if (Packet_Parameter1 < 0x08 && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
+  {
+    uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
+    // reads from flash
+    return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
+  }
+  return false; // return false if unsuccessful :(
 }
 
 static bool TowerMd()
@@ -157,10 +181,9 @@ static bool TowerMd()
   {
     return Flash_Write16((uint16_t*)&NvTowerMd, Packet_Parameter23);
   }
-  return false;
+  return false; // return false if unsuccessful :(
 }
 
-/*check each bit with the packet_position to ensure that the packets are aligned.*/
 void Packet_Handle()
 {
   Packet_Command &= ~PACKET_ACK_MASK;
@@ -170,11 +193,11 @@ void Packet_Handle()
 
 	switch (Packet_Command)
   {
-    case CMD_STARTUP:	/*Tower startup*/
+    case CMD_STARTUP:
       success = StartUpPackets();
       break;
 
-    case CMD_TOWER_VER:	/*Special Tower version*/
+    case CMD_TOWER_VER:
       success = TowerVersion();
       break;
 
@@ -198,12 +221,12 @@ void Packet_Handle()
       break;
   }
 
-  if (ack)
+  if (ack) // If acknowledgement bit is set
   {
-    if (success)
+    if (success) // if the switch case run was successful
     {
-      Packet_Command |= PACKET_ACK_MASK;
-      Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
+      Packet_Command |= PACKET_ACK_MASK; // return Packet_Command to have acknowledgement mask included
+      Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3); // Put packets
     }
   }
 }
@@ -220,7 +243,7 @@ int main(void)
 
 	if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
 	{
-		/*Turns on the LED lights to indicate that TowerStartup() was successful */
+	    /*Turns on the LED lights to indicate that TowerStartup() was successful */
 		LEDs_On(LED_ORANGE);
 		LEDs_On(LED_BLUE);
 
@@ -231,7 +254,7 @@ int main(void)
 			{
 				Packet_Handle();
 			}
-			UART_Poll();
+			UART_Poll(); // UART Polling
 		}
 	}
 

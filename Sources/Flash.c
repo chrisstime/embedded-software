@@ -4,6 +4,11 @@
  *      @date: 15 Aug 2017
  *      @author: 11970744, 11986282
  */
+/*!
+**  @addtogroup Flash_module documentation
+**  @{
+*/
+/* MODULE Flash */
 
 #include "types.h"
 // add in header file for Flash.c
@@ -17,6 +22,21 @@
 #define FLASH_CMD_PROGRAM_PHRASE FTFE_FCCOB0_CCOBn(0x07)
 
 static bool addressAvailable[MEMORY_SIZE];
+
+typedef struct {
+    uint8_t FCCOB0;
+    uint8_t FCCOB1;
+    uint8_t FCCOB2;
+    uint8_t FCCOB3;
+    uint8_t FCCOB7;
+    uint8_t FCCOB6;
+    uint8_t FCCOB5;
+    uint8_t FCCOB4;
+    uint8_t FCCOBB;
+    uint8_t FCCOBA;
+    uint8_t FCCOB9;
+    uint8_t FCCOB8;
+} TFCCOB;
 
 /*!
  * @brief This launches the Command
@@ -37,21 +57,23 @@ static bool LaunchCommand(TFCCOB* commonCommandObject)
     FTFE_FSTAT |= (FTFE_FSTAT_ACCERR_MASK | FTFE_FSTAT_FPVIOL_MASK);
   }
 
-    FTFE_FCCOB0 = commonCommandObject->FCCOB0;
-    FTFE_FCCOB1 = commonCommandObject->FCCOB1;
-    FTFE_FCCOB2 = commonCommandObject->FCCOB2;
-    FTFE_FCCOB3 = commonCommandObject->FCCOB3;
-    FTFE_FCCOB7 = commonCommandObject->FCCOB7;
-    FTFE_FCCOB6 = commonCommandObject->FCCOB6;
-    FTFE_FCCOB5 = commonCommandObject->FCCOB5;
-    FTFE_FCCOB4 = commonCommandObject->FCCOB4;
-    FTFE_FCCOBB = commonCommandObject->FCCOBB;
-    FTFE_FCCOBA = commonCommandObject->FCCOBA;
-    FTFE_FCCOB9 = commonCommandObject->FCCOB9;
-    FTFE_FCCOB8 = commonCommandObject->FCCOB8;
+  // point point point point
+  FTFE_FCCOB0 = commonCommandObject->FCCOB0;
+  FTFE_FCCOB1 = commonCommandObject->FCCOB1;
+  FTFE_FCCOB2 = commonCommandObject->FCCOB2;
+  FTFE_FCCOB3 = commonCommandObject->FCCOB3;
+  FTFE_FCCOB7 = commonCommandObject->FCCOB7;
+  FTFE_FCCOB6 = commonCommandObject->FCCOB6;
+  FTFE_FCCOB5 = commonCommandObject->FCCOB5;
+  FTFE_FCCOB4 = commonCommandObject->FCCOB4;
+  FTFE_FCCOBB = commonCommandObject->FCCOBB;
+  FTFE_FCCOBA = commonCommandObject->FCCOBA;
+  FTFE_FCCOB9 = commonCommandObject->FCCOB9;
+  FTFE_FCCOB8 = commonCommandObject->FCCOB8;
 
-    FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
-    // le make sure we shoot it into the right spots
+  FTFE_FSTAT |= FTFE_FSTAT_CCIF_MASK;  // this be the register for the flash status?? allegedly...
+
+  // le wait
   while(!(FTFE_FSTAT & FTFE_FSTAT_CCIF_MASK))
   {
   }
@@ -90,13 +112,16 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
 {
   uint32_t position; // 32 bit position
 
-  if (size == 1) // if size is 1 byte, we can allocate it to any address
+  if (size == 1) // if size is 1, we can allocate it to any address
   {
     for (position = 0 ; position < MEMORY_SIZE ; position++)
     {
+      // if address is available
       if (addressAvailable[position])
       {
+        // pop in the address to the variable pointer
         *variable = (void *)(FLASH_DATA_START + position);
+        // set to false so we don't accidentally fill it in. Same logic goes for the rest.
         addressAvailable[position] = false;
         return true;
       }
@@ -104,6 +129,7 @@ bool Flash_AllocateVar(volatile void** variable, const uint8_t size)
   }
   else if (size == 2)
   {
+    // keep hopping by 2 so long as it's less the MEMORY_SIZE
     for (position = 0 ; position < MEMORY_SIZE ; position += 2 )
     {
       if (addressAvailable[position] && addressAvailable[position + 1])
@@ -145,22 +171,23 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
 {
   TFCCOB FlashFCCOB;
 
+  // write the phrase to FCCOB
   FlashFCCOB.FCCOB0 = FLASH_CMD_PROGRAM_PHRASE;
   FlashFCCOB.FCCOB1 = (address >> 16);
   FlashFCCOB.FCCOB2 = (address >> 8);
   FlashFCCOB.FCCOB3 = address;
   FlashFCCOB.FCCOB7 = (phrase.s.Lo);
-  FlashFCCOB.FCCOB6 = (address >> 8);
-  FlashFCCOB.FCCOB5 = (address >> 16);
-  FlashFCCOB.FCCOB4 = (address >> 24);
+  FlashFCCOB.FCCOB6 = (phrase.s.Lo >> 8);
+  FlashFCCOB.FCCOB5 = (phrase.s.Lo >> 16);
+  FlashFCCOB.FCCOB4 = (phrase.s.Lo >> 24);
   FlashFCCOB.FCCOBB = (phrase.s.Hi);
-  FlashFCCOB.FCCOBA = (address >> 8);
-  FlashFCCOB.FCCOB9 = (address >> 16);
-  FlashFCCOB.FCCOB8 = (address >> 24);
+  FlashFCCOB.FCCOBA = (phrase.s.Hi >> 8);
+  FlashFCCOB.FCCOB9 = (phrase.s.Hi >> 16);
+  FlashFCCOB.FCCOB8 = (phrase.s.Hi >> 24);
 
   if (!LaunchCommand(&FlashFCCOB))
   {
-    return false;
+    return false; // return false if unsuccessful :(
   }
   return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
@@ -173,18 +200,18 @@ static bool WritePhrase(const uint32_t address, const uint64union_t phrase)
  */
 static bool EraseSector(const uint32_t address)
 {
-  bool successfulErase = false;
-
   TFCCOB FlashFCCOB;
 
+  // Run erase command and clear the address
   FlashFCCOB.FCCOB0 = FLASH_CMD_ERASE_SECTOR;
   FlashFCCOB.FCCOB1 = (uint8_t)(address >> 16);
   FlashFCCOB.FCCOB2 = (uint8_t)(address >> 8);
   FlashFCCOB.FCCOB3 = (uint8_t)(address);
 
+  // run launch command on FCCOB
   if (!LaunchCommand(&FlashFCCOB))
   {
-    return false;
+    return false; // return false if unsuccessful :(
   }
   return !((FTFE_FSTAT & FTFE_FSTAT_MGSTAT0_MASK) || (FTFE_FSTAT & FTFE_FSTAT_ACCERR_MASK) || (FTFE_FSTAT & FTFE_FSTAT_FPVIOL_MASK));
 }
@@ -200,13 +227,6 @@ bool ModifyPhrase(const uint32_t address, const uint64union_t phrase)
   return EraseSector(address) && WritePhrase(address, phrase);
 }
 
-/*! @brief Writes a 32-bit number to Flash.
- *
- *  @param address The address of the data.
- *  @param data The 32-bit data to write.
- *  @return bool - TRUE if Flash was written successfully, FALSE if address is not aligned to a 4-byte boundary or if there is a programming error.
- *  @note Assumes Flash has been initialized.
- */
 bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 {
   volatile uint32_t* phraseAdd = address;
@@ -214,7 +234,7 @@ bool Flash_Write32(volatile uint32_t* const address, const uint32_t data)
 
   if(!((uint32_t)address >= FLASH_DATA_START && (uint32_t)address <= FLASH_DATA_END && (uint32_t)address % 4 ==0))
   {
-    return false;
+    return false; // return false if no more memory left :(
   }
 
   if((uint32_t)address % 8 == 0 )

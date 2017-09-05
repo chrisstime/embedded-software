@@ -1,24 +1,36 @@
 Sources/main.o: ../Sources/main.c \
- C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/Cpu.h \
- C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Types.h \
- C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Error.h \
- C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Const.h \
- C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/IO_Map.h \
- C:/Users/11970744/Desktop/embedded-software-master/Static_Code/IO_Map/MK70F12.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
+ D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
+ D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
  ../Sources/FIFO.h ../Sources/types.h ../Sources/packet.h \
- ../Sources/UART.h
+ ../Sources/UART.h ../Sources/Flash.h ../Sources/LEDs.h
 
-C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/Cpu.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h:
 
-C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Types.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
 
-C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Error.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
 
-C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/PE_Const.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
 
-C:/Users/11970744/Desktop/embedded-software-master/Generated_Code/IO_Map.h:
+D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
 
-C:/Users/11970744/Desktop/embedded-software-master/Static_Code/IO_Map/MK70F12.h:
+D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h:
+
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
+
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
+
+D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
+
+D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
 
 ../Sources/FIFO.h:
 
@@ -27,3 +39,7 @@ C:/Users/11970744/Desktop/embedded-software-master/Static_Code/IO_Map/MK70F12.h:
 ../Sources/packet.h:
 
 ../Sources/UART.h:
+
+../Sources/Flash.h:
+
+../Sources/LEDs.h:

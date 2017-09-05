@@ -17,7 +17,6 @@
 // Number of bytes in a FIFO
 #define FIFO_SIZE 256
 
-
 /*!
  * @struct TFIFO
  */
@@ -29,13 +28,12 @@ typedef struct
   uint8_t Buffer[FIFO_SIZE];	/*!< The actual array of bytes to store the data */
 } TFIFO;
 
-
 /*! @brief Initialize the FIFO before first use.
  *
  *  @param FIFO A pointer to the FIFO that needs initializing.
  *  @return void
  */
-void FIFO_Init(TFIFO * const FIFO);
+void FIFO_Init(TFIFO* const FIFO);
 
 /*! @brief Put one character into the FIFO.
  *
@@ -44,8 +42,7 @@ void FIFO_Init(TFIFO * const FIFO);
  *  @return bool - TRUE if data is successfully stored in the FIFO.
  *  @note Assumes that FIFO_Init has been called.
  */
-bool FIFO_Put(TFIFO * const FIFO, const uint8_t data);
-
+bool FIFO_Put(TFIFO* const FIFO, const uint8_t data);
 
 /*! @brief Get one character from the FIFO.
  *
@@ -55,6 +52,5 @@ bool FIFO_Put(TFIFO * const FIFO, const uint8_t data);
  *  @note Assumes that FIFO_Init has been called.
  */
 bool FIFO_Get(TFIFO * const FIFO, uint8_t volatile * const dataPtr);
-
 
 #endif

@@ -10,7 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70446427-5424-4bab-b762-5e7585486105" name="Default" comment="">
+<<<<<<< HEAD
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sources/Flash.c" afterPath="$PROJECT_DIR$/Sources/Flash.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sources/PIT.c" afterPath="$PROJECT_DIR$/Sources/PIT.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sources/RTC.c" afterPath="$PROJECT_DIR$/Sources/RTC.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sources/main.c" afterPath="$PROJECT_DIR$/Sources/main.c" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,10 +33,18 @@
       <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Sources/main.c">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1377">
               <caret line="143" column="23" lean-forward="false" selection-start-line="143" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
               <folding>
                 <element signature="e#6724#6834#0" expanded="true" />
+=======
+            <state relative-caret-position="-980">
+              <caret line="166" column="23" lean-forward="false" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
+              <folding>
+                <element signature="e#7625#7735#0" expanded="true" />
+                <marker date="1504526926000" expanded="true" signature="6428:6643" ph="{...}" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
               </folding>
             </state>
           </provider>
@@ -37,6 +53,7 @@
       <file leaf-file-name="Flash.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Sources/Flash.c">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1504">
               <caret line="213" column="0" lean-forward="false" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
               <folding>
@@ -45,6 +62,51 @@
                 <marker date="1504527075000" expanded="true" signature="8531:8979" ph="{...}" />
                 <marker date="1504527075000" expanded="true" signature="9176:9219" ph="{...}" />
               </folding>
+=======
+            <state relative-caret-position="1804">
+              <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RTC.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sources/RTC.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1785">
+              <caret line="119" column="23" lean-forward="true" selection-start-line="119" selection-start-column="23" selection-end-line="119" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PIT.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sources/PIT.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="278">
+              <caret line="23" column="75" lean-forward="false" selection-start-line="23" selection-start-column="75" selection-end-line="23" selection-end-column="75" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PIT.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sources/PIT.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="720">
+              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RTC.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sources/RTC.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
             </state>
           </provider>
         </entry>
@@ -103,11 +165,29 @@
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+<<<<<<< HEAD
+=======
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+<<<<<<< HEAD
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
+    <option name="width" value="840" />
+    <option name="height" value="1023" />
+  </component>
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -133,6 +213,7 @@
             <path>
               <item name="embedded-software" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="embedded-software" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name=".settings" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -154,6 +235,8 @@
             <path>
               <item name="embedded-software" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="embedded-software" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
               <item name="Sources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -165,7 +248,11 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.CMake" />
+=======
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -196,11 +283,16 @@
       <updated>1503541747094</updated>
       <workItem from="1503541749018" duration="30395000" />
       <workItem from="1504186975340" duration="2699000" />
+<<<<<<< HEAD
       <workItem from="1504438319734" duration="15733000" />
+=======
+      <workItem from="1504438319734" duration="14925000" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="48827000" />
   </component>
   <component name="ToolWindowManager">
@@ -211,6 +303,19 @@
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928178" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32928178" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+=======
+    <option name="totallyTimeSpent" value="48019000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1680" height="1023" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15262516" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928178" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -242,7 +347,12 @@
         <state relative-caret-position="1110">
           <caret line="74" column="34" lean-forward="false" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#6724#6834#0" expanded="true" />
+=======
+            <element signature="e#7625#7735#0" expanded="true" />
+            <marker date="1504526926000" expanded="true" signature="6428:6643" ph="{...}" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
           </folding>
         </state>
       </provider>
@@ -301,12 +411,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="930">
           <caret line="62" column="2" lean-forward="true" selection-start-line="62" selection-start-column="2" selection-end-line="62" selection-end-column="2" />
+<<<<<<< HEAD
           <folding>
             <marker date="1504527075000" expanded="true" signature="7073:7324" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="7731:8172" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="8531:8979" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="9176:9219" ph="{...}" />
           </folding>
+=======
+          <folding />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
         </state>
       </provider>
     </entry>
@@ -315,7 +429,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#6724#6834#0" expanded="true" />
+=======
+            <element signature="e#7625#7735#0" expanded="true" />
+            <marker date="1504526926000" expanded="true" signature="6428:6643" ph="{...}" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
           </folding>
         </state>
       </provider>
@@ -324,12 +443,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1575">
           <caret line="105" column="71" lean-forward="false" selection-start-line="105" selection-start-column="71" selection-end-line="105" selection-end-column="71" />
+<<<<<<< HEAD
           <folding>
             <marker date="1504527075000" expanded="true" signature="7073:7324" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="7731:8172" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="8531:8979" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="9176:9219" ph="{...}" />
           </folding>
+=======
+          <folding />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
         </state>
       </provider>
     </entry>
@@ -461,6 +584,7 @@
         <state relative-caret-position="279">
           <caret line="15362" column="15" lean-forward="false" selection-start-line="15362" selection-start-column="8" selection-end-line="15362" selection-end-column="15" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#3555#3664#0" expanded="false" />
             <element signature="e#16923#16957#0" expanded="false" />
             <element signature="e#16984#17024#0" expanded="false" />
@@ -471,12 +595,25 @@
             <element signature="e#1181566#1181602#0" expanded="false" />
             <element signature="e#1181640#1181664#0" expanded="false" />
             <element signature="e#1183228#1183658#0" expanded="false" />
+=======
+            <element signature="e#3555#3664#0" expanded="true" />
+            <element signature="e#16923#16957#0" expanded="true" />
+            <element signature="e#16984#17024#0" expanded="true" />
+            <element signature="e#17051#17096#0" expanded="true" />
+            <element signature="e#17134#17159#0" expanded="true" />
+            <element signature="e#1181490#1181501#0" expanded="true" />
+            <element signature="e#1181528#1181539#0" expanded="true" />
+            <element signature="e#1181566#1181602#0" expanded="true" />
+            <element signature="e#1181640#1181664#0" expanded="true" />
+            <element signature="e#1183228#1183658#0" expanded="true" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Sources/Flash.c">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1504">
           <caret line="213" column="0" lean-forward="false" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
           <folding>
@@ -485,6 +622,11 @@
             <marker date="1504527075000" expanded="true" signature="8531:8979" ph="{...}" />
             <marker date="1504527075000" expanded="true" signature="9176:9219" ph="{...}" />
           </folding>
+=======
+        <state relative-caret-position="1804">
+          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
         </state>
       </provider>
     </entry>
@@ -514,13 +656,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Sources/main.c">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1377">
           <caret line="143" column="23" lean-forward="false" selection-start-line="143" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
           <folding>
             <element signature="e#6724#6834#0" expanded="true" />
+=======
+        <state relative-caret-position="-980">
+          <caret line="166" column="23" lean-forward="false" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
+          <folding>
+            <element signature="e#7625#7735#0" expanded="true" />
+            <marker date="1504526926000" expanded="true" signature="6428:6643" ph="{...}" />
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
           </folding>
         </state>
       </provider>
     </entry>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+>>>>>>> ed72ce7537097c22d45c63b9c85786e25c3e6833
 </project>
