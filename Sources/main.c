@@ -55,6 +55,7 @@ Packet_Parameter3 **     Filename    : main.c
 #define CMD_TOWER_VER 0x09
 #define CMD_TOWER_NB 0x0B
 #define CMD_TOWER_MD 0x0D
+#define CMD_TOWER_TIME 0x0C
 #define TOWER_DEFAULT_VALUE 0x188A /* the student number here is 9862*/
 #define TOWER_DEFAULT_MD 0x0001 /* default tower mode is 1*/
 #define PACKET_ACK_MASK 0x80
@@ -66,25 +67,50 @@ static volatile uint16union_t* NvTowerMd; // Tower Mode variable
 
 static TFTMChannel aFTMChannel;
 
+/*! @brief Pit call back function
+ *
+ */
+static void PITCB()
+{
+  LEDs_Toggle(LED_YELLOW)
+}
+
+/*! @brief Initialises everything
+ *  @return returns true if everything initialises successfully
+ */
+static void RTCCB()
+{
+  uint8_t hours, minutes, seconds;
+  RTC_Get(&hours, &minutes, &seconds);
+  LEDs_Toggle(LED_YELLOW);
+  Packet_Put(CMD_TOWER_TIME ,hours,minutes,seconds);
+}
+
+/*! @brief Initialises everything
+ *  @return returns true if everything initialises successfully
+ */
 static bool TowerStartup()
 {
   bool success = false;
 
-  // Initialise FTM
-  aFTMChannel.channelNb	= 0x00;
-  aFTMChannel.delayCount = 24414;
-  aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
-  //  aFTMChannel.ioType.inputDetection 	= 2;
-  aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
-  aFTMChannel.userArguments = 0;
-  aFTMChannel.userFunction 	= FTM_BLED_Off;
-  FTM_Set(&aFTMChannel);
-
-  /*Initialise Packet.c clockrate, flash, LEDs and then the FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && FTM_Init();
+  /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(PITCB(), Null) && RTC_Init(RTCCB(), Null) FTM_Init();
 
   if (success)
   {
+    PIT_Set(1000000000, true);
+    PIT_Enable(true);
+
+    // Initialise FTM
+    aFTMChannel.channelNb	= 0x00;
+    aFTMChannel.delayCount = 24414;
+    aFTMChannel.ioType.outputAction	= TIMER_OUTPUT_TOGGLE;
+    //  aFTMChannel.ioType.inputDetection 	= 2;
+    aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
+    aFTMChannel.userArguments = 0;
+    aFTMChannel.userFunction 	= FTM_BLED_Off;
+    FTM_Set(&aFTMChannel);
+
     /* Allocate memory in flash will return true if successful*/
 	  success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
 
