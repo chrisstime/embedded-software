@@ -1,8 +1,8 @@
 /*
  * LEDs.c
  *
- *      @date: 20 Aug 2017
- *      @author: 11986282, 11970744
+ *  Created on: 20 Aug 2017
+ *      Author: 11986282, 11970744
  */
 /*
 /*!
@@ -15,8 +15,7 @@
 #include "MK70F12.h"
 
 
-bool LEDs_Init(void)
-{
+bool LEDs_Init(void){
   // Enable PORT A
   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
 
@@ -39,20 +38,17 @@ bool LEDs_Init(void)
 }
 
 
-void LEDs_On(const TLED color)
-{
+void LEDs_On(const TLED color){
   GPIOA_PCOR |= color;
 }
 
 
-void LEDs_Off(const TLED color)
-{
+void LEDs_Off(const TLED color){
   GPIOA_PSOR = color;
 }
 
 
-void LEDs_Toggle(const TLED color)
-{
+void LEDs_Toggle(const TLED color){
   GPIOA_PTOR |= color;
 }
 

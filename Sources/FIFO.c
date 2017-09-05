@@ -2,8 +2,8 @@
  * FIFO.c
  *
  *  Created on: 1 Aug 2017
- *      @date 8 Aug 2017
- *      @author: 11970744, 11986282
+ *  Last Modified 8 Aug 2017
+ *      Author: 11970744, 11986282
  */
 /*!
  **  @addtogroup FIFO_module FIFO module documentation
@@ -24,18 +24,8 @@ void FIFO_Init(TFIFO * const FIFO) {
 	FIFO->NbBytes = 0;
 }
 
-bool FIFO_Put(TFIFO * const FIFO, const uint8_t data) {
-//  if (FIFO->NbBytes < FIFO_SIZE)
-//    {
-//      FIFO->Buffer[FIFO->End] = data;
-//      FIFO->End = (FIFO->End + 1) % FIFO_SIZE;
-//      FIFO->NbBytes++;
-//      return true;
-//    }
-//  else {
-//	  FIFO->End = 0;
-//	  return false;
-//  }
+bool FIFO_Put(TFIFO * const FIFO, const uint8_t data)
+{
 	if (FIFO->NbBytes >= FIFO_SIZE)
 		return false;
 

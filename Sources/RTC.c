@@ -107,6 +107,16 @@ void RTC_Get(uint8_t* const hours, uint8_t* const minutes, uint8_t* const second
   uint8_t passMinutes = (time/60) % 60;
   uint8_t passSeconds = time % 60;
 
+  // check time is the same
+  uint8_t check;
+  for (check = 0 ; check <= 10 ; check++)
+  {
+     time = RTC_TSR;
+     if (time == RTC_TSR)
+      break;
+     else time = RTC_TSR;
+  }
+
   // pop in the values to the address
   *hours = passHours;
   *minutes = passMinutes;
