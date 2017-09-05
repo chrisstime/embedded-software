@@ -70,7 +70,7 @@ static TFTMChannel aFTMChannel;
 /*! @brief Pit call back function
  *
  */
-static void PITCB()
+static void PITCB(void (*fpointer))
 {
   LEDs_Toggle(LED_YELLOW)
 }
@@ -78,7 +78,7 @@ static void PITCB()
 /*! @brief Initialises everything
  *  @return returns true if everything initialises successfully
  */
-static void RTCCB()
+static void RTCCB(void (*fpointer))
 {
   uint8_t hours, minutes, seconds;
   RTC_Get(&hours, &minutes, &seconds);
@@ -94,7 +94,7 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(PITCB(), Null) && RTC_Init(RTCCB(), Null) FTM_Init();
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(PITCB, Null) && RTC_Init(CPU_BUS_CLK_HZ, RTCCB, Null) FTM_Init();
 
   if (success)
   {
@@ -141,12 +141,20 @@ static bool TowerStartup()
   return success;
 }
 
+/*! @brief Sends tower version packets
+ *
+ *  @bool returns true if packet send is successful
+ */
 static bool TowerVersion()
 {
   // returns v 1.0
 	return Packet_Put(Packet_Command, 0x76, 0x01, 0x00);
 }
 
+/*! @brief Sends startup packets. Should be v 1.0
+ *
+ * @bool returns true if packet send is successful
+ */
 static bool StartUpPackets()
 {
   // gonna use this to check is sending startup packets is successful
@@ -165,6 +173,10 @@ static bool StartUpPackets()
   return success;
 }
 
+/*! @brief Sends Tower number packets. Should be 6282.
+ *
+ * @bool returns true if packet send is successful
+ */
 static bool TowerNb()
 {
   if (Packet_Parameter1 == 0x02) // if Parameter is set to 2
@@ -183,6 +195,10 @@ static bool TowerNb()
   return false; // return false if unsuccessful :(
 }
 
+/*! @brief Programs writes or erases to flash
+ *
+ * @bool returns true if Flash erase or flash write is successful
+ */
 static bool FlashPrg()
 {
 	if (Packet_Parameter1 == CMD_FLASH_READ && Packet_Parameter2 == 0x00)
@@ -198,6 +214,10 @@ static bool FlashPrg()
 	return false; // return false if unsuccessful :(
 }
 
+/*! @brief Programs writes or erases to flash
+ *
+ * @bool returns true if Flash erase or flash write is successful
+ */
 static bool FlashRead()
 {
   if (Packet_Parameter1 < 0x08 && Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
@@ -209,6 +229,10 @@ static bool FlashRead()
   return false; // return false if unsuccessful :(
 }
 
+/*! @brief Sends Tower Mode or writes to flash the packets you set
+ *
+ * @bool returns true if flash tower mode was successfully written
+ */
 static bool TowerMd()
 {
   if (Packet_Parameter1 == 0x01)
@@ -272,11 +296,17 @@ void Packet_Handle()
   ExitCritical();
 }
 
+/*! @brief Turns on blue LED
+ *
+ */
 void FTM_BLED_On(void (*fpointer))
 {
   LEDs_On(LED_BLUE);
 }
 
+/*! @brief Turns off blue LED
+ *
+ */
 void FTM_BLED_Off(void (*fpointer))
 {
   LEDs_Off(LED_BLUE);
