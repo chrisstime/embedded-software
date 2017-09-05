@@ -336,7 +336,7 @@ int main(void)
 			if (Packet_Get())
 			{
 				Packet_Handle();
-        if (FTM_StartTimer(aFTMChannel))
+        if (FTM_StartTimer(&aFTMChannel))
           LEDs_On(LED_BLUE);
 			}
 			//UART_Poll(); // UART Polling
