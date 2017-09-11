@@ -1,6 +1,6 @@
 /* ###################################################################
-Packet_Parameter3 **     Filename    : main.c
- **     Project     : Lab1
+ **     Filename    : main.c
+ **     Project     : Lab4
  **     Processor   : MK70FN1M0VMJ12
  **     Version     : Driver 01.01
  **     Compiler    : GNU C Compiler
@@ -29,7 +29,7 @@ Packet_Parameter3 **     Filename    : main.c
  * Main.c
  *
  *  Created on: 1 Aug 2017
- *  Last Modified 8 Aug 2017
+ *  Last Modified 11 Sep 2017
  *      Author: 11970744, 11986282
  */
 
@@ -273,10 +273,10 @@ static bool TowerMd()
 void Packet_Handle()
 {
   EnterCritical();
-  Packet_Command &= ~PACKET_ACK_MASK;
+  Packet_Command &= ~PACKET_ACK_MASK; // removes the acknowledgement mask from the Packet_Command
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
-  bool success = false;
+  bool success = false; // command success checker
 
   switch (Packet_Command)
   {
@@ -312,7 +312,7 @@ void Packet_Handle()
       break;
   }
 
-  if (ack) // If acknowledgement bit is set
+  if (ack) // If acknowledgment bit is set
   {
     if (success) // if the switch case run was successful
     {
@@ -346,12 +346,12 @@ int main(void)
          LEDs_On(LED_BLUE);
          Packet_Handle();
        }
-	//UART_Poll(); // UART Polling
+  //UART_Poll(); // UART Polling
     }
   }
 
 
-	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
+  /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START
     PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */

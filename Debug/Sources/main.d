@@ -1,52 +1,61 @@
 Sources/main.o: ../Sources/main.c \
- D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
- D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h \
- D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h \
- ../Sources/FIFO.h ../Sources/types.h ../Sources/packet.h \
- ../Sources/UART.h ../Sources/Flash.h ../Sources/LEDs.h ../Sources/FTM.h \
- ../Sources/RTC.h ../Sources/PIT.h
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/Cpu.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Types.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Error.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Const.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/IO_Map.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Static_Code/IO_Map/MK70F12.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Types.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Error.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Const.h \
+ C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/IO_Map.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/FIFO.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/types.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/packet.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/UART.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/Flash.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/types.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/LEDs.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/FTM.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/RTC.h \
+ C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/PIT.h
 
-D:/Embedded\ Software/embedded-software/Generated_Code/Cpu.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/Cpu.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Types.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Error.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Const.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/IO_Map.h:
 
-D:/Embedded\ Software/embedded-software/Static_Code/IO_Map/MK70F12.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Static_Code/IO_Map/MK70F12.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Types.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Types.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Error.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Error.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/PE_Const.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/PE_Const.h:
 
-D:/Embedded\ Software/embedded-software/Generated_Code/IO_Map.h:
+C:/Users/11986282/Desktop/Lab4withLab3Lib/Generated_Code/IO_Map.h:
 
-../Sources/FIFO.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/FIFO.h:
 
-../Sources/types.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/types.h:
 
-../Sources/packet.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/packet.h:
 
-../Sources/UART.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/UART.h:
 
-../Sources/Flash.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/Flash.h:
 
-../Sources/LEDs.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/types.h:
 
-../Sources/FTM.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/LEDs.h:
 
-../Sources/RTC.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/FTM.h:
 
-../Sources/PIT.h:
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/RTC.h:
+
+C:\Users\11986282\Desktop\Lab4withLab3Lib\Library/PIT.h:
