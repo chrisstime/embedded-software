@@ -35,7 +35,6 @@ Packet_Parameter3 **     Filename    : main.c
 
 // CPU mpdule - contains low level hardware initialization routines
 #include "Cpu.h"
-#include "Events.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"

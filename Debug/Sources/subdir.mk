@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Sources/FIFO.c \
+../Sources/FTM.c \
 ../Sources/Flash.c \
 ../Sources/LEDs.c \
 ../Sources/PIT.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 
 OBJS += \
 ./Sources/FIFO.o \
+./Sources/FTM.o \
 ./Sources/Flash.o \
 ./Sources/LEDs.o \
 ./Sources/PIT.o \
@@ -25,6 +27,7 @@ OBJS += \
 
 C_DEPS += \
 ./Sources/FIFO.d \
+./Sources/FTM.d \
 ./Sources/Flash.d \
 ./Sources/LEDs.d \
 ./Sources/PIT.d \
@@ -38,7 +41,7 @@ C_DEPS += \
 Sources/%.o: ../Sources/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross ARM C Compiler'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"D:/Embedded Software/embedded-software/Static_Code/IO_Map" -I"D:/Embedded Software/embedded-software/Sources" -I"D:/Embedded Software/embedded-software/Generated_Code" -std=c99 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -c -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"D:/Embedded Software/embedded-software/Static_Code/PDD" -I"D:/Embedded Software/embedded-software/Static_Code/IO_Map" -I"D:/Embedded Software/embedded-software/Sources" -I"D:/Embedded Software/embedded-software/Generated_Code" -std=c99 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
