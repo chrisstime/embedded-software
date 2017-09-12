@@ -29,8 +29,9 @@
  * Main.c
  *
  *  Created on: 1 Aug 2017
- *  Last Modified 11 Sep 2017
- *      Author: 11970744, 11986282
+ *   @date 11 Sep 2017
+ *   @author 11986282
+ *   @author 11970744
  */
 
 // CPU mpdule - contains low level hardware initialization routines
@@ -49,6 +50,9 @@
 #include "FTM.h"
 #include "RTC.h"
 #include "PIT.h"
+#include "analog.h"
+#include "median.h"
+#include "SPI.h"
 
 // Define packet commands and other things that need to be defined
 #define CMD_STARTUP 0x04
