@@ -54,7 +54,7 @@
 #include "median.h"
 #include "SPI.h"
 
-// Define packet commands and other things that need to be defined
+// Define packet commands
 #define CMD_STARTUP 0x04
 #define CMD_FLASH_PRG 0x07
 #define CMD_FLASH_READ 0x08
@@ -62,6 +62,9 @@
 #define CMD_TOWER_NB 0x0B
 #define CMD_TOWER_MD 0x0D
 #define CMD_TOWER_TIME 0x0C
+#define CMD_ANALOG_INPUT 0x50
+#define CMD_PROTOCOL_MODE 0x0A
+// Define some default values like student number and tower number etc.
 #define TOWER_DEFAULT_VALUE 0x188A /* the student number here is 9862*/
 #define TOWER_DEFAULT_MD 0x0001 /* default tower mode is 1*/
 #define PACKET_ACK_MASK 0x80
@@ -274,6 +277,18 @@ static bool TowerMd()
   return false; // return false if unsuccessful :(
 }
 
+static bool ProtocolMode()
+{
+  //
+  return false;
+}
+
+static bool AnalogInput()
+{
+  //
+  return false;
+}
+
 void Packet_Handle()
 {
   EnterCritical();
@@ -310,6 +325,14 @@ void Packet_Handle()
 
     case CMD_TOWER_TIME:
       success = SetTime();
+    break;
+
+    case CMD_PROTOCOL_MODE:
+      success = ProtocolMode(); //create this command
+    break;
+
+    case CMD_ANALOG_INPUT:
+      success = AnalogInput(); // create this commands
     break;
 
     default:
