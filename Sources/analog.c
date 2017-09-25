@@ -11,6 +11,8 @@
 #include "analog.h"
 #include "Cpu.h"
 #include "MK70F12.h"
+#include "SPI.h"
+#include "median.h"
 
 bool Analog_Init(const uint32_t moduleClock)
 {
@@ -40,7 +42,7 @@ bool Analog_Init(const uint32_t moduleClock)
   Analog_Input[0].putPtr = Analog_Input[0].values;
   Analog_Input[1].putPtr = Analog_Input[1].values;
 
-  return success;
+  return true;
 }
 
 bool Analog_Get(const uint8_t channelNb)
