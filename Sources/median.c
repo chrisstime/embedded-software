@@ -103,6 +103,7 @@
    // have to sort array into ascending order
    // median is the middle number if numbers are even
    // median is the average of the two middle sorted numbers
+   // this function is recursive.
    if (size == 0)
      return false;
 
