@@ -70,16 +70,16 @@ bool Analog_Get(const uint8_t channelNb)
     (Analog_Input[channelNb].putPtr)++;
   }
 
-  /* Read input from analog input channel into the sliding window */
+  /* Have SPI transmit the inputData */
   SPI_Exchange(inputData, Analog_Input[channelNb].putPtr);
 
-  /* Wait for conversion */
-  uint8_t i;
-  for (i = 0; i < 100; i++)
+  /* Wait */
+  uint8_t count;
+  for (count = 0; count < 100; count++)
   {
   }
 
-  /* Update the current 'processed' analog value */
+  /* Then update analog value*/
   Analog_Input[channelNb].value.l = Median_Filter(Analog_Input[channelNb].values, ANALOG_WINDOW_SIZE);
 
   return true;
