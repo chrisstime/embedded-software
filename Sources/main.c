@@ -1,6 +1,6 @@
 /* ###################################################################
-Packet_Parameter3 **     Filename    : main.c
- **     Project     : Lab1
+ **     Filename    : main.c
+ **     Project     : Lab4
  **     Processor   : MK70FN1M0VMJ12
  **     Version     : Driver 01.01
  **     Compiler    : GNU C Compiler
@@ -29,8 +29,9 @@ Packet_Parameter3 **     Filename    : main.c
  * Main.c
  *
  *  Created on: 1 Aug 2017
- *  Last Modified 8 Aug 2017
- *      Author: 11970744, 11986282
+ *   @date 11 Sep 2017
+ *   @author 11986282
+ *   @author 11970744
  */
 
 // CPU mpdule - contains low level hardware initialization routines
@@ -49,8 +50,11 @@ Packet_Parameter3 **     Filename    : main.c
 #include "FTM.h"
 #include "RTC.h"
 #include "PIT.h"
+#include "analog.h"
+#include "median.h"
+#include "SPI.h"
 
-// Define packet commands and other things that need to be defined
+// Define packet commands
 #define CMD_STARTUP 0x04
 #define CMD_FLASH_PRG 0x07
 #define CMD_FLASH_READ 0x08
@@ -58,6 +62,9 @@ Packet_Parameter3 **     Filename    : main.c
 #define CMD_TOWER_NB 0x0B
 #define CMD_TOWER_MD 0x0D
 #define CMD_TOWER_TIME 0x0C
+#define CMD_ANALOG_INPUT 0x50
+#define CMD_PROTOCOL_MODE 0x0A
+// Define some default values like student number and tower number etc.
 #define TOWER_DEFAULT_VALUE 0x188A /* the student number here is 9862*/
 #define TOWER_DEFAULT_MD 0x0001 /* default tower mode is 1*/
 #define PACKET_ACK_MASK 0x80
@@ -68,13 +75,34 @@ static volatile uint16union_t* NvTowerNb; // Tower Number variable
 static volatile uint16union_t* NvTowerMd; // Tower Mode variable
 
 static TFTMChannel aFTMChannel;
+uint8_t ProtocolMode;
 
 /*! @brief Pit call back function
  *
  */
 static void PITCallBack(void* arg)
 {
-  LEDs_Toggle(LED_GREEN);
+  Analog_Get(0x00);
+  Analog_Get(0x01);
+
+  if(ProtocolMode == 0)
+  {
+    if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
+    {
+      Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+    }
+    if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
+    {
+      Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+    }
+  }
+  else
+  {
+     Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+     Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+  }
+  Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
+  Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
 }
 
 /*! @brief Initialises everything
@@ -104,7 +132,8 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) && RTC_Init(RTCCallBack, NULL) && FTM_Init();
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) 
+            && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ);
 
   if (success)
   {
@@ -147,6 +176,10 @@ static bool TowerStartup()
     uint64_t initialiseFlash = _FP(FLASH_DATA_START);
     }
   }
+
+  /*This is set to be asynchronous as the default*/
+  ProtocolMode = 0;
+
   /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
   return success;
 }
@@ -191,7 +224,8 @@ static bool StartUpPackets()
   success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
   // Whatever was saved/written  in flash
   success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
-
+  /*Protocol command, by default protocol mode is 0*/
+  success &= Packet_Put(CMD_PROTOCOL_MODE, 0x01, ProtocolMode, 0x00);
   // Return success if all the packet put ran were successful
   return success;
 }
@@ -270,13 +304,25 @@ static bool TowerMd()
   return false; // return false if unsuccessful :(
 }
 
+static bool Protocol_Mode()
+{
+  if (Packet_Parameter1 == 0x01)
+    Packet_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
+  else if (Packet_Parameter1 == 0x02)
+  {
+    ProtocolMode = Packet_Parameter2;
+    return true;
+  }
+  return false;
+}
+
 void Packet_Handle()
 {
   EnterCritical();
-  Packet_Command &= ~PACKET_ACK_MASK;
+  Packet_Command &= ~PACKET_ACK_MASK; // removes the acknowledgement mask from the Packet_Command
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
-  bool success = false;
+  bool success = false; // command success checker
 
   switch (Packet_Command)
   {
@@ -308,11 +354,15 @@ void Packet_Handle()
       success = SetTime();
     break;
 
+    case CMD_PROTOCOL_MODE:
+      success = Protocol_Mode(); //create this command
+    break;
+
     default:
       break;
   }
 
-  if (ack) // If acknowledgement bit is set
+  if (ack) // If acknowledgment bit is set
   {
     if (success) // if the switch case run was successful
     {
@@ -346,12 +396,12 @@ int main(void)
          LEDs_On(LED_BLUE);
          Packet_Handle();
        }
-	//UART_Poll(); // UART Polling
+  //UART_Poll(); // UART Polling
     }
   }
 
 
-	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
+  /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START
     PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
