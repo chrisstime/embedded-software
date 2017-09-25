@@ -24,6 +24,18 @@ typedef struct
   uint32_t baudRate;               /*!< The baud rate in bits/sec of the SPI clock. */
 } TSPIModule;
 
+typedef enum
+{
+  Baudrate,
+  Delay
+} BaudDelay;
+
+typedef struct
+{
+  int ptf_array;
+  int ptos_array;
+}ptarray;
+
 /*! @brief Sets up the SPI before first use.
  *
  *  @param aSPIModule is a structure containing the operating conditions for the module.
