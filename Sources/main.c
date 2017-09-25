@@ -75,13 +75,34 @@ static volatile uint16union_t* NvTowerNb; // Tower Number variable
 static volatile uint16union_t* NvTowerMd; // Tower Mode variable
 
 static TFTMChannel aFTMChannel;
+uint8_t ProtocolMode;
 
 /*! @brief Pit call back function
  *
  */
 static void PITCallBack(void* arg)
 {
-  LEDs_Toggle(LED_GREEN);
+  Analog_Get(0x00);
+  Analog_Get(0x01);
+
+  if(ProtocolMode == 0)
+  {
+    if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
+    {
+      Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+    }
+    if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
+    {
+      Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+    }
+  }
+  else
+  {
+     Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+     Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+  }
+  Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
+  Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
 }
 
 /*! @brief Initialises everything
@@ -111,7 +132,8 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) && RTC_Init(RTCCallBack, NULL) && FTM_Init();
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) 
+            && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ);
 
   if (success)
   {
@@ -154,6 +176,10 @@ static bool TowerStartup()
     uint64_t initialiseFlash = _FP(FLASH_DATA_START);
     }
   }
+
+  /*This is set to be asynchronous as the default*/
+  ProtocolMode = 0;
+
   /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
   return success;
 }
@@ -198,7 +224,8 @@ static bool StartUpPackets()
   success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
   // Whatever was saved/written  in flash
   success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
-
+  /*Protocol command, by default protocol mode is 0*/
+  success &= Packet_Put(CMD_PROTOCOL_MODE, 0x01, ProtocolMode, 0x00);
   // Return success if all the packet put ran were successful
   return success;
 }
@@ -277,15 +304,15 @@ static bool TowerMd()
   return false; // return false if unsuccessful :(
 }
 
-static bool ProtocolMode()
+static bool Protocol_Mode()
 {
-  //
-  return false;
-}
-
-static bool AnalogInput()
-{
-  //
+  if (Packet_Parameter1 == 0x01)
+    Packet_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
+  else if (Packet_Parameter1 == 0x02)
+  {
+    ProtocolMode = Packet_Parameter2;
+    return true;
+  }
   return false;
 }
 
@@ -328,11 +355,7 @@ void Packet_Handle()
     break;
 
     case CMD_PROTOCOL_MODE:
-      success = ProtocolMode(); //create this command
-    break;
-
-    case CMD_ANALOG_INPUT:
-      success = AnalogInput(); // create this commands
+      success = Protocol_Mode(); //create this command
     break;
 
     default:
