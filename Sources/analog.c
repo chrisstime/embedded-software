@@ -14,12 +14,33 @@
 
 bool Analog_Init(const uint32_t moduleClock)
 {
-  // something
-}
+  if (moduleClock == 0)
+  {
+    return false;
+  }
 
-bool Analog_Init(const uint32_t moduleClock)
-{
-  // something
+  TSPIModule SPIModule;
+  SPIModule.isMaster = true;
+  SPIModule.continuousClock = false;
+  SPIModule.inactiveHighClock = false;
+  SPIModule.changedOnLeadingClockEdge = false;
+  SPIModule.LSBFirst = false;
+  SPIModule.baudRate = 1000000;
+
+  if (!SPI_Init(&SPIModule, moduleClock))
+    return false;
+
+  SPI_SelectSlaveDevice(ANALOG_ADDRESS);
+
+  /* Initialize Analog_Input */
+  Analog_Input[0].value.l = 0;
+  Analog_Input[1].value.l = 0;
+  Analog_Input[0].oldValue.l = 0;
+  Analog_Input[1].oldValue.l = 0;
+  Analog_Input[0].putPtr = Analog_Input[0].values;
+  Analog_Input[1].putPtr = Analog_Input[1].values;
+
+  return success;
 }
 
 bool Analog_Get(const uint8_t channelNb)
