@@ -23,7 +23,6 @@ static float Abs(float nb)
   {
     uint32_t sixteenarray[16];
     uint8_t fourarray[4];
-    float ideal;
     //baudrate or delay? Set up arrays for either case.
     switch(BD)
     {
@@ -37,8 +36,6 @@ static float Abs(float nb)
         {
           fourarray[a] = pbrValues[a];
         }
-        //ideal ratio is inverse for the delay as it is calculated with time not freq.
-        ideal = (float)IdealNb / (float)moduleClock;
         break;
       case Delay:
         for (int a = 0; a < 16; a++)
@@ -50,12 +47,12 @@ static float Abs(float nb)
         {
           fourarray[a] = pdtValues[a];
         }
-        ideal = (float)moduleClock / (float)IdealNb;
         break;
     }
 
     float bestResult = 0, tmpResult;
     uint8_t i, j, pt_four, pt_sixteen;
+    float ideal = (float)IdealNb / (float)moduleClock;
 
     for (i = 0; i < 4; i++)
     {
@@ -137,12 +134,13 @@ bool SPI_Init(const TSPIModule* const aSPIModule, const uint32_t moduleClock)
 
   //delay after transmit to be 5us
   //similar to baud rate calc.
+
   uint8_t pdt, dt;
   BD = Delay;
-  uint32_t delayfreqinv = 200000;
-  Idealbaudanddelayfinder(delayfreqinv, moduleClock, &pdt, &dt, BD);
+  uint32_t delayfreq = 200000;
+  Idealbaudanddelayfinder(delayfreq, moduleClock, &pdt, &dt, BD);
   SPI2_CTAR0 |= SPI_CTAR_DT(dt);
-  SPI2_CTAR0 |= SPI_CTAR_PDT(pdt);
+  SPI2_CTAR0 |= SPI_CTAR_PDT(pdt)
 
   //start SPI
   SPI2_MCR    &= ~SPI_MCR_HALT_MASK;
