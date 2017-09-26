@@ -15,9 +15,9 @@
 
 /*! @brief Sets up the SPI before first use.
  *
- *  @param aSPIModule is a structure containing the operating conditions for the module.
- *  @param moduleClk The module clock in Hz.
- *  @return BOOL - true if the SPI module was successfully initialized.
+ *  @param const void * a pointer to where int a is stored used. First element for comparing in the array
+ *  @param const void * a pointer to where int b is stored. Second element for comparing values in the array
+ *  @return int the result of the equation int a - int b
  */
 int CompareValues(const void * a, const void * b)
 {
@@ -34,7 +34,7 @@ int CompareValues(const void * a, const void * b)
    if (size == 0)
      return false;
 
-   qsort(array, size, sizeOf(int) CompareValues);
+   qsort(array, size, sizeOf(int), CompareValues);
 
    return false;
  }
