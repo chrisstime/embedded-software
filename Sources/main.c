@@ -79,6 +79,7 @@ uint8_t ProtocolMode;
 
 /*! @brief Pit call back function
  *
+ *  @param arg Placeholder no user argument
  */
 static void PITCallBack(void* arg)
 {
@@ -118,8 +119,9 @@ static void PITCallBack(void* arg)
   Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
 }
 
-/*! @brief Initialises everything
- *  @return returns true if everything initialises successfully
+/*! @brief RTC Call back function constantly lights up every second and spits out the time
+ *  
+*  @param arg Placeholder no user argument
  */
 static void RTCCallBack(void* arg)
 {
@@ -131,6 +133,7 @@ static void RTCCallBack(void* arg)
 
 /*! @brief FTM call back function. Turns on blue LED
  *
+*  @param arg Placeholder no user argument
  */
 static void FTMCallBack(void* arg)
 {
@@ -145,48 +148,49 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) 
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() 
+            && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) 
             && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ);
 
   if (success)
   {
       /* Start up the PIT timer using a period of 500 ms */
-          PIT_Set(10000000, true);
-          PIT_Enable(true);
+      PIT_Set(10000000, true);
+      PIT_Enable(true);
 
-          /* Initialize FTM Channel 0 */
-          aFTMChannel.channelNb = 0x00;
-          aFTMChannel.delayCount = 24414;
-          aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
-          aFTMChannel.ioType.outputAction = TIMER_OUTPUT_HIGH;
-          aFTMChannel.userFunction = FTMCallBack;
-          aFTMChannel.userArguments = NULL;
-          success &= FTM_Set(&aFTMChannel);
+      /* Initialize FTM Channel 0 */
+      aFTMChannel.channelNb = 0x00;
+      aFTMChannel.delayCount = 24414;
+      aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
+      aFTMChannel.ioType.outputAction = TIMER_OUTPUT_HIGH;
+      aFTMChannel.userFunction = FTMCallBack;
+      aFTMChannel.userArguments = NULL;
+      success &= FTM_Set(&aFTMChannel);
 
-    /* Allocate memory in flash will return true if successful*/
-    success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
+      /* Allocate memory in flash will return true if successful*/
+      success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
 
-    /* Check if there's no previously set value in NvTowerNb in flash memory*/
-    if (success && (*NvTowerNb).l == 0xFFFF)
-    {
-       /* If it's empty, just allocate it the default value which is our student number*/
-       success &= Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
+      /* Check if there's no previously set value in NvTowerNb in flash memory*/
+      if (success && (*NvTowerNb).l == 0xFFFF)
+      {
+         /* If it's empty, just allocate it the default value which is our student number*/
+         success &= Flash_Write16((uint16_t*)NvTowerNb, TOWER_DEFAULT_VALUE);
 
-       /* Initialise flash just because */
-       uint64_t initialiseFlash = _FP(FLASH_DATA_START);
-     }
+         /* Initialise flash just because */
+         uint64_t initialiseFlash = _FP(FLASH_DATA_START);
+      }
 
-    /* Also allocate space in memory for the Tower mode */
-    success &= Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd));
+      /* Also allocate space in memory for the Tower mode */
+      success &= Flash_AllocateVar((volatile void**)&NvTowerMd, sizeof(*NvTowerMd));
 
-    /* Check if there's no previously set value in NvTowerMd in flash memory*/
-    if (success && (*NvTowerMd).l == 0xFFFF)
-    {
-    /* If it's empty, just allocate it the default value 1 for tower mode*/
-    success &= Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_MD);
+      /* Check if there's no previously set value in NvTowerMd in flash memory*/
+      if (success && (*NvTowerMd).l == 0xFFFF)
+      {
+      /* If it's empty, just allocate it the default value 1 for tower mode*/
+      success &= Flash_Write16((uint16_t*)NvTowerMd, TOWER_DEFAULT_MD);
 
-    /* Initialise flash just because */
-    uint64_t initialiseFlash = _FP(FLASH_DATA_START);
+      /* Initialise flash just because */
+      uint64_t initialiseFlash = _FP(FLASH_DATA_START);
     }
   }
 
@@ -202,6 +206,7 @@ static bool TowerStartup()
  */
 static bool SetTime()
 {
+  /* Check that the packets being sent to set time are valid. So first packet is under 23 and minutes and seconds are under 60 */
   if (Packet_Parameter1 <= 23 && Packet_Parameter2 <= 59 && Packet_Parameter3 <= 59)
   {
      RTC_Set(Packet_Parameter1, Packet_Parameter2, Packet_Parameter3);
@@ -212,7 +217,7 @@ static bool SetTime()
 
 /*! @brief Sends tower version packets
  *
- *  @bool returns true if packet send is successful
+ *  @return - bool returns true if packet send is successful
  */
 static bool TowerVersion()
 {
@@ -222,7 +227,7 @@ static bool TowerVersion()
 
 /*! @brief Sends startup packets. Should be v 1.0
  *
- * @bool returns true if packet send is successful
+ * @return - bool returns true if packet send is successful
  */
 static bool StartUpPackets()
 {
@@ -245,7 +250,7 @@ static bool StartUpPackets()
 
 /*! @brief Sends Tower number packets. Should be 6282.
  *
- * @bool returns true if packet send is successful
+ * @return - bool returns true if packet send is successful
  */
 static bool TowerNb()
 {
@@ -267,7 +272,7 @@ static bool TowerNb()
 
 /*! @brief Programs writes or erases to flash
  *
- * @bool returns true if Flash erase or flash write is successful
+ * @return - bool returns true if Flash erase or flash write is successful
  */
 static bool FlashPrg()
 {
@@ -286,7 +291,7 @@ return false; // return false if unsuccessful :(
 
 /*! @brief Programs writes or erases to flash
  *
- * @bool returns true if Flash erase or flash write is successful
+ * @return - bool returns true if Flash erase or flash write is successful
  */
 static bool FlashRead()
 {
@@ -301,7 +306,7 @@ static bool FlashRead()
 
 /*! @brief Sends Tower Mode or writes to flash the packets you set
  *
- * @bool returns true if flash tower mode was successfully written
+ * @return - bool returns true if flash tower mode was successfully written
  */
 static bool TowerMd()
 {
@@ -317,18 +322,30 @@ static bool TowerMd()
   return false; // return false if unsuccessful :(
 }
 
+/*! @brief a request for the Protocol Mode packet.
+ *
+ *  @return bool - TRUE if the received packet was successfully handled.
+ */
 static bool Protocol_Mode()
 {
+  // check for packet request. 0x01 for get.
   if (Packet_Parameter1 == 0x01)
     Packet_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
+
+  // else if the request is a packet set -> 0x02
   else if (Packet_Parameter1 == 0x02)
   {
-    ProtocolMode = Packet_Parameter2;
-    return true;
+    // check if parameters 2 is 0x00 or 0x01 as the valid params
+    if ((Packet_Parameter2 == 0x00 || Packet_Parameter2 == 0x01) && Packet_Parameter3 == 0x00)
+    {
+      ProtocolMode = Packet_Parameter2;
+      return true;
+    }
   }
   return false;
 }
 
+/* Handles all packet commands to be sent to the Tower */
 void Packet_Handle()
 {
   EnterCritical();
