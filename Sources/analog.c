@@ -80,15 +80,6 @@ bool Analog_Get(const uint8_t channelNb)
     (Analog_Input[channelNb].putPtr)++;
   }
 
-  /* Wait */
-  uint8_t count;
-  for (count = 0; count < 100; count++)
-  {
-  }
-
-  /* Then update analog value*/
-  Analog_Input[channelNb].value.l = Median_Filter(Analog_Input[channelNb].values, ANALOG_WINDOW_SIZE);
-
   return true;
 }
 
