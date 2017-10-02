@@ -1,9 +1,12 @@
-/*
- * analog.c
+/*! @file
  *
- *      @date 11 Sep 2017
- *      @author 11986282
- *      @author 11970744
+ *  @brief Routines for setting up and reading from the ADC.
+ *
+ *  This contains the functions needed for accessing the external TWR-ADCDAC-LTC board.
+ *
+ *  @author Declan Scott        11970744
+ *          Christine Vinaviles 11986282
+ *  @date 2017-09-26
  */
 
 // include header files with functions used for Lab4
@@ -16,11 +19,13 @@
 
 bool Analog_Init(const uint32_t moduleClock)
 {
+  // if module clock is empty for some reason immediately return false for Analog_Init
   if (moduleClock == 0)
   {
     return false;
   }
 
+  // set SPI Module to whatever was stated in the lab.
   TSPIModule SPIModule;
   SPIModule.isMaster = true;
   SPIModule.continuousClock = false;
@@ -34,13 +39,13 @@ bool Analog_Init(const uint32_t moduleClock)
 
   SPI_SelectSlaveDevice(7);
 
-  /* Initialize Analog_Input */
-  Analog_Input[0].value.l = 0;
-  Analog_Input[1].value.l = 0;
-  Analog_Input[0].oldValue.l = 0;
-  Analog_Input[1].oldValue.l = 0;
-  Analog_Input[0].putPtr = Analog_Input[0].values;
-  Analog_Input[1].putPtr = Analog_Input[1].values;
+  /* Loop througj to initialize Analog_Input */
+  for (int i = 0; i < 2 ; i++)
+  {
+    Analog_Input[i].value.l = 0;
+    Analog_Input[i].oldValue.l = 0;
+    Analog_Input[i].putPtr = Analog_Input[i].values;
+  }
 
   return true;
 }
@@ -62,6 +67,9 @@ bool Analog_Get(const uint8_t channelNb)
       return false;
   }
 
+  /* Have SPI transmit the inputData */
+  SPI_Exchange(inputData, Analog_Input[channelNb].putPtr);
+
   /* Point to the location of the next sample to take */
   if (Analog_Input[channelNb].putPtr == &(Analog_Input[channelNb].values[ANALOG_WINDOW_SIZE - 1]))
   {
@@ -71,9 +79,6 @@ bool Analog_Get(const uint8_t channelNb)
   {
     (Analog_Input[channelNb].putPtr)++;
   }
-
-  /* Have SPI transmit the inputData */
-  SPI_Exchange(inputData, Analog_Input[channelNb].putPtr);
 
   /* Wait */
   uint8_t count;

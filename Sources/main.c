@@ -82,25 +82,38 @@ uint8_t ProtocolMode;
  */
 static void PITCallBack(void* arg)
 {
-  Analog_Get(0x00);
-  Analog_Get(0x01);
+  for (int i = 0 ; i < 2 ; i++)
+  {
+    Analog_Get(i);
 
+    /* Wait */
+    for (int count = 0; count < 100; count++);
+
+    /* Then update analog value*/
+    Analog_Input[channelNb].value.l = Median_Filter(Analog_Input[channelNb].values, ANALOG_WINDOW_SIZE);
+  }
+
+  /* if user sets to asynchronous */
   if(ProtocolMode == 0)
   {
+    /* Compare if the analog value changes then PackPut the new value. So it will only transmits packets if there is a change */
     if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
     {
       Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
     }
+    /* If the analog value changes then PackPut the new value. This occurs for falling edge and rising edge*/
     if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
     {
       Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
     }
   }
-  else
+  else /* if synchronous */
   {
      Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
      Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
   }
+
+  /* transfer value to oldValue  */
   Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
   Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
 }
@@ -138,7 +151,7 @@ static bool TowerStartup()
   if (success)
   {
       /* Start up the PIT timer using a period of 500 ms */
-          PIT_Set(500000000, true);
+          PIT_Set(10000000, true);
           PIT_Enable(true);
 
           /* Initialize FTM Channel 0 */

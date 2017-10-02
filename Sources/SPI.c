@@ -1,3 +1,13 @@
+/*! @file
+ *
+ *  @brief I/O routines for K70 SPI interface.
+ *
+ *  This contains the functions for operating the SPI (serial peripheral interface) module.
+ *
+ *  @author Declan Scott         11970744
+ *  @author Christine Vinaviles  11986282
+ *  @date 2017-09-26
+ */
 #include "SPI.h"
 #include "MK70F12.h"
 #include "stdlib.h"
@@ -8,6 +18,12 @@ static uint32_t brValues[16] = {2, 4, 6, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 static uint8_t pdtValues[4] = {1, 3, 5, 7};
 static uint32_t dtValues[16] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536};
 
+/*! @brief returns absolute value.
+ *
+ *  @param nb is the variable to make sure is positive.
+ *
+ *  @return float
+ */
 static float Abs(float nb)
 {
   if (nb < 0)
@@ -19,6 +35,16 @@ static float Abs(float nb)
     return nb;
   }
 }
+ 
+/*! @brief finds ideal baud rate and delay values for CTAR register.
+ *
+ *  @param IdealNb is the ideal baud rate or delay value to calcuate.
+ *  @param moduleClk The module clock in Hz.
+ *  @param ptf_array is the pointer to the smaller array [4] (br or dt)
+ *  @param ptos_array is the pointer to the larger array [16] (pbr or pdt)
+ *
+ *  @notes assumes the pre-scalar is zero.
+ */
   static void Idealbaudanddelayfinder(uint32_t IdealNb, uint32_t moduleClock, uint8_t* ptf_array, uint8_t* ptos_array, BaudDelay BD)
   {
     uint32_t sixteenarray[16];
