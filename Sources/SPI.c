@@ -35,7 +35,7 @@ static float Abs(float nb)
     return nb;
   }
 }
- 
+
 /*! @brief finds ideal baud rate and delay values for CTAR register.
  *
  *  @param IdealNb is the ideal baud rate or delay value to calcuate.
@@ -47,7 +47,7 @@ static float Abs(float nb)
  */
   static void Idealbaudanddelayfinder(uint32_t IdealNb, uint32_t moduleClock, uint8_t* ptf_array, uint8_t* ptos_array, BaudDelay BD)
   {
-    uint32_t sixteenarray[16];
+    uint32_t sixteenarray[16] ;
     uint8_t fourarray[4];
     float ideal;
     //baudrate or delay? Set up arrays for either case.
@@ -187,7 +187,9 @@ void SPI_SelectSlaveDevice(const uint8_t slaveAddress)
 
   switch (slaveAddress)
   {
-    case 0x00: //ADC
+    //case 4/5/6/7:
+
+    case 0x07: //ADC
       GPIOE_PDOR |= (1 << 5);
       GPIOE_PDOR |= (1 << 27);
       break;
@@ -223,7 +225,12 @@ void SPI_Exchange(const uint16_t dataTx, uint16_t* const dataRx)
   {
 
   }
-  *dataRx = SPI2_POPR;
+
+  if(dataRx){
+    *dataRx = SPI2_POPR;
+  } else {
+    SPI2_POPR;
+  }
 
   //clear flags
   SPI2_SR |= SPI_SR_RFDF_MASK;
