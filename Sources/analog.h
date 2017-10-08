@@ -37,7 +37,7 @@ extern TAnalogInput Analog_Input[ANALOG_NB_INPUTS];
 /*! @brief Sets up the ADC before first use.
  *
  *  @param moduleClk The module clock rate in Hz.
- *  @return bool - true if the TAnalogInput was successfully initialized.
+ *  @return bool - true if the UART was successfully initialized.
  */
 bool Analog_Init(const uint32_t moduleClock);
 

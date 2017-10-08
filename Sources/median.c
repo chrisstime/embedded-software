@@ -26,17 +26,29 @@ int CompareValues(const void * a, const void * b)
 
  int16_t Median_Filter(const int16_t array[], const uint32_t size)
  {
+   int16_t tempArray[size];
+   for (int i = 0; i < size ; i++)
+   {
+     tempArray[i] = array[i];
+   }
    // sort array of a length up to 1024
    // have to sort array into ascending order
    // median is the middle number if numbers are even
    // median is the average of the two middle sorted numbers
-   // this function is recursive.
-   if (size == 0)
-     return false;
+   qsort(tempArray, size, sizeof(array[0]), CompareValues);
 
-   qsort(array, size, sizeOf(int), CompareValues);
+   int16_t median = 0;
 
-   return false;
+   if (size % 2 == 0 )
+   {
+     median = (tempArray[size/2] + tempArray[(size/2)-1]) /2;
+   }
+   else
+   {
+     median = tempArray[(size+1)/2];
+   }
+
+   return median;
  }
 
 /* END median */

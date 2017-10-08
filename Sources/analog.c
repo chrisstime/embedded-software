@@ -6,6 +6,7 @@
  *      @author 11970744
  */
 
+
 // include header files with functions used for Lab4
 #include "types.h"
 #include "analog.h"
@@ -13,6 +14,10 @@
 #include "MK70F12.h"
 #include "SPI.h"
 #include "median.h"
+
+
+TAnalogInput Analog_Input[ANALOG_NB_INPUTS];
+
 
 bool Analog_Init(const uint32_t moduleClock)
 {
@@ -31,16 +36,15 @@ bool Analog_Init(const uint32_t moduleClock)
 
   if (!SPI_Init(&SPIModule, moduleClock))
     return false;
-
-  SPI_SelectSlaveDevice(7);
+  SPI_SelectSlaveDevice(0x07);
 
   /* Initialize Analog_Input */
-  Analog_Input[0].value.l = 0;
-  Analog_Input[1].value.l = 0;
-  Analog_Input[0].oldValue.l = 0;
-  Analog_Input[1].oldValue.l = 0;
-  Analog_Input[0].putPtr = Analog_Input[0].values;
-  Analog_Input[1].putPtr = Analog_Input[1].values;
+  for (int i = 0; i <= 1 ; i++)
+  {
+      Analog_Input[i].value.l = 0;
+      Analog_Input[i].oldValue.l = 0;
+      Analog_Input[i].putPtr = Analog_Input[i].values;
+  }
 
   return true;
 }
@@ -61,28 +65,18 @@ bool Analog_Get(const uint8_t channelNb)
     default:
       return false;
   }
-
-  /* Point to the location of the next sample to take */
-  if (Analog_Input[channelNb].putPtr == &(Analog_Input[channelNb].values[ANALOG_WINDOW_SIZE - 1]))
-  {
-    Analog_Input[channelNb].putPtr = Analog_Input[channelNb].values;
-  }
-  else
-  {
-    (Analog_Input[channelNb].putPtr)++;
-  }
-
   /* Have SPI transmit the inputData */
   SPI_Exchange(inputData, Analog_Input[channelNb].putPtr);
 
-  /* Wait */
-  uint8_t count;
-  for (count = 0; count < 100; count++)
-  {
-  }
-
-  /* Then update analog value*/
-  Analog_Input[channelNb].value.l = Median_Filter(Analog_Input[channelNb].values, ANALOG_WINDOW_SIZE);
+  /* Point to the location of the next sample to take */
+     if (Analog_Input[channelNb].putPtr == &(Analog_Input[channelNb].values[ANALOG_WINDOW_SIZE - 1]))
+     {
+       Analog_Input[channelNb].putPtr = Analog_Input[channelNb].values;
+     }
+     else
+     {
+       (Analog_Input[channelNb].putPtr)++;
+     }
 
   return true;
 }

@@ -77,36 +77,50 @@ static volatile uint16union_t* NvTowerMd; // Tower Mode variable
 static TFTMChannel aFTMChannel;
 uint8_t ProtocolMode;
 
+static void AnalogGetInput()
+{
+  for (int i = 0 ; i <= 1 ; i++)
+    {
+      Analog_Get(i);
+      /* Wait */
+      uint16_t count;
+      for (count = 0; count < 100; count++);
+
+      /* Then update analog value*/
+      Analog_Input[i].value.l = Median_Filter(Analog_Input[i].values, ANALOG_WINDOW_SIZE);
+      //Analog_Input[channelNb].value.l = Analog_Input[channelNb].values[0];
+    }
+
+    if(ProtocolMode == 0)
+    {
+      if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
+      {
+        Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+      }
+      if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
+      {
+        Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+      }
+    }
+    else
+    {
+       Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+       Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+    }
+    Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
+    Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
+}
+
 /*! @brief Pit call back function
  *
  */
 static void PITCallBack(void* arg)
 {
-  Analog_Get(0x00);
-  Analog_Get(0x01);
-
-  if(ProtocolMode == 0)
-  {
-    if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
-    {
-      Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
-    }
-    if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
-    {
-      Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
-    }
-  }
-  else
-  {
-     Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
-     Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
-  }
-  Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
-  Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
+  AnalogGetInput();
 }
 
 /*! @brief Initialises everything
- *  @return returns true if everything initialises successfully
+ *  @param no argument required/ void
  */
 static void RTCCallBack(void* arg)
 {
@@ -132,13 +146,13 @@ static bool TowerStartup()
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL) 
+  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL)
             && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ);
 
   if (success)
   {
-      /* Start up the PIT timer using a period of 500 ms */
-          PIT_Set(500000000, true);
+      /* Start up the PIT timer using a period of 10 ms */
+          PIT_Set(10000000, true);
           PIT_Enable(true);
 
           /* Initialize FTM Channel 0 */
@@ -310,6 +324,7 @@ static bool Protocol_Mode()
     Packet_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
   else if (Packet_Parameter1 == 0x02)
   {
+    //range checking on param2
     ProtocolMode = Packet_Parameter2;
     return true;
   }
@@ -396,6 +411,13 @@ int main(void)
          LEDs_On(LED_BLUE);
          Packet_Handle();
        }
+
+
+      // if(processData){
+         //filter
+         //send packets
+      //   processData = false;
+      // }
   //UART_Poll(); // UART Polling
     }
   }
