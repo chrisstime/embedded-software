@@ -15,7 +15,7 @@
 #include "types.h"
 #include "OS.h"
 
-OS_ECB* FTMSemaphore;
+extern OS_ECB* FTMSemaphore;
 
 typedef enum
 {

@@ -17,9 +17,6 @@
 // Number of bytes in a FIFO
 #define FIFO_SIZE 256
 
-
-
-
 /*!
  * @struct TFIFO
  */
