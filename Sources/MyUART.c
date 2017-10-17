@@ -86,6 +86,32 @@ void __attribute__ ((interrupt)) MyUART_ISR(void)
 
 	uint8_t tempdata;
 
+	/*
+
+  // Determine if data has been sent from the PC to Tower
+  //if (UART2_C2 & UART_C2_RIE_MASK)
+  //{
+    if (UART2_S1 & UART_S1_RDRF_MASK)
+    {
+      (void)MyFIFO_Put(&RX_FIFO, UART2_D);
+      OS_SemaphoreSignal(UARTRxSemaphore);
+    }
+  //}
+
+  //Determine if data is ready to be sent from the Tower to PC
+  //if (UART2_C2 & UART_C2_TIE_MASK)
+  //{
+    if (UART2_S1 & UART_S1_TDRE_MASK)
+    {
+      if (!MyFIFO_Get(&TX_FIFO, &UART2_D))
+      {
+	    UART2_C2 &= ~UART_C2_TCIE_MASK;
+	    OS_SemaphoreSignal(UARTTxSemaphore);
+      }
+    }
+
+    */
+
 	  /* Determine if data is ready to be sent from the Tower to PC */
 	  if (UART2_C2 & UART_C2_TIE_MASK)
 	  {

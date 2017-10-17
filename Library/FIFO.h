@@ -17,6 +17,9 @@
 // Number of bytes in a FIFO
 #define FIFO_SIZE 256
 
+
+
+
 /*!
  * @struct TFIFO
  */
@@ -26,14 +29,19 @@ typedef struct
   uint16_t End; 		/*!< The index of the next available empty position in the FIFO */
   uint16_t volatile NbBytes;	/*!< The number of bytes currently stored in the FIFO */
   uint8_t Buffer[FIFO_SIZE];	/*!< The actual array of bytes to store the data */
+  OS_ECB* SpaceAvailableSemaphore;
+  OS_ECB* ItemsAvailableSemaphore;
+  OS_ECB* AccessSemaphore;
 } TFIFO;
+
+extern TFIFO TX_FIFO, RX_FIFO;
 
 /*! @brief Initialize the FIFO before first use.
  *
  *  @param FIFO A pointer to the FIFO that needs initializing.
  *  @return void
  */
-void FIFO_Init(TFIFO* const FIFO);
+void MyFIFO_Init(TFIFO* const FIFO);
 
 /*! @brief Put one character into the FIFO.
  *
@@ -42,7 +50,7 @@ void FIFO_Init(TFIFO* const FIFO);
  *  @return bool - TRUE if data is successfully stored in the FIFO.
  *  @note Assumes that FIFO_Init has been called.
  */
-bool FIFO_Put(TFIFO* const FIFO, const uint8_t data);
+bool MyFIFO_Put(TFIFO* const FIFO, const uint8_t data);
 
 /*! @brief Get one character from the FIFO.
  *
@@ -51,6 +59,6 @@ bool FIFO_Put(TFIFO* const FIFO, const uint8_t data);
  *  @return bool - TRUE if data is successfully retrieved from the FIFO.
  *  @note Assumes that FIFO_Init has been called.
  */
-bool FIFO_Get(TFIFO* const FIFO, uint8_t* const dataPtr);
+bool MyFIFO_Get(TFIFO * const FIFO, uint8_t volatile * const dataPtr);
 
 #endif

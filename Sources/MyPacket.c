@@ -131,7 +131,7 @@ bool MyPacket_Get(void){
 
 bool MyPacket_Put(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
-  //OS_SemaphoreWait(PacketSemaphore,0);
+  OS_SemaphoreWait(PacketSemaphore,0);
 
   uint8_t checkSum = command ^ parameter1 ^ parameter2 ^ parameter3;
   //call UART_OutChar() 5 times

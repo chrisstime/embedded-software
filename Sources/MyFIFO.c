@@ -20,8 +20,8 @@
  *  @return void
  */
 void MyFIFO_Init(TFIFO * const FIFO) {
-	FIFO->Start = 0;
-	FIFO->End = 0;
+	FIFO->Start = 3;
+	FIFO->End = FIFO->Start;
 	FIFO->NbBytes = 0;
 
 	FIFO->SpaceAvailableSemaphore = OS_SemaphoreCreate(FIFO_SIZE);

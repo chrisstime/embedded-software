@@ -31,16 +31,16 @@ void QuickSort(int16_t array[], const uint32_t size)
   /* Indexes used to traverse the array from bottom to top and top to bottom, respectively */
   int8_t lowI, highI;
 
-  /* Loop through the array to move values less than pivot to the left â€˜partitionâ€™ and values more than pivot to the right â€˜partitionâ€™ */
+  /* Loop through the array to move values less than pivot to the left ‘partition’ and values more than pivot to the right ‘partition’ */
   for (lowI = 0, highI = size - 1; ; lowI++, highI--)
   {
-    /* Find the next element to swap into the right â€˜partitionâ€™ */
+    /* Find the next element to swap into the right ‘partition’ */
     while (array[lowI] < pivot)
     {
       lowI++;
     }
 
-    /* Find the next element to swap into the left â€˜partitionâ€™ */
+    /* Find the next element to swap into the left ‘partition’ */
     while (pivot < array[highI])
     {
       highI--;
@@ -58,7 +58,7 @@ void QuickSort(int16_t array[], const uint32_t size)
     array[highI] = temp;
   }
 
-  /* Recursive call to quicksort each â€˜partitionâ€™ */
+  /* Recursive call to quicksort each ‘partition’ */
   QuickSort(array, lowI);
   QuickSort(array + lowI, size - lowI);
 }
