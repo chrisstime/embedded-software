@@ -14,13 +14,6 @@
 #include "packet.h"
 #include "MyUART.h"
 
-
-//uint8_t	Packet_Command,	/*!< The packet's command */
-//	Packet_Parameter1, 	/*!< The packet's 1st parameter */
-//	Packet_Parameter2, 	/*!< The packet's 2nd parameter */
-//	Packet_Parameter3,	/*!< The packet's 3rd parameter */
-//	Packet_Checksum;	/*!< The packet's checksum */
-
 TPacket Packet;
 static uint8_t PacketPosition;
 
@@ -36,86 +29,85 @@ OS_ECB* PacketSemaphore;
  */
 static bool Checksum_Check(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
-	uint8_t Calculated_Checksum = command ^ parameter1 ^ parameter2 ^ parameter3;
-	if (Calculated_Checksum == Packet_Checksum)
-    {
+   uint8_t Calculated_Checksum = command ^ parameter1 ^ parameter2 ^ parameter3;
+   if (Calculated_Checksum == Packet_Checksum)
+   {
       return true;
-    }
-	return false;
+   }
+   return false;
 }
-
 
 bool MyPacket_Init(const uint32_t baudRate, const uint32_t moduleClk)
 {
+   PacketPosition = 0;
+   Packet_Parameter1 = 0;
+   Packet_Parameter2 = 0;
+   Packet_Parameter3 = 0;
+   Packet_Checksum = 0;
+   Packet_Command = 0;
 
-  PacketPosition = 0;
-  Packet_Parameter1 = 0;
-  Packet_Parameter2 = 0;
-  Packet_Parameter3 = 0;
-  Packet_Checksum = 0;
-  Packet_Command = 0;
-
-  return MyUART_Init(baudRate, moduleClk);
+   return MyUART_Init(baudRate, moduleClk);
 }
 
-void Packet_Shift(){
-  Packet_Command = Packet_Parameter1;
-  Packet_Parameter1 = Packet_Parameter2;
-  Packet_Parameter2 = Packet_Parameter3;
-  Packet_Parameter3 =  Packet_Checksum;
-  Packet_Checksum = 0;
+void Packet_Shift()
+{
+   Packet_Command = Packet_Parameter1;
+   Packet_Parameter1 = Packet_Parameter2;
+   Packet_Parameter2 = Packet_Parameter3;
+   Packet_Parameter3 =  Packet_Checksum;
+   Packet_Checksum = 0;
 }
 
 /*! @brief Attempts to get a packet from the received data.
  *
  *  @return bool - TRUE if a valid packet was received.
  */
-bool MyPacket_Get(void){
-	static int PacketPosition = 0;
+bool MyPacket_Get(void)
+{
+   static int PacketPosition = 0;
 
-	switch(PacketPosition){
-	case 0:
-		if (MyUART_InChar(&Packet_Command))
-			PacketPosition++;
-		break;
+   switch(PacketPosition){
+	 case 0:
+	   if (MyUART_InChar(&Packet_Command))
+	     PacketPosition++;
+	  break;
 
 	case 1:
-		if (MyUART_InChar(&Packet_Parameter1))
-			PacketPosition++;
-		break;
+	  if (MyUART_InChar(&Packet_Parameter1))
+	    PacketPosition++;
+	  break;
 
 	case 2:
-		if (MyUART_InChar(&Packet_Parameter2))
-			PacketPosition++;
-		break;
+	  if (MyUART_InChar(&Packet_Parameter2))
+		PacketPosition++;
+	  break;
 
 	case 3:
-		if (MyUART_InChar(&Packet_Parameter3))
-			PacketPosition++;
-		break;
+	  if (MyUART_InChar(&Packet_Parameter3))
+	    PacketPosition++;
+	  break;
 
 	case 4:
-		if (MyUART_InChar(&Packet_Checksum))
-			PacketPosition++;
-			break;
+	  if (MyUART_InChar(&Packet_Checksum))
+		PacketPosition++;
+	  break;
 
 	case 5:
-		if (Checksum_Check(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
-		{
-			PacketPosition = 0;
-			//OS_SemaphoreSignal(PacketSemaphore);
-			return true;
-		}
-		else
-		{
-			PacketPosition = 4;
-			Packet_Shift();
-		}
-		break;
+	  if (Checksum_Check(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3))
+	  {
+	     PacketPosition = 0;
+		 return true;
+	  }
+	  else
+	  {
+	     PacketPosition = 4;
+		 Packet_Shift();
+	  }
+	  break;
 
 	default:
-		PacketPosition = 0;
-		break;
+	    PacketPosition = 0;
+	  break;
 	}
 
 	return false;
@@ -126,20 +118,20 @@ bool MyPacket_Get(void){
  *
  *  @return bool - TRUE if a valid packet was sent.
  */
-
-
-
 bool MyPacket_Put(const uint8_t command, const uint8_t parameter1, const uint8_t parameter2, const uint8_t parameter3)
 {
-  OS_SemaphoreWait(PacketSemaphore,0);
+   OS_SemaphoreWait(PacketSemaphore,0);
+   uint8_t checkSum = command ^ parameter1 ^ parameter2 ^ parameter3;
+   /* call UART_OutChar() 5 times 5th byte is calculated -> Checksum */
+   bool success = MyUART_OutChar(command)
+		   && MyUART_OutChar(parameter1)
+		   && MyUART_OutChar(parameter2)
+		   && MyUART_OutChar(parameter3)
+		   && MyUART_OutChar(checkSum);
 
-  uint8_t checkSum = command ^ parameter1 ^ parameter2 ^ parameter3;
-  //call UART_OutChar() 5 times
-  // 5th byte is calculated -> Checksum
-  bool success = MyUART_OutChar(command) && MyUART_OutChar(parameter1) && MyUART_OutChar(parameter2) && MyUART_OutChar(parameter3) && MyUART_OutChar(checkSum);
-  OS_SemaphoreSignal(PacketSemaphore);
-  return success;
+   OS_SemaphoreSignal(PacketSemaphore);
 
+   return success;
 }
 
 //call UART_outchar 5 times. 5th time is check sum

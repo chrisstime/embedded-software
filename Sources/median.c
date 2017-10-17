@@ -13,7 +13,11 @@
  #include "Cpu.h"
  #include "MK70F12.h"
 
-
+/*! @brief QuickSort
+ *
+ *
+ *
+ */
 void QuickSort(int16_t array[], const uint32_t size)
 {
   /* Array of 0 or 1 elements is already sorted */
@@ -28,7 +32,7 @@ void QuickSort(int16_t array[], const uint32_t size)
   /* Temporary storage for swapping values */
   int16_t temp;
 
-  /* Indexes used to traverse the array from bottom to top and top to bottom, respectively */
+  /* Indexes from bottom to top and top to bottom */
   int8_t lowI, highI;
 
   /* Loop through the array to move values less than pivot to the left ‘partition’ and values more than pivot to the right ‘partition’ */
@@ -46,7 +50,7 @@ void QuickSort(int16_t array[], const uint32_t size)
       highI--;
     }
 
-    /* Check if the entire array has been covered */
+    /* Check */
     if (lowI >= highI)
     {
       break;
@@ -58,7 +62,7 @@ void QuickSort(int16_t array[], const uint32_t size)
     array[highI] = temp;
   }
 
-  /* Recursive call to quicksort each ‘partition’ */
+  /* Recursive call */
   QuickSort(array, lowI);
   QuickSort(array + lowI, size - lowI);
 }
@@ -76,7 +80,7 @@ int16_t Median_Filter(const int16_t array[], const uint32_t size)
 
   QuickSort(sortedArray, size);
 
-  /* Median is found differently for even- and odd-sized arrays */
+  /* Check if even */
   if (size % 2 == 0)
   {
     /* If even, median is the average of the two middle elements */

@@ -1,16 +1,16 @@
 Archive member included because of file (symbol)
 
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
                               ./Sources/main.o (FTM_Init)
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
                               ./Sources/main.o (Flash_Init)
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
                               ./Sources/main.o (LEDs_Init)
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
                               ./Sources/main.o (PIT_Init)
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
                               ./Sources/main.o (RTC_Init)
-C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
                               ./Sources/main.o (OS_Init)
 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
                               c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu/crt0.o (exit)
@@ -31,12 +31,13 @@ StartupSemaphore    0x4               ./Sources/main.o
 Packet              0x5               ./Sources/MyPacket.o
 Analog_Input        0x24              ./Sources/analog.o
 ProtocolMode        0x1               ./Sources/main.o
-PITSemaphore        0x4               ./Sources/main.o
+PITSemaphore        0x4               ./Generated_Code/Vectors.o
 PacketSemaphore     0x4               ./Sources/MyPacket.o
-RTCSemaphore        0x4               ./Sources/main.o
+PitCounter          0x1               ./Sources/main.o
+RTCSemaphore        0x4               ./Generated_Code/Vectors.o
 SR_reg              0x1               ./Generated_Code/Cpu.o
 UARTRxSemaphore     0x4               ./Sources/MyUART.o
-FTMSemaphore        0x4               ./Sources/main.o
+FTMSemaphore        0x4               ./Generated_Code/Vectors.o
 UARTTxSemaphore     0x4               ./Sources/MyUART.o
 RX_FIFO             0x114             ./Sources/main.o
 TX_FIFO             0x114             ./Sources/main.o
@@ -225,8 +226,6 @@ Discarded input sections
                 0x00000000        0x4 ./Sources/main.o
  .bss.aSPIModule
                 0x00000000        0xc ./Sources/main.o
- .text.setSPIModule
-                0x00000000       0x3c ./Sources/main.o
  .debug_macro   0x00000000      0x850 ./Sources/main.o
  .debug_macro   0x00000000       0x16 ./Sources/main.o
  .debug_macro   0x00000000       0x44 ./Sources/main.o
@@ -365,129 +364,129 @@ Discarded input sections
  .debug_macro   0x00000000    0x174c1 ./Generated_Code/Vectors.o
  .debug_macro   0x00000000       0x9a ./Generated_Code/Vectors.o
  .debug_macro   0x00000000       0x22 ./Generated_Code/Vectors.o
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .rodata.FCMD_PROGRAM_PHRASE
-                0x00000000        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x00000000        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .rodata.FCMD_ERASE_BLOCK
-                0x00000000        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x00000000        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .rodata.FCMD_ERASE_SECTOR
-                0x00000000        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x00000000      0x166 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000     0x1800 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000      0x14e C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x00000000       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .group         0x00000000        0x8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .text          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .data          0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .bss           0x00000000        0x0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00000000        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x00000000      0x166 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000     0x1800 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000      0x14e C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x00000000       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .group         0x00000000        0x8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .text          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .data          0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .bss           0x00000000        0x0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .rodata.OS_TICK_FREQUENCY
-                0x00000000        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00000000        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.OS_TimeDelay
-                0x00000000       0x48 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00000000       0x48 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.OS_TimeGet
-                0x00000000       0x24 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00000000       0x24 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.OS_TimeSet
-                0x00000000       0x20 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000      0x14e C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x00000000       0x30 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00000000       0x20 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000      0x850 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000       0x16 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000      0x209 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000      0x14e C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000    0x174c1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000       0x22 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x00000000       0x30 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text          0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
  .data          0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
  .bss           0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
@@ -542,8 +541,8 @@ LOAD ./Sources/median.o
 LOAD ./Project_Settings/Startup_Code/startup.o
 LOAD ./Generated_Code/Cpu.o
 LOAD ./Generated_Code/Vectors.o
-LOAD C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a
-LOAD C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a
+LOAD C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a
+LOAD C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a
 LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libstdc++_s.a
 LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libm.a
 START GROUP
@@ -584,7 +583,7 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x00000400                _cfm
                 0x00000410                . = ALIGN (0x4)
 
-.text           0x00000410     0x3204
+.text           0x00000410     0x3214
                 0x00000410                . = ALIGN (0x4)
  *(.text)
  .text          0x00000410       0x54 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
@@ -648,286 +647,286 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
  .text.AnalogGetInput
                 0x000011ac       0xfc ./Sources/main.o
  .text.PITCallBack
-                0x000012a8       0x24 ./Sources/main.o
+                0x000012a8       0x34 ./Sources/main.o
  .text.PITThread
-                0x000012cc       0x28 ./Sources/main.o
-                0x000012cc                PITThread
+                0x000012dc       0x38 ./Sources/main.o
+                0x000012dc                PITThread
  .text.RTCCallBack
-                0x000012f4       0x24 ./Sources/main.o
+                0x00001314       0x24 ./Sources/main.o
  .text.RTCThread
-                0x00001318       0x44 ./Sources/main.o
+                0x00001338       0x44 ./Sources/main.o
  .text.FTMCallBack
-                0x0000135c       0x24 ./Sources/main.o
+                0x0000137c       0x24 ./Sources/main.o
  .text.FTMThread
-                0x00001380       0x24 ./Sources/main.o
+                0x000013a0       0x24 ./Sources/main.o
  .text.TxThread
-                0x000013a4       0x40 ./Sources/main.o
+                0x000013c4       0x40 ./Sources/main.o
  .text.RxThread
-                0x000013e4       0x30 ./Sources/main.o
+                0x00001404       0x30 ./Sources/main.o
  .text.StartUpPackets
-                0x00001414       0xb8 ./Sources/main.o
+                0x00001434       0xb8 ./Sources/main.o
  .text.TowerStart
-                0x000014cc      0x198 ./Sources/main.o
-                0x000014cc                TowerStart
+                0x000014ec      0x198 ./Sources/main.o
+                0x000014ec                TowerStart
  .text.InitModulesThread
-                0x00001664       0x98 ./Sources/main.o
- .text.SetTime  0x000016fc       0x40 ./Sources/main.o
+                0x00001684       0x8c ./Sources/main.o
+ .text.SetTime  0x00001710       0x40 ./Sources/main.o
  .text.TowerVersion
-                0x0000173c       0x20 ./Sources/main.o
- .text.TowerNb  0x0000175c       0x64 ./Sources/main.o
+                0x00001750       0x20 ./Sources/main.o
+ .text.TowerNb  0x00001770       0x64 ./Sources/main.o
  .text.FlashPrg
-                0x000017c0       0x50 ./Sources/main.o
+                0x000017d4       0x50 ./Sources/main.o
  .text.FlashRead
-                0x00001810       0x50 ./Sources/main.o
- .text.TowerMd  0x00001860       0x60 ./Sources/main.o
+                0x00001824       0x50 ./Sources/main.o
+ .text.TowerMd  0x00001874       0x60 ./Sources/main.o
  .text.Protocol_Mode
-                0x000018c0       0x44 ./Sources/main.o
+                0x000018d4       0x44 ./Sources/main.o
  .text.Packet_Handle
-                0x00001904       0xf0 ./Sources/main.o
-                0x00001904                Packet_Handle
+                0x00001918       0xf0 ./Sources/main.o
+                0x00001918                Packet_Handle
  .text.PacketThread
-                0x000019f4       0x2c ./Sources/main.o
- .text.main     0x00001a20       0xdc ./Sources/main.o
-                0x00001a20                main
+                0x00001a08       0x2c ./Sources/main.o
+ .text.main     0x00001a34       0xdc ./Sources/main.o
+                0x00001a34                main
  .text.QuickSort
-                0x00001afc       0xec ./Sources/median.o
-                0x00001afc                QuickSort
+                0x00001b10       0xec ./Sources/median.o
+                0x00001b10                QuickSort
  .text.Median_Filter
-                0x00001be8       0xcc ./Sources/median.o
-                0x00001be8                Median_Filter
+                0x00001bfc       0xcc ./Sources/median.o
+                0x00001bfc                Median_Filter
  .text.__copy_rom_section
-                0x00001cb4       0xe4 ./Project_Settings/Startup_Code/startup.o
-                0x00001cb4                __copy_rom_section
+                0x00001cc8       0xe4 ./Project_Settings/Startup_Code/startup.o
+                0x00001cc8                __copy_rom_section
  .text.__copy_rom_sections_to_ram
-                0x00001d98       0x9c ./Project_Settings/Startup_Code/startup.o
-                0x00001d98                __copy_rom_sections_to_ram
+                0x00001dac       0x9c ./Project_Settings/Startup_Code/startup.o
+                0x00001dac                __copy_rom_sections_to_ram
  .text.__init_registers
-                0x00001e34       0x20 ./Project_Settings/Startup_Code/startup.o
-                0x00001e34                __init_registers
+                0x00001e48       0x20 ./Project_Settings/Startup_Code/startup.o
+                0x00001e48                __init_registers
  .text.__init_user
-                0x00001e54        0xc ./Project_Settings/Startup_Code/startup.o
-                0x00001e54                __init_user
+                0x00001e68        0xc ./Project_Settings/Startup_Code/startup.o
+                0x00001e68                __init_user
  .text.__thumb_startup
-                0x00001e60       0x34 ./Project_Settings/Startup_Code/startup.o
-                0x00001e60                __thumb_startup
+                0x00001e74       0x34 ./Project_Settings/Startup_Code/startup.o
+                0x00001e74                __thumb_startup
  .text.Cpu_Interrupt
-                0x00001e94       0x18 ./Generated_Code/Cpu.o
-                0x00001e94                Cpu_Interrupt
+                0x00001ea8       0x18 ./Generated_Code/Cpu.o
+                0x00001ea8                Cpu_Interrupt
  .text.__init_hardware
-                0x00001eac      0x1cc ./Generated_Code/Cpu.o
-                0x00001eac                __init_hardware
+                0x00001ec0      0x1cc ./Generated_Code/Cpu.o
+                0x00001ec0                __init_hardware
  .text.Cpu_SetBASEPRI
-                0x00002078       0x18 ./Generated_Code/Cpu.o
-                0x00002078                Cpu_SetBASEPRI
+                0x0000208c       0x18 ./Generated_Code/Cpu.o
+                0x0000208c                Cpu_SetBASEPRI
  .text.PE_low_level_init
-                0x00002090       0xe4 ./Generated_Code/Cpu.o
-                0x00002090                PE_low_level_init
+                0x000020a4       0xe4 ./Generated_Code/Cpu.o
+                0x000020a4                PE_low_level_init
  .text.FTM_Init
-                0x00002174       0x98 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
-                0x00002174                FTM_Init
- .text.FTM_Set  0x0000220c       0xf0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
-                0x0000220c                FTM_Set
+                0x00002188       0x98 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+                0x00002188                FTM_Init
+ .text.FTM_Set  0x00002220       0xf0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+                0x00002220                FTM_Set
  .text.FTM_StartTimer
-                0x000022fc       0x8c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
-                0x000022fc                FTM_StartTimer
+                0x00002310       0x8c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+                0x00002310                FTM_StartTimer
  .text.FTM0_ISR
-                0x00002388       0xb8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
-                0x00002388                FTM0_ISR
+                0x0000239c       0xb8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+                0x0000239c                FTM0_ISR
  .text.LaunchCommand
-                0x00002440       0x60 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x00002454       0x60 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .text.WritePhrase
-                0x000024a0       0x94 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x000024b4       0x94 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .text.EraseSector
-                0x00002534       0x74 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x00002548       0x74 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .text.ModifyPhrase
-                0x000025a8       0x34 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x000025bc       0x34 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .text.Flash_Init
-                0x000025dc       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x000025dc                Flash_Init
+                0x000025f0       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x000025f0                Flash_Init
  .text.Flash_AllocateVar
-                0x00002604       0x9c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x00002604                Flash_AllocateVar
+                0x00002618       0x9c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x00002618                Flash_AllocateVar
  .text.Flash_Write32
-                0x000026a0       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x000026a0                Flash_Write32
+                0x000026b4       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x000026b4                Flash_Write32
  .text.Flash_Write16
-                0x00002704       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x00002704                Flash_Write16
+                0x00002718       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x00002718                Flash_Write16
  .text.Flash_Write8
-                0x00002768       0x4c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x00002768                Flash_Write8
+                0x0000277c       0x4c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x0000277c                Flash_Write8
  .text.Flash_Erase
-                0x000027b4       0x1c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
-                0x000027b4                Flash_Erase
+                0x000027c8       0x1c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+                0x000027c8                Flash_Erase
  .text.LEDs_Init
-                0x000027d0       0x70 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
-                0x000027d0                LEDs_Init
- .text.LEDs_On  0x00002840       0x1c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
-                0x00002840                LEDs_On
+                0x000027e4       0x70 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+                0x000027e4                LEDs_Init
+ .text.LEDs_On  0x00002854       0x1c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+                0x00002854                LEDs_On
  .text.LEDs_Off
-                0x0000285c       0x1c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
-                0x0000285c                LEDs_Off
+                0x00002870       0x1c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+                0x00002870                LEDs_Off
  .text.LEDs_Toggle
-                0x00002878       0x1c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
-                0x00002878                LEDs_Toggle
+                0x0000288c       0x1c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+                0x0000288c                LEDs_Toggle
  .text.PIT_Init
-                0x00002894       0x98 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
-                0x00002894                PIT_Init
- .text.PIT_Set  0x0000292c       0x68 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
-                0x0000292c                PIT_Set
+                0x000028a8       0x98 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+                0x000028a8                PIT_Init
+ .text.PIT_Set  0x00002940       0x68 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+                0x00002940                PIT_Set
  .text.PIT_Enable
-                0x00002994       0x40 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
-                0x00002994                PIT_Enable
- .text.PIT_ISR  0x000029d4       0x40 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
-                0x000029d4                PIT_ISR
+                0x000029a8       0x40 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+                0x000029a8                PIT_Enable
+ .text.PIT_ISR  0x000029e8       0x40 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+                0x000029e8                PIT_ISR
  .text.RTC_Init
-                0x00002a14       0xd0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
-                0x00002a14                RTC_Init
- .text.RTC_Set  0x00002ae4       0x5c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
-                0x00002ae4                RTC_Set
- .text.RTC_Get  0x00002b40       0xa0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
-                0x00002b40                RTC_Get
- .text.RTC_ISR  0x00002be0       0x34 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
-                0x00002be0                RTC_ISR
- .text.OS_Init  0x00002c14      0x110 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002c14                OS_Init
+                0x00002a28       0xd0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+                0x00002a28                RTC_Init
+ .text.RTC_Set  0x00002af8       0x5c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+                0x00002af8                RTC_Set
+ .text.RTC_Get  0x00002b54       0xa0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+                0x00002b54                RTC_Get
+ .text.RTC_ISR  0x00002bf4       0x34 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+                0x00002bf4                RTC_ISR
+ .text.OS_Init  0x00002c28      0x110 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002c28                OS_Init
  .text.OS_ISREnter
-                0x00002d24       0x20 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002d24                OS_ISREnter
+                0x00002d38       0x20 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002d38                OS_ISREnter
  .text.OS_ISRExit
-                0x00002d44       0x1c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002d44                OS_ISRExit
+                0x00002d58       0x1c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002d58                OS_ISRExit
  .text.OS_SemaphoreCreate
-                0x00002d60       0x90 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002d60                OS_SemaphoreCreate
+                0x00002d74       0x90 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002d74                OS_SemaphoreCreate
  .text.OS_SemaphoreSignal
-                0x00002df0       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002df0                OS_SemaphoreSignal
+                0x00002e04       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002e04                OS_SemaphoreSignal
  .text.OS_SemaphoreWait
-                0x00002e34       0x58 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002e34                OS_SemaphoreWait
+                0x00002e48       0x58 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002e48                OS_SemaphoreWait
  .text.OS_Start
-                0x00002e8c       0x10 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002e8c                OS_Start
+                0x00002ea0       0x10 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002ea0                OS_Start
  .text.OS_ThreadCreate
-                0x00002e9c      0x160 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002e9c                OS_ThreadCreate
+                0x00002eb0      0x160 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00002eb0                OS_ThreadCreate
  .text.OS_ThreadDelete
-                0x00002ffc      0x18c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00002ffc                OS_ThreadDelete
+                0x00003010      0x18c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00003010                OS_ThreadDelete
  .text.EventThreadReady
-                0x00003188       0x68 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x0000319c       0x68 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.EventThreadWait
-                0x000031f0       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00003204       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.EventTimeout
-                0x00003254       0x40 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .text.Idle     0x00003294       0x18 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00003268       0x40 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .text.Idle     0x000032a8       0x18 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.FindFirstSet
-                0x000032ac       0x44 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x000032c0       0x44 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.Schedule
-                0x000032f0       0x64 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .text.TCBInit  0x00003354       0xcc C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x00003304       0x64 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .text.TCBInit  0x00003368       0xcc C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .text.TimeTick
-                0x00003420       0x74 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- *fill*         0x00003494        0xc 
+                0x00003434       0x74 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ *fill*         0x000034a8        0x8 
  .text.OS_ContextSwitchISR
-                0x000034a0       0x70 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x000034a0                OS_ContextSwitchISR
+                0x000034b0       0x70 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x000034b0                OS_ContextSwitchISR
  .text.OS_SysTickISR
-                0x00003510       0x5c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
-                0x00003510                OS_SysTickISR
- .text.exit     0x0000356c       0x28 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
-                0x0000356c                exit
+                0x00003520       0x5c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+                0x00003520                OS_SysTickISR
+ .text.exit     0x0000357c       0x28 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
+                0x0000357c                exit
  .text.__libc_init_array
-                0x00003594       0x4c c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-init.o)
-                0x00003594                __libc_init_array
- .text.memset   0x000035e0       0x10 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-memset.o)
-                0x000035e0                memset
- .text._exit    0x000035f0        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libnosys.a(_exit.o)
-                0x000035f0                _exit
+                0x000035a4       0x4c c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-init.o)
+                0x000035a4                __libc_init_array
+ .text.memset   0x000035f0       0x10 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-memset.o)
+                0x000035f0                memset
+ .text._exit    0x00003600        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libnosys.a(_exit.o)
+                0x00003600                _exit
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x000035f4        0x2 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-impure.o)
- *fill*         0x000035f6        0x2 
+                0x00003604        0x2 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-impure.o)
+ *fill*         0x00003606        0x2 
  .rodata._global_impure_ptr
-                0x000035f8        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-impure.o)
-                0x000035f8                _global_impure_ptr
+                0x00003608        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-impure.o)
+                0x00003608                _global_impure_ptr
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x000035fc        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
+ .eh_frame      0x0000360c        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
  *(.init)
- .init          0x000035fc        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crti.o
-                0x000035fc                _init
- .init          0x00003600        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtn.o
+ .init          0x0000360c        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crti.o
+                0x0000360c                _init
+ .init          0x00003610        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtn.o
  *(.fini)
- .fini          0x00003608        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crti.o
-                0x00003608                _fini
- .fini          0x0000360c        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtn.o
-                0x00003614                . = ALIGN (0x4)
-                0x00003614                _etext = .
+ .fini          0x00003618        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crti.o
+                0x00003618                _fini
+ .fini          0x0000361c        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtn.o
+                0x00003624                . = ALIGN (0x4)
+                0x00003624                _etext = .
 
-.vfp11_veneer   0x00003614        0x0
+.vfp11_veneer   0x00003624        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x00003614        0x0
+.v4_bx          0x00003624        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00003614        0x0
+.iplt           0x00003624        0x0
  .iplt          0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x00003614        0x8
-                0x00003614                __exidx_start = .
+.ARM            0x00003624        0x8
+                0x00003624                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x00003614        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu/crt0.o
-                0x0000361c                __exidx_end = .
+ .ARM.exidx     0x00003624        0x8 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu/crt0.o
+                0x0000362c                __exidx_end = .
 
-.rel.dyn        0x0000361c        0x0
+.rel.dyn        0x0000362c        0x0
  .rel.iplt      0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
 
-.ctors          0x0000361c        0x0
-                0x0000361c                __CTOR_LIST__ = .
+.ctors          0x0000362c        0x0
+                0x0000362c                __CTOR_LIST__ = .
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *(.ctors)
-                0x0000361c                __CTOR_END__ = .
+                0x0000362c                __CTOR_END__ = .
 
-.dtors          0x0000361c        0x0
-                0x0000361c                __DTOR_LIST__ = .
+.dtors          0x0000362c        0x0
+                0x0000362c                __DTOR_LIST__ = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *(.dtors)
-                0x0000361c                __DTOR_END__ = .
+                0x0000362c                __DTOR_END__ = .
 
-.preinit_array  0x0000361c        0x0
-                0x0000361c                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x0000362c        0x0
+                0x0000362c                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x0000361c                PROVIDE (__preinit_array_end, .)
+                0x0000362c                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0000361c        0x4
-                0x0000361c                PROVIDE (__init_array_start, .)
+.init_array     0x0000362c        0x4
+                0x0000362c                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x0000361c        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
-                0x00003620                PROVIDE (__init_array_end, .)
+ .init_array    0x0000362c        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
+                0x00003630                PROVIDE (__init_array_end, .)
 
-.fini_array     0x00003620        0x4
-                0x00003620                PROVIDE (__fini_array_start, .)
+.fini_array     0x00003630        0x4
+                0x00003630                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x00003620        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
-                0x00003624                PROVIDE (__fini_array_end, .)
-                0x00003624                ___ROM_AT = .
+ .fini_array    0x00003630        0x4 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
+                0x00003634                PROVIDE (__fini_array_end, .)
+                0x00003634                ___ROM_AT = .
 
-.data           0x1fff0000       0xec load address 0x00003624
+.data           0x1fff0000       0xec load address 0x00003634
                 0x1fff0000                . = ALIGN (0x4)
                 0x1fff0000                _sdata = .
  *(.data)
@@ -941,23 +940,23 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
  .data.dtValues
                 0x1fff0048       0x40 ./Sources/SPI.o
  .data.freeList.5646
-                0x1fff0088        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x1fff0088        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  *fill*         0x1fff0089        0x3 
  .data.impure_data
                 0x1fff008c       0x60 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-impure.o)
                 0x1fff00ec                . = ALIGN (0x4)
                 0x1fff00ec                _edata = .
                 0x000000ec                ___data_size = (_edata - _sdata)
-                0x00003710                ___m_data_20000000_ROMStart = (___ROM_AT + SIZEOF (.data))
+                0x00003720                ___m_data_20000000_ROMStart = (___ROM_AT + SIZEOF (.data))
 
-.jcr            0x1fff00ec        0x0 load address 0x00003710
+.jcr            0x1fff00ec        0x0 load address 0x00003720
  .jcr           0x1fff00ec        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
 
-.igot.plt       0x1fff00ec        0x0 load address 0x00003710
+.igot.plt       0x1fff00ec        0x0 load address 0x00003720
  .igot.plt      0x00000000        0x0 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtbegin.o
 
 .m_data_20000000
-                0x20000000        0x0 load address 0x00003710
+                0x20000000        0x0 load address 0x00003720
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                ___m_data_20000000_RAMStart = .
  *(.m_data_20000000)
@@ -966,7 +965,7 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x00000000                ___m_data_20000000_ROMSize = (___m_data_20000000_RAMEnd - ___m_data_20000000_RAMStart)
                 0x20000000                . = ALIGN (0x4)
 
-.bss            0x1fff00f0     0x16d0 load address 0x00003718
+.bss            0x1fff00f0     0x16d0 load address 0x00003728
                 0x1fff00f0                __START_BSS = .
                 0x1fff00f0                PROVIDE (__bss_start__, __START_BSS)
  *(.bss)
@@ -1002,51 +1001,51 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x1fff0c20                SR_lock
  *fill*         0x1fff0c21        0x3 
  .bss.UserFunction
-                0x1fff0c24       0x20 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+                0x1fff0c24       0x20 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
  .bss.UserArguments
-                0x1fff0c44       0x20 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+                0x1fff0c44       0x20 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
  .bss.FlashCommonCommandObject
-                0x1fff0c64        0xc C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x1fff0c64        0xc C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .bss.NanoSecondsPerTick
-                0x1fff0c70        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+                0x1fff0c70        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
  .bss.UserFunction
-                0x1fff0c74        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+                0x1fff0c74        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
  .bss.UserArguments
-                0x1fff0c78        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+                0x1fff0c78        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
  .bss.UserFunction
-                0x1fff0c7c        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+                0x1fff0c7c        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
  .bss.UserArguments
-                0x1fff0c80        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+                0x1fff0c80        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
  .bss.TCBUnusedMain
-                0x1fff0c84       0x18 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .bss.TCBTable  0x1fff0c9c      0x300 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff0c84       0x18 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .bss.TCBTable  0x1fff0c9c      0x300 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.pTCBFreeList
-                0x1fff0f9c        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff0f9c        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.pTCBAllocatedList
-                0x1fff0fa0        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff0fa0        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.pTCBPriorityTable
-                0x1fff0fa4       0x80 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff0fa4       0x80 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.pTCBRunning
-                0x1fff1024        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1024        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.pTCBHighestReady
-                0x1fff1028        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1028        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.ReadyList
-                0x1fff102c        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .bss.ECBTable  0x1fff1030      0x100 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff102c        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .bss.ECBTable  0x1fff1030      0x100 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.NextECBFree
-                0x1fff1130        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1130        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  *fill*         0x1fff1131        0x3 
  .bss.IdleCounter
-                0x1fff1134        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1134        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.IdleStack
-                0x1fff1138      0x400 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .bss.Ticks     0x1fff1538        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1138      0x400 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .bss.Ticks     0x1fff1538        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.ToggleCntr
-                0x1fff153c        0x4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff153c        0x4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.ToggleLED
-                0x1fff1540        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1540        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .bss.ISRNestLevel
-                0x1fff1541        0x1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x1fff1541        0x1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  *(COMMON)
  *fill*         0x1fff1542        0x2 
  COMMON         0x1fff1544        0xc ./Sources/MyPacket.o
@@ -1058,28 +1057,30 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x1fff1558                UARTTxSemaphore
  COMMON         0x1fff155c       0x24 ./Sources/analog.o
                 0x1fff155c                Analog_Input
- COMMON         0x1fff1580      0x23c ./Sources/main.o
+ COMMON         0x1fff1580      0x230 ./Sources/main.o
                 0x1fff1580                StartupSemaphore
                 0x1fff1584                ProtocolMode
-                0x1fff1588                PITSemaphore
-                0x1fff158c                RTCSemaphore
-                0x1fff1590                FTMSemaphore
-                0x1fff1594                RX_FIFO
-                0x1fff16a8                TX_FIFO
- COMMON         0x1fff17bc        0x1 ./Generated_Code/Cpu.o
-                0x1fff17bc                SR_reg
+                0x1fff1585                PitCounter
+                0x1fff1588                RX_FIFO
+                0x1fff169c                TX_FIFO
+ COMMON         0x1fff17b0        0x1 ./Generated_Code/Cpu.o
+                0x1fff17b0                SR_reg
+ *fill*         0x1fff17b1        0x3 
+ COMMON         0x1fff17b4        0xc ./Generated_Code/Vectors.o
+                0x1fff17b4                PITSemaphore
+                0x1fff17b8                RTCSemaphore
+                0x1fff17bc                FTMSemaphore
                 0x1fff17c0                . = ALIGN (0x4)
- *fill*         0x1fff17bd        0x3 
                 0x1fff17c0                __END_BSS = .
                 0x1fff17c0                PROVIDE (__bss_end__, __END_BSS)
-                0x00003710                _romp_at = ((___ROM_AT + SIZEOF (.data)) + SIZEOF (.m_data_20000000))
+                0x00003720                _romp_at = ((___ROM_AT + SIZEOF (.data)) + SIZEOF (.m_data_20000000))
 
-.romp           0x1fff17c0       0x24 load address 0x00003710
-                0x00003710                __S_romp = _romp_at
-                0x1fff17c0        0x4 LONG 0x3624 ___ROM_AT
+.romp           0x1fff17c0       0x24 load address 0x00003720
+                0x00003720                __S_romp = _romp_at
+                0x1fff17c0        0x4 LONG 0x3634 ___ROM_AT
                 0x1fff17c4        0x4 LONG 0x1fff0000 _sdata
                 0x1fff17c8        0x4 LONG 0xec ___data_size
-                0x1fff17cc        0x4 LONG 0x3710 ___m_data_20000000_ROMStart
+                0x1fff17cc        0x4 LONG 0x3720 ___m_data_20000000_ROMStart
                 0x1fff17d0        0x4 LONG 0x20000000 ___m_data_20000000_RAMStart
                 0x1fff17d4        0x4 LONG 0x0 ___m_data_20000000_ROMSize
                 0x1fff17d8        0x4 LONG 0x0
@@ -1087,7 +1088,7 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x1fff17e0        0x4 LONG 0x0
 
 ._user_heap_stack
-                0x1fff17e4      0x400 load address 0x00003734
+                0x1fff17e4      0x400 load address 0x00003744
                 0x1fff17e4                . = ALIGN (0x4)
                 0x1fff17e4                PROVIDE (end, .)
                 0x1fff17e4                PROVIDE (_end, .)
@@ -1129,17 +1130,17 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
  .ARM.attributes
                 0x00000277       0x39 ./Generated_Code/Vectors.o
  .ARM.attributes
-                0x000002b0       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+                0x000002b0       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
  .ARM.attributes
-                0x000002e9       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x000002e9       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .ARM.attributes
-                0x00000322       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
+                0x00000322       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
  .ARM.attributes
-                0x0000035b       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+                0x0000035b       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
  .ARM.attributes
-                0x00000394       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+                0x00000394       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
  .ARM.attributes
-                0x000003cd       0x39 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x000003cd       0x39 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
  .ARM.attributes
                 0x00000406       0x34 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
  .ARM.attributes
@@ -1154,43 +1155,43 @@ LOAD c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-
                 0x0000050a       0x22 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv7e-m/fpu/crtn.o
 OUTPUT(Lab4.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x6975
+.debug_info     0x00000000     0x6952
  .debug_info    0x00000000      0x29b ./Sources/MyFIFO.o
  .debug_info    0x0000029b      0x37a ./Sources/MyPacket.o
  .debug_info    0x00000615      0x94e ./Sources/MyUART.o
  .debug_info    0x00000f63      0x8c2 ./Sources/SPI.o
  .debug_info    0x00001825      0x2a2 ./Sources/analog.o
- .debug_info    0x00001ac7      0xdd9 ./Sources/main.o
- .debug_info    0x000028a0      0x1d0 ./Sources/median.o
- .debug_info    0x00002a70      0x3b0 ./Project_Settings/Startup_Code/startup.o
- .debug_info    0x00002e20      0xc82 ./Generated_Code/Cpu.o
- .debug_info    0x00003aa2      0x178 ./Generated_Code/Vectors.o
- .debug_info    0x00003c1a      0x761 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_info    0x0000437b      0x8d3 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_info    0x00004c4e      0x4a3 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_info    0x000050f1      0x57a C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_info    0x0000566b      0x608 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_info    0x00005c73      0xd02 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .debug_info    0x00001ac7      0xdb6 ./Sources/main.o
+ .debug_info    0x0000287d      0x1d0 ./Sources/median.o
+ .debug_info    0x00002a4d      0x3b0 ./Project_Settings/Startup_Code/startup.o
+ .debug_info    0x00002dfd      0xc82 ./Generated_Code/Cpu.o
+ .debug_info    0x00003a7f      0x178 ./Generated_Code/Vectors.o
+ .debug_info    0x00003bf7      0x761 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_info    0x00004358      0x8d3 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_info    0x00004c2b      0x4a3 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_info    0x000050ce      0x57a C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_info    0x00005648      0x608 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_info    0x00005c50      0xd02 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_abbrev   0x00000000     0x1908
+.debug_abbrev   0x00000000     0x18f2
  .debug_abbrev  0x00000000      0x116 ./Sources/MyFIFO.o
  .debug_abbrev  0x00000116      0x11c ./Sources/MyPacket.o
  .debug_abbrev  0x00000232      0x1c2 ./Sources/MyUART.o
  .debug_abbrev  0x000003f4      0x1e0 ./Sources/SPI.o
  .debug_abbrev  0x000005d4      0x104 ./Sources/analog.o
- .debug_abbrev  0x000006d8      0x2fd ./Sources/main.o
- .debug_abbrev  0x000009d5       0xc6 ./Sources/median.o
- .debug_abbrev  0x00000a9b      0x189 ./Project_Settings/Startup_Code/startup.o
- .debug_abbrev  0x00000c24      0x185 ./Generated_Code/Cpu.o
- .debug_abbrev  0x00000da9       0xb3 ./Generated_Code/Vectors.o
- .debug_abbrev  0x00000e5c      0x1b1 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_abbrev  0x0000100d      0x1fb C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_abbrev  0x00001208      0x155 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_abbrev  0x0000135d      0x154 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_abbrev  0x000014b1      0x15f C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_abbrev  0x00001610      0x2f8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .debug_abbrev  0x000006d8      0x2e7 ./Sources/main.o
+ .debug_abbrev  0x000009bf       0xc6 ./Sources/median.o
+ .debug_abbrev  0x00000a85      0x189 ./Project_Settings/Startup_Code/startup.o
+ .debug_abbrev  0x00000c0e      0x185 ./Generated_Code/Cpu.o
+ .debug_abbrev  0x00000d93       0xb3 ./Generated_Code/Vectors.o
+ .debug_abbrev  0x00000e46      0x1b1 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_abbrev  0x00000ff7      0x1fb C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_abbrev  0x000011f2      0x155 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_abbrev  0x00001347      0x154 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_abbrev  0x0000149b      0x15f C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_abbrev  0x000015fa      0x2f8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_aranges  0x00000000      0x4b8
+.debug_aranges  0x00000000      0x4b0
  .debug_aranges
                 0x00000000       0x30 ./Sources/MyFIFO.o
  .debug_aranges
@@ -1202,44 +1203,44 @@ OUTPUT(Lab4.elf elf32-littlearm)
  .debug_aranges
                 0x000000e8       0x28 ./Sources/analog.o
  .debug_aranges
-                0x00000110       0xd0 ./Sources/main.o
+                0x00000110       0xc8 ./Sources/main.o
  .debug_aranges
-                0x000001e0       0x28 ./Sources/median.o
+                0x000001d8       0x28 ./Sources/median.o
  .debug_aranges
-                0x00000208       0x50 ./Project_Settings/Startup_Code/startup.o
+                0x00000200       0x50 ./Project_Settings/Startup_Code/startup.o
  .debug_aranges
-                0x00000258       0x38 ./Generated_Code/Cpu.o
+                0x00000250       0x38 ./Generated_Code/Cpu.o
  .debug_aranges
-                0x00000290       0x18 ./Generated_Code/Vectors.o
+                0x00000288       0x18 ./Generated_Code/Vectors.o
  .debug_aranges
-                0x000002a8       0x38 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+                0x000002a0       0x38 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
  .debug_aranges
-                0x000002e0       0x68 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+                0x000002d8       0x68 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
  .debug_aranges
-                0x00000348       0x38 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
+                0x00000340       0x38 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
  .debug_aranges
-                0x00000380       0x38 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+                0x00000378       0x38 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
  .debug_aranges
-                0x000003b8       0x38 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+                0x000003b0       0x38 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
  .debug_aranges
-                0x000003f0       0xc8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+                0x000003e8       0xc8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_ranges   0x00000000      0x3b0
+.debug_ranges   0x00000000      0x3a8
  .debug_ranges  0x00000000       0x20 ./Sources/MyFIFO.o
  .debug_ranges  0x00000020       0x30 ./Sources/MyPacket.o
  .debug_ranges  0x00000050       0x28 ./Sources/MyUART.o
  .debug_ranges  0x00000078       0x30 ./Sources/SPI.o
  .debug_ranges  0x000000a8       0x18 ./Sources/analog.o
- .debug_ranges  0x000000c0       0xc0 ./Sources/main.o
- .debug_ranges  0x00000180       0x18 ./Sources/median.o
- .debug_ranges  0x00000198       0x40 ./Project_Settings/Startup_Code/startup.o
- .debug_ranges  0x000001d8       0x28 ./Generated_Code/Cpu.o
- .debug_ranges  0x00000200       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_ranges  0x00000228       0x58 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_ranges  0x00000280       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_ranges  0x000002a8       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_ranges  0x000002d0       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_ranges  0x000002f8       0xb8 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .debug_ranges  0x000000c0       0xb8 ./Sources/main.o
+ .debug_ranges  0x00000178       0x18 ./Sources/median.o
+ .debug_ranges  0x00000190       0x40 ./Project_Settings/Startup_Code/startup.o
+ .debug_ranges  0x000001d0       0x28 ./Generated_Code/Cpu.o
+ .debug_ranges  0x000001f8       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_ranges  0x00000220       0x58 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_ranges  0x00000278       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_ranges  0x000002a0       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_ranges  0x000002c8       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_ranges  0x000002f0       0xb8 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
 .debug_macro    0x00000000    0x1f0bf
  .debug_macro   0x00000000       0xab ./Sources/MyFIFO.o
@@ -1282,68 +1283,68 @@ OUTPUT(Lab4.elf elf32-littlearm)
  .debug_macro   0x0001ba2a       0xa0 ./Generated_Code/Cpu.o
  .debug_macro   0x0001baca       0xf1 ./Generated_Code/Vectors.o
  .debug_macro   0x0001bbbb       0x30 ./Generated_Code/Vectors.o
- .debug_macro   0x0001bbeb       0xbf C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x0001bcaa     0x1800 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_macro   0x0001d4aa       0xaa C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x0001d554       0x28 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_macro   0x0001d57c       0x68 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_macro   0x0001d5e4       0x72 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_macro   0x0001d656       0xa4 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x0001d6fa       0x94 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_macro   0x0001d78e       0xa3 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x0001d831     0x17fa C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_macro   0x0001f02b       0x94 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .debug_macro   0x0001bbeb       0xbf C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x0001bcaa     0x1800 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_macro   0x0001d4aa       0xaa C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x0001d554       0x28 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_macro   0x0001d57c       0x68 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_macro   0x0001d5e4       0x72 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_macro   0x0001d656       0xa4 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x0001d6fa       0x94 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_macro   0x0001d78e       0xa3 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x0001d831     0x17fa C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_macro   0x0001f02b       0x94 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_line     0x00000000     0x31c4
- .debug_line    0x00000000      0x2ab ./Sources/MyFIFO.o
- .debug_line    0x000002ab      0x266 ./Sources/MyPacket.o
- .debug_line    0x00000511      0x2cb ./Sources/MyUART.o
- .debug_line    0x000007dc      0x38b ./Sources/SPI.o
- .debug_line    0x00000b67      0x338 ./Sources/analog.o
- .debug_line    0x00000e9f      0x61b ./Sources/main.o
- .debug_line    0x000014ba      0x3b1 ./Sources/median.o
- .debug_line    0x0000186b      0x3b8 ./Project_Settings/Startup_Code/startup.o
- .debug_line    0x00001c23      0x2fe ./Generated_Code/Cpu.o
- .debug_line    0x00001f21      0x2e3 ./Generated_Code/Vectors.o
- .debug_line    0x00002204      0x222 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_line    0x00002426      0x2c7 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_line    0x000026ed      0x1e7 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_line    0x000028d4      0x1fd C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_line    0x00002ad1      0x25d C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_line    0x00002d2e      0x496 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+.debug_line     0x00000000     0x30cc
+ .debug_line    0x00000000      0x2c8 ./Sources/MyFIFO.o
+ .debug_line    0x000002c8      0x25f ./Sources/MyPacket.o
+ .debug_line    0x00000527      0x2e7 ./Sources/MyUART.o
+ .debug_line    0x0000080e      0x38b ./Sources/SPI.o
+ .debug_line    0x00000b99      0x2e4 ./Sources/analog.o
+ .debug_line    0x00000e7d      0x599 ./Sources/main.o
+ .debug_line    0x00001416      0x35d ./Sources/median.o
+ .debug_line    0x00001773      0x3b8 ./Project_Settings/Startup_Code/startup.o
+ .debug_line    0x00001b2b      0x2fe ./Generated_Code/Cpu.o
+ .debug_line    0x00001e29      0x2e3 ./Generated_Code/Vectors.o
+ .debug_line    0x0000210c      0x222 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_line    0x0000232e      0x2c7 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_line    0x000025f5      0x1e7 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_line    0x000027dc      0x1fd C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_line    0x000029d9      0x25d C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_line    0x00002c36      0x496 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_str      0x00000000    0x8ea07
- .debug_str     0x00000000    0x8a7c8 ./Sources/MyFIFO.o
-                              0x8a94b (size before relaxing)
- .debug_str     0x0008a7c8      0x2de ./Sources/MyPacket.o
-                               0x33b8 (size before relaxing)
- .debug_str     0x0008aaa6      0x2cd ./Sources/MyUART.o
-                              0x8ab49 (size before relaxing)
- .debug_str     0x0008ad73     0x17f4 ./Sources/SPI.o
+.debug_str      0x00000000    0x8e9e9
+ .debug_str     0x00000000    0x8a7d2 ./Sources/MyFIFO.o
+                              0x8a955 (size before relaxing)
+ .debug_str     0x0008a7d2      0x2de ./Sources/MyPacket.o
+                               0x33c2 (size before relaxing)
+ .debug_str     0x0008aab0      0x2cd ./Sources/MyUART.o
+                              0x8ab53 (size before relaxing)
+ .debug_str     0x0008ad7d     0x1816 ./Sources/SPI.o
                               0x847d7 (size before relaxing)
- .debug_str     0x0008c567      0x10d ./Sources/analog.o
-                              0x8a94d (size before relaxing)
- .debug_str     0x0008c674      0x620 ./Sources/main.o
-                              0x8b453 (size before relaxing)
- .debug_str     0x0008cc94       0x53 ./Sources/median.o
-                              0x8be90 (size before relaxing)
- .debug_str     0x0008cce7     0x109a ./Project_Settings/Startup_Code/startup.o
+ .debug_str     0x0008c593       0xc5 ./Sources/analog.o
+                              0x8a931 (size before relaxing)
+ .debug_str     0x0008c658      0x61e ./Sources/main.o
+                              0x8b435 (size before relaxing)
+ .debug_str     0x0008cc76       0x53 ./Sources/median.o
+                              0x8be74 (size before relaxing)
+ .debug_str     0x0008ccc9     0x109a ./Project_Settings/Startup_Code/startup.o
                               0x853e2 (size before relaxing)
- .debug_str     0x0008dd81      0x21a ./Generated_Code/Cpu.o
+ .debug_str     0x0008dd63      0x21a ./Generated_Code/Cpu.o
                               0x8aa9a (size before relaxing)
- .debug_str     0x0008df9b       0x1c ./Generated_Code/Vectors.o
+ .debug_str     0x0008df7d       0x1c ./Generated_Code/Vectors.o
                               0x8a856 (size before relaxing)
- .debug_str     0x0008dfb7      0x239 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
+ .debug_str     0x0008df99      0x239 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
                               0x8a2a8 (size before relaxing)
- .debug_str     0x0008e1f0      0x34c C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
+ .debug_str     0x0008e1d2      0x34c C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
                               0x835e7 (size before relaxing)
- .debug_str     0x0008e53c       0x49 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
+ .debug_str     0x0008e51e       0x49 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
                               0x82f0f (size before relaxing)
- .debug_str     0x0008e585       0x8f C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
+ .debug_str     0x0008e567       0x8f C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
                               0x82f5f (size before relaxing)
- .debug_str     0x0008e614       0x69 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
+ .debug_str     0x0008e5f6       0x69 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
                               0x8a848 (size before relaxing)
- .debug_str     0x0008e67d      0x38a C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .debug_str     0x0008e65f      0x38a C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
                               0x8ad2a (size before relaxing)
 
 .comment        0x00000000       0x70
@@ -1358,30 +1359,30 @@ OUTPUT(Lab4.elf elf32-littlearm)
  .comment       0x00000000       0x71 ./Project_Settings/Startup_Code/startup.o
  .comment       0x00000000       0x71 ./Generated_Code/Cpu.o
  .comment       0x00000000       0x71 ./Generated_Code/Vectors.o
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .comment       0x00000000       0x71 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .comment       0x00000000       0x71 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
 
-.debug_frame    0x00000000      0xd8c
+.debug_frame    0x00000000      0xd74
  .debug_frame   0x00000000       0x70 ./Sources/MyFIFO.o
  .debug_frame   0x00000070       0xa0 ./Sources/MyPacket.o
  .debug_frame   0x00000110       0x94 ./Sources/MyUART.o
  .debug_frame   0x000001a4       0xa8 ./Sources/SPI.o
  .debug_frame   0x0000024c       0x50 ./Sources/analog.o
- .debug_frame   0x0000029c      0x2d4 ./Sources/main.o
- .debug_frame   0x00000570       0x54 ./Sources/median.o
- .debug_frame   0x000005c4       0xc0 ./Project_Settings/Startup_Code/startup.o
- .debug_frame   0x00000684       0x80 ./Generated_Code/Cpu.o
- .debug_frame   0x00000704       0x84 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(FTM.o)
- .debug_frame   0x00000788      0x140 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(Flash.o)
- .debug_frame   0x000008c8       0x80 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(LEDs.o)
- .debug_frame   0x00000948       0x88 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(PIT.o)
- .debug_frame   0x000009d0       0x88 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libLab3.a(RTC.o)
- .debug_frame   0x00000a58      0x2a0 C:\Users\11986282\Desktop\Declan - final embedded-software-master\Library\libOS.a(OS.o)
- .debug_frame   0x00000cf8       0x28 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
- .debug_frame   0x00000d20       0x2c c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-init.o)
- .debug_frame   0x00000d4c       0x20 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-memset.o)
- .debug_frame   0x00000d6c       0x20 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libnosys.a(_exit.o)
+ .debug_frame   0x0000029c      0x2bc ./Sources/main.o
+ .debug_frame   0x00000558       0x54 ./Sources/median.o
+ .debug_frame   0x000005ac       0xc0 ./Project_Settings/Startup_Code/startup.o
+ .debug_frame   0x0000066c       0x80 ./Generated_Code/Cpu.o
+ .debug_frame   0x000006ec       0x84 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(FTM.o)
+ .debug_frame   0x00000770      0x140 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(Flash.o)
+ .debug_frame   0x000008b0       0x80 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(LEDs.o)
+ .debug_frame   0x00000930       0x88 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(PIT.o)
+ .debug_frame   0x000009b8       0x88 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libLab3.a(RTC.o)
+ .debug_frame   0x00000a40      0x2a0 C:\Users\11986282\Desktop\FINAL LAB 5\Library\libOS.a(OS.o)
+ .debug_frame   0x00000ce0       0x28 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-exit.o)
+ .debug_frame   0x00000d08       0x2c c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-init.o)
+ .debug_frame   0x00000d34       0x20 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libg_s.a(lib_a-memset.o)
+ .debug_frame   0x00000d54       0x20 c:/freescale/kds_3.0.0/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libnosys.a(_exit.o)

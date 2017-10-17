@@ -15,7 +15,7 @@
 #include "types.h"
 #include "OS.h"
 
-OS_ECB* PITSemaphore;
+extern OS_ECB* PITSemaphore;
 
 /*! @brief Sets up the PIT before first use.
  *

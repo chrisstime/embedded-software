@@ -15,7 +15,7 @@
 #include "types.h"
 #include "OS.h"
 
-OS_ECB* RTCSemaphore;
+extern OS_ECB* RTCSemaphore;
 
 /*! @brief Initializes the RTC before first use.
  *

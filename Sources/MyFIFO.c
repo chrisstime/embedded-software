@@ -19,76 +19,74 @@
  *  @param FIFO A pointer to the FIFO that needs initializing.
  *  @return void
  */
-void MyFIFO_Init(TFIFO * const FIFO) {
-	FIFO->Start = 3;
-	FIFO->End = FIFO->Start;
-	FIFO->NbBytes = 0;
+void MyFIFO_Init(TFIFO * const FIFO)
+{
+   FIFO->Start = 3;
+   FIFO->End = FIFO->Start;
+   FIFO->NbBytes = 0;
 
-	FIFO->SpaceAvailableSemaphore = OS_SemaphoreCreate(FIFO_SIZE);
-	FIFO->ItemsAvailableSemaphore = OS_SemaphoreCreate(0);
-	FIFO->AccessSemaphore = OS_SemaphoreCreate(1);
-//	OS_SemaphoreSignal(FIFO->SpaceAvailableSemaphore);
-//	OS_SemaphoreSignal(FIFO->ItemsAvailableSemaphore);
+   FIFO->SpaceAvailableSemaphore = OS_SemaphoreCreate(FIFO_SIZE);
+   FIFO->ItemsAvailableSemaphore = OS_SemaphoreCreate(0);
+   FIFO->AccessSemaphore = OS_SemaphoreCreate(1);
 }
 
-bool MyFIFO_Put(TFIFO * const FIFO, const uint8_t data) {
-	//wait for spaceavailable
-	//wait for bufferaccess
-	OS_ERROR error;
-	error = OS_SemaphoreWait(FIFO->SpaceAvailableSemaphore, 0);
-	error = OS_SemaphoreWait(FIFO->AccessSemaphore, 0);
+bool MyFIFO_Put(TFIFO * const FIFO, const uint8_t data)
+{
+   OS_ERROR error;
+   error = OS_SemaphoreWait(FIFO->SpaceAvailableSemaphore, 0);
+   error = OS_SemaphoreWait(FIFO->AccessSemaphore, 0);
 
-	OS_DisableInterrupts();
+   OS_DisableInterrupts();
 
-	if (FIFO->NbBytes >= FIFO_SIZE)
-		return false;
+   if (FIFO->NbBytes >= FIFO_SIZE)
+     return false;
 
-	FIFO->Buffer[FIFO->End] = data;
+   FIFO->Buffer[FIFO->End] = data;
 
-	FIFO->End++;
-	FIFO->NbBytes++;
+   FIFO->End++;
+   FIFO->NbBytes++;
 
-	if (FIFO->End >= FIFO_SIZE)
-		FIFO->End = 0;
+   if (FIFO->End >= FIFO_SIZE)
+     FIFO->End = 0;
 
-	OS_EnableInterrupts();
+   OS_EnableInterrupts();
 
-	OS_SemaphoreSignal(FIFO->AccessSemaphore);
-	OS_SemaphoreSignal(FIFO->ItemsAvailableSemaphore);
+   OS_SemaphoreSignal(FIFO->AccessSemaphore);
+   OS_SemaphoreSignal(FIFO->ItemsAvailableSemaphore);
 
+   //unlock bufferaccess
+   //signal itemsavailable
 
-	//unlock bufferaccess
-	//signal itemsavailable
-	return true;
+   return true;
 }
 
 bool MyFIFO_Get(TFIFO * const FIFO, uint8_t volatile * const dataPtr)
 {
-	//wait for itemsAvailable
+   //wait for itemsAvailable
 
-	OS_ERROR error;
-	error = OS_SemaphoreWait(FIFO->ItemsAvailableSemaphore, 0);
-	error = OS_SemaphoreWait(FIFO->AccessSemaphore, 0);
+   OS_ERROR error;
+   error = OS_SemaphoreWait(FIFO->ItemsAvailableSemaphore, 0);
+   error = OS_SemaphoreWait(FIFO->AccessSemaphore, 0);
 
-	OS_DisableInterrupts();
+   OS_DisableInterrupts();
 
-	if (FIFO->NbBytes == 0)
-		return false;
+   if (FIFO->NbBytes == 0)
+     return false;
 
-	*dataPtr = FIFO->Buffer[FIFO->Start];
+   *dataPtr = FIFO->Buffer[FIFO->Start];
 
-	FIFO->Start++;
-	FIFO->NbBytes--;
+   FIFO->Start++;
+   FIFO->NbBytes--;
 
-	if (FIFO->Start >= FIFO_SIZE)
-		FIFO->Start = 0;
+   if (FIFO->Start >= FIFO_SIZE)
+     FIFO->Start = 0;
 
-	OS_EnableInterrupts();
+   OS_EnableInterrupts();
 
-	OS_SemaphoreSignal(FIFO->AccessSemaphore);
-	OS_SemaphoreSignal(FIFO->SpaceAvailableSemaphore);
+   OS_SemaphoreSignal(FIFO->AccessSemaphore);
+   OS_SemaphoreSignal(FIFO->SpaceAvailableSemaphore);
 
-	return true;
+   return true;
 }
 
 /* END FIFO */
