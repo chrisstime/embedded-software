@@ -13,6 +13,9 @@
 
 // new types
 #include "types.h"
+#include "OS.h"
+
+OS_ECB* FTMSemaphore;
 
 typedef enum
 {

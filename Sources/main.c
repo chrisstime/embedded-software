@@ -36,6 +36,11 @@
 
 // CPU mpdule - contains low level hardware initialization routines
 #include "Cpu.h"
+#include "Events.h"
+//#include "CI2C1.h"
+//#include "RTC1.h"
+//#include "TO1.h"
+//#include "TU1.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -43,16 +48,17 @@
 #include "MK70F12.h"
 #include "FIFO.h"
 #include "packet.h"
-#include "UART.h"
+#include "MyUART.h"
 #include "Flash.h"
 #include "types.h"
 #include "LEDs.h"
 #include "FTM.h"
 #include "RTC.h"
 #include "PIT.h"
-#include "analog.h"
+#include "Analog.h"
 #include "median.h"
 #include "SPI.h"
+#include "OS.h"
 
 // Define packet commands
 #define CMD_STARTUP 0x04
@@ -69,25 +75,92 @@
 #define TOWER_DEFAULT_MD 0x0001 /* default tower mode is 1*/
 #define PACKET_ACK_MASK 0x80
 
+#define THREAD_STACK_SIZE 100
+#define NB_LEDS 4
+
 const uint32_t BaudRate = 115200;
 
 static volatile uint16union_t* NvTowerNb; // Tower Number variable
 static volatile uint16union_t* NvTowerMd; // Tower Mode variable
 
-static TFTMChannel aFTMChannel;
+static 	TFTMChannel aFTMChannel;
+static 	TSPIModule 	aSPIModule;
+		TFIFO 		TX_FIFO, RX_FIFO;
+
+TAnalogInput Analog_Input[ANALOG_NB_INPUTS];
+
+OS_ECB* StartupSemaphore;
+
 uint8_t ProtocolMode;
 
+// Thread stacks
+OS_THREAD_STACK(InitModuleThreadStack, THREAD_STACK_SIZE);
+
+static uint32_t RTCThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+static uint32_t PITThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+static uint32_t FTMThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+static uint32_t PacketThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+//static uint32_t AnalogThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+static uint32_t UARTTxThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+static uint32_t UARTRxThreadStacks[THREAD_STACK_SIZE] __attribute__ ((aligned(0x08)));
+
+
+
+
+ static bool setSPIModule()
+{
+	aSPIModule.isMaster = true;
+	aSPIModule.continuousClock = false;
+	aSPIModule.inactiveHighClock = false;
+	aSPIModule.changedOnLeadingClockEdge = false;
+	aSPIModule.LSBFirst = false;
+	aSPIModule.baudRate = 1000000;
+
+	return true;
+}
+
+
+//static void AnalogThread(void* arg)
+//{
+//  for(;;)
+//  {
+//	  OS_SemaphoreWait(AnalogNb0Semaphore,0);
+//
+//		 //Analog_Input[channelNb].value.l = Analog_Input[channelNb].values[0];
+//
+//
+//		if(ProtocolMode == 0)
+//		{
+//		  if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
+//		  {
+//			MyPacket_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+//		  }
+//		  if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
+//		  {
+//			MyPacket_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+//		  }
+//		}
+//		else
+//		{
+//			MyPacket_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+//			MyPacket_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+//		}
+//		Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
+//		Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
+//  }
+//}
 static void AnalogGetInput()
 {
   for (int i = 0 ; i <= 1 ; i++)
     {
+	  int16_t* dataPtr;
       Analog_Get(i);
       /* Wait */
       uint16_t count;
       for (count = 0; count < 100; count++);
 
       /* Then update analog value*/
-      Analog_Input[i].value.l = Median_Filter(Analog_Input[i].values, ANALOG_WINDOW_SIZE);
+      Analog_Input[i].value.l = Median_Filter(Analog_Input[i].values, 5);
       //Analog_Input[channelNb].value.l = Analog_Input[channelNb].values[0];
     }
 
@@ -95,39 +168,101 @@ static void AnalogGetInput()
     {
       if (Analog_Input[0].oldValue.l != Analog_Input[0].value.l)
       {
-        Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+        MyPacket_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
       }
       if (Analog_Input[1].oldValue.l != Analog_Input[1].value.l)
       {
-        Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+    	  MyPacket_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
       }
     }
     else
     {
-       Packet_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
-       Packet_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
+    	MyPacket_Put(CMD_ANALOG_INPUT, 0x00, Analog_Input[0].value.s.Lo, Analog_Input[0].value.s.Hi);
+    	MyPacket_Put(CMD_ANALOG_INPUT, 0x01, Analog_Input[1].value.s.Lo, Analog_Input[1].value.s.Hi);
     }
     Analog_Input[0].oldValue.l = Analog_Input[0].value.l;
     Analog_Input[1].oldValue.l = Analog_Input[1].value.l;
 }
+
 
 /*! @brief Pit call back function
  *
  */
 static void PITCallBack(void* arg)
 {
-  AnalogGetInput();
+  OS_ISREnter();
+
+  //AnalogGetInput();
+  OS_SemaphoreSignal(PITSemaphore);
+
+  OS_ISRExit();
 }
+
+void PITThread(void* pData)//(void *arguments)
+{
+  for(;;)
+  {
+    OS_SemaphoreWait(PITSemaphore, 0);
+    LEDs_Toggle(LED_GREEN);
+
+    AnalogGetInput();
+    /*
+    for (int i = 0 ; i < 2 ; i++)
+    {
+    	MyAnalog_Get(i);
+    	Analog_Input[i].value.l = Median_Filter(Analog_Input[i].values, ANALOG_WINDOW_SIZE);
+    }
+
+    OS_SemaphoreSignal(AnalogNb0Semaphore);
+    OS_SemaphoreSignal(AnalogNb1Semaphore);
+    */
+  }
+}
+//
+//void AnalogThread0(void* arg)
+//{
+//	for(;;)
+//	{
+//		OS_SemaphoreWait(AnalogNb0Semaphore);
+//		Median_Filter(Analog_Input[0],ANALOG_WINDOW_SIZE);
+//		MyPacket_Put()
+//	}
+//}
+
+//
+//void processanalogthread(){
+//	for(;;){
+//		//OS_SemaphoreWait(AnalogProcess,0);
+//		//median filtering
+//		//send analog packet
+//	}
+//}
+
+
 
 /*! @brief Initialises everything
  *  @param no argument required/ void
  */
 static void RTCCallBack(void* arg)
 {
-  uint8_t hours, minutes, seconds;
-  RTC_Get(&hours, &minutes, &seconds);
-  LEDs_Toggle(LED_YELLOW);
-  (void)Packet_Put(CMD_TOWER_TIME, hours, minutes, seconds);
+  OS_ISREnter();
+
+  OS_SemaphoreSignal(RTCSemaphore);
+
+  OS_ISRExit();
+
+}
+
+static void RTCThread(void* arg)
+{
+  for(;;)
+  {
+	  OS_SemaphoreWait(RTCSemaphore, 0);
+	  uint8_t hours, minutes, seconds;
+	  RTC_Get(&hours, &minutes, &seconds);
+	  LEDs_Toggle(LED_YELLOW);
+	  (void)MyPacket_Put(CMD_TOWER_TIME, hours, minutes, seconds);
+  }
 }
 
 /*! @brief FTM call back function. Turns on blue LED
@@ -135,34 +270,85 @@ static void RTCCallBack(void* arg)
  */
 static void FTMCallBack(void* arg)
 {
-  LEDs_On(LED_BLUE);
+  OS_ISREnter();
+  OS_SemaphoreSignal(FTMSemaphore);
+  OS_ISRExit();
 }
 
-/*! @brief Initialises everything
- *  @return returns true if everything initialises successfully
+static void FTMThread(void* arg)
+{
+	for(;;)
+	{
+	  OS_SemaphoreWait(FTMSemaphore,0);
+	  LEDs_Off(LED_BLUE);
+	}
+}
+
+static void TxThread(void* arg)
+{
+
+	for(;;)
+	{
+		OS_SemaphoreWait(UARTTxSemaphore,0);
+		MyFIFO_Get(&TX_FIFO, &UART2_D);
+		UART2_C2 |= UART_C2_TIE_MASK;
+
+	}
+}
+
+static void RxThread(void* arg)
+{
+	for(;;)
+	{
+		OS_SemaphoreWait(UARTRxSemaphore,0);
+		MyFIFO_Put(&RX_FIFO, MyUART_TempRxData);
+	}
+}
+
+/*! @brief Sends startup packets. Should be v 1.0
+ *
+ * @bool returns true if packet send is successful
  */
-static bool TowerStartup()
+static bool StartUpPackets()
+{
+  // gonna use this to check is sending startup packets is successful
+  bool success;
+  //OS_SemaphoreWait(StartupSemaphore,0);
+
+
+  // start up value of 0x04 and the rest of the packets are zero
+  success = MyPacket_Put(CMD_STARTUP, 0x00, 0x00, 0x00);
+  // signifies Tower V 1.0
+  success &= MyPacket_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00);
+  // Whatever was saved/written in flash
+  success &= MyPacket_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
+  // Whatever was saved/written  in flash
+  success &= MyPacket_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
+  /*Protocol command, by default protocol mode is 0*/
+  success &= MyPacket_Put(CMD_PROTOCOL_MODE, 0x01, ProtocolMode, 0x00);
+  // Return success if all the packet put ran were successful
+  return success;
+}
+
+void TowerStart()
 {
   bool success = false;
 
   /*Initialise Packet.c clockrate, flash, LEDs, PIT, RTC and FTM. Will pass 0x01 to success bool if all is gewd */
-  success = Packet_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL)
-            && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ);
+  success = MyPacket_Init(BaudRate, CPU_BUS_CLK_HZ) && Flash_Init() && LEDs_Init() && PIT_Init(CPU_BUS_CLK_HZ, PITCallBack, NULL)
+            && RTC_Init(RTCCallBack, NULL) && FTM_Init() && Analog_Init(CPU_BUS_CLK_HZ) /*&& setSPIModule()*/;
 
   if (success)
   {
-      /* Start up the PIT timer using a period of 10 ms */
-          PIT_Set(10000000, true);
-          PIT_Enable(true);
-
-          /* Initialize FTM Channel 0 */
-          aFTMChannel.channelNb = 0x00;
-          aFTMChannel.delayCount = 24414;
-          aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
-          aFTMChannel.ioType.outputAction = TIMER_OUTPUT_HIGH;
-          aFTMChannel.userFunction = FTMCallBack;
-          aFTMChannel.userArguments = NULL;
-          success &= FTM_Set(&aFTMChannel);
+	LEDs_On(LED_ORANGE);
+	/* Initialize FTM Channel 0 */
+	aFTMChannel.channelNb = 0x00;
+	aFTMChannel.delayCount = 24414;
+	aFTMChannel.timerFunction = TIMER_FUNCTION_OUTPUT_COMPARE;
+	aFTMChannel.ioType.outputAction = TIMER_OUTPUT_HIGH;
+	aFTMChannel.userFunction = FTMCallBack;
+	aFTMChannel.userArguments = NULL;
+	success &= FTM_Set(&aFTMChannel);
 
     /* Allocate memory in flash will return true if successful*/
     success &= Flash_AllocateVar((volatile void**)&NvTowerNb, sizeof(*NvTowerNb));
@@ -191,12 +377,47 @@ static bool TowerStartup()
     }
   }
 
-  /*This is set to be asynchronous as the default*/
-  ProtocolMode = 0;
+	  /*This is set to be asynchronous as the default*/
+	  ProtocolMode = 0;
+  }
 
-  /*If any one if these processes fails, return false and Packet Handle and UART polling will not run */
-  return success;
+static void InitModulesThread(void* pData)
+{
+  OS_DisableInterrupts();
+
+  // Initialise PIT
+  // PIT_Init(CPU_BUS_CLK_HZ,NULL,NULL);
+  TowerStart();
+
+  // Start modules
+	// PIT
+  PIT_Set(10000000, true);
+  PIT_Enable(true);
+
+    // FTM
+  FTM_StartTimer(&aFTMChannel);
+
+  PITSemaphore    = OS_SemaphoreCreate(0);
+  RTCSemaphore 	  = OS_SemaphoreCreate(0);
+  FTMSemaphore    = OS_SemaphoreCreate(0);
+  PacketSemaphore = OS_SemaphoreCreate(1);
+  StartupSemaphore= OS_SemaphoreCreate(0);
+
+  OS_EnableInterrupts();
+  // Send void packet
+  MyPacket_Put(0x76, 0x6F, 0x69, 0x64);
+
+  //OS_SemaphoreSignal(StartupSemaphore);
+  StartUpPackets();
+
+  // We only do this once - so delete this thread
+  OS_ThreadDelete(OS_PRIORITY_SELF);
 }
+
+/*! @brief Initialises everything
+ *  @return returns true if everything initialises successfully
+ */
+
 
 /*! @brief Sets time everything
  *  @return returns true if everything time is set successfully in RTC
@@ -218,30 +439,7 @@ static bool SetTime()
 static bool TowerVersion()
 {
   // returns v 1.0
-  return Packet_Put(Packet_Command, 0x76, 0x01, 0x00);
-}
-
-/*! @brief Sends startup packets. Should be v 1.0
- *
- * @bool returns true if packet send is successful
- */
-static bool StartUpPackets()
-{
-  // gonna use this to check is sending startup packets is successful
-  bool success;
-
-  // start up value of 0x04 and the rest of the packets are zero
-  success = Packet_Put(CMD_STARTUP, 0x00, 0x00, 0x00);
-  // signifies Tower V 1.0
-  success &= Packet_Put(CMD_TOWER_VER, 0x76, 0x01, 0x00);
-  // Whatever was saved/written in flash
-  success &= Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
-  // Whatever was saved/written  in flash
-  success &= Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
-  /*Protocol command, by default protocol mode is 0*/
-  success &= Packet_Put(CMD_PROTOCOL_MODE, 0x01, ProtocolMode, 0x00);
-  // Return success if all the packet put ran were successful
-  return success;
+  return MyPacket_Put(Packet_Command, 0x76, 0x01, 0x00);
 }
 
 /*! @brief Sends Tower number packets. Should be 6282.
@@ -260,7 +458,7 @@ static bool TowerNb()
     if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
     {
       // Return either default tower value if nothing's written in flash or saved value from flash mem
-      return Packet_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
+      return MyPacket_Put(CMD_TOWER_NB, 0x01, (*NvTowerNb).s.Lo, (*NvTowerNb).s.Hi);
     }
   }
   return false; // return false if unsuccessful :(
@@ -295,7 +493,7 @@ static bool FlashRead()
   {
     uint32_t* data = (uint32_t*)(FLASH_DATA_START + Packet_Parameter1);
     // reads from flash
-    return Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
+    return MyPacket_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, *data);
   }
   return false; // return false if unsuccessful :(
 }
@@ -309,7 +507,7 @@ static bool TowerMd()
   if (Packet_Parameter1 == 0x01)
   {
     if (Packet_Parameter2 == 0x00 && Packet_Parameter3 == 0x00)
-      return Packet_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
+      return MyPacket_Put(CMD_TOWER_MD, 0x01, (*NvTowerMd).s.Lo, (*NvTowerMd).s.Hi);
   }
   if(Packet_Parameter1 == 0x02)
   {
@@ -321,7 +519,7 @@ static bool TowerMd()
 static bool Protocol_Mode()
 {
   if (Packet_Parameter1 == 0x01)
-    Packet_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
+	  MyPacket_Put(Packet_Command, 0x01, ProtocolMode, 0x00);
   else if (Packet_Parameter1 == 0x02)
   {
     //range checking on param2
@@ -333,7 +531,7 @@ static bool Protocol_Mode()
 
 void Packet_Handle()
 {
-  EnterCritical();
+//  EnterCritical();
   Packet_Command &= ~PACKET_ACK_MASK; // removes the acknowledgement mask from the Packet_Command
 
   bool ack = Packet_Command & PACKET_ACK_MASK;
@@ -382,45 +580,52 @@ void Packet_Handle()
     if (success) // if the switch case run was successful
     {
       Packet_Command |= PACKET_ACK_MASK; // return Packet_Command to have acknowledgement mask included
-      Packet_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3); // Put packets
+      MyPacket_Put(Packet_Command, Packet_Parameter1, Packet_Parameter2, Packet_Parameter3); // Put packets
     }
   }
-  ExitCritical();
+ // ExitCritical();
 }
+
+static void PacketThread(void* arg)
+{
+  for(;;)
+  {
+	if (MyPacket_Get())
+	{
+	  FTM_StartTimer(&aFTMChannel);
+	  LEDs_On(LED_BLUE);
+	  Packet_Handle();
+    }
+  }
+}
+
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
   /* Write your local variable definition here */
-
+	OS_ERROR error;
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
 
-  __DI();
-  if (TowerStartup() && StartUpPackets()) /* initialises everything, check if Flash, LED and tower was started up successfully */
-  {
-    LEDs_On(LED_ORANGE);
-    __EI();
-    for (;;) /*to loop forever*/
-    {
-       if (Packet_Get())
-       {
-         FTM_StartTimer(&aFTMChannel);
-         LEDs_On(LED_BLUE);
-         Packet_Handle();
-       }
+//  TowerStart();
+//  StartUpPackets();
+  OS_Init(CPU_BUS_CLK_HZ, false);
 
+    // Create module initialisation thread
+  error = OS_ThreadCreate(InitModulesThread,NULL, &InitModuleThreadStack[THREAD_STACK_SIZE - 1], 0); // Highest priority
+  	// Create other threads
+  error = OS_ThreadCreate(PITThread, &PITSemaphore, &PITThreadStacks[THREAD_STACK_SIZE - 1],4);
+  error = OS_ThreadCreate(RTCThread, &RTCSemaphore, &RTCThreadStacks[THREAD_STACK_SIZE - 1],5);
+  error = OS_ThreadCreate(FTMThread, &FTMSemaphore, &FTMThreadStacks[THREAD_STACK_SIZE - 1],6);
+  error = OS_ThreadCreate(PacketThread, &PacketSemaphore, &PacketThreadStacks[THREAD_STACK_SIZE - 1],7);
+  //error = OS_ThreadCreate(AnalogThread, &AnalogNb0Semaphore, &AnalogThreadStacks[THREAD_STACK_SIZE - 1],3);
+  error = OS_ThreadCreate(RxThread, &UARTRxSemaphore, &UARTRxThreadStacks[THREAD_STACK_SIZE - 1],2);
+  error = OS_ThreadCreate(TxThread, &UARTTxSemaphore, &UARTTxThreadStacks[THREAD_STACK_SIZE - 1],1);
 
-      // if(processData){
-         //filter
-         //send packets
-      //   processData = false;
-      // }
-  //UART_Poll(); // UART Polling
-    }
-  }
+  OS_Start();
 
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/

@@ -14,6 +14,10 @@
 // new types
 #include "types.h"
 
+OS_ECB* UARTRxSemaphore;
+OS_ECB* UARTTxSemaphore;
+
+
 /*! @brief Sets up the UART interface before first use.
  *
  *  @param baudRate The desired baud rate in bits/sec.
